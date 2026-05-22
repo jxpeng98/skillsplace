@@ -15,11 +15,13 @@ async function writeJson(filePath, value) {
   await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-async function createFixture(name, marketplace, codexMarketplace) {
+async function createFixture(name, marketplace, codexMarketplace, claudeMarketplace) {
   const fixtureRoot = await mkdtemp(path.join(tmpdir(), `${name}-`));
   await mkdir(path.join(fixtureRoot, ".agents/plugins"), { recursive: true });
+  await mkdir(path.join(fixtureRoot, ".claude-plugin"), { recursive: true });
   await writeJson(path.join(fixtureRoot, "marketplace.json"), marketplace);
   await writeJson(path.join(fixtureRoot, ".agents/plugins/marketplace.json"), codexMarketplace);
+  await writeJson(path.join(fixtureRoot, ".claude-plugin/marketplace.json"), claudeMarketplace);
   return fixtureRoot;
 }
 
@@ -73,6 +75,25 @@ test("validator accepts marketplace entries that point to external package sourc
           category: "Productivity"
         }
       ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      description: "External-only marketplace fixture.",
+      version: "0.1.0",
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "github",
+            repo: "example/agent-packages",
+            ref: "main"
+          },
+          description: "Release workflow package hosted outside this marketplace."
+        }
+      ]
     }
   );
 
@@ -95,6 +116,13 @@ test("validator uses the root passed with --root", async () => {
       name: "skillsplace",
       interface: {
         displayName: "Skillsplace Marketplace"
+      },
+      plugins: []
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
       },
       plugins: []
     }

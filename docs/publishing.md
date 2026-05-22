@@ -11,9 +11,10 @@ This repository is a marketplace host only. Do not add bundled skills, plugin so
 1. Choose a kebab-case slug, for example `release-helper`.
 2. Add the package summary to the top-level `marketplace.json`.
 3. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
-4. Point Codex entries at reviewed external sources, such as a Git URL and pinned `ref` or `sha`.
-5. Run `npm run validate`.
-6. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
+4. Add a Claude Code entry to `.claude-plugin/marketplace.json` when the package should appear in Claude Code.
+5. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
+6. Run `npm run validate`.
+7. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
 
 ## Codex
 
@@ -40,9 +41,23 @@ Prefer Git-backed entries for this repository:
 
 ## Claude Code
 
-Claude Code skills are not bundled in this repository. Reference Claude-compatible package locations in `marketplace.json` until you publish them from a separate repository or managed distribution channel.
+Claude Code reads a plugin marketplace from `.claude-plugin/marketplace.json`. The marketplace requires `name`, `owner`, and `plugins`.
 
-Do not add `.claude/skills/<name>/SKILL.md` here while this repository remains catalog-only.
+Prefer GitHub-backed entries for this repository:
+
+```json
+{
+  "name": "external-plugin",
+  "source": {
+    "source": "github",
+    "repo": "example/agent-packages",
+    "ref": "main"
+  },
+  "description": "External plugin hosted outside this marketplace."
+}
+```
+
+Do not add `.claude/skills/<name>/SKILL.md` or local plugin source trees here while this repository remains catalog-only.
 
 ## Other Platforms
 

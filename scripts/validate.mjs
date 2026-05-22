@@ -310,6 +310,66 @@ async function validateCodexMarketplace() {
   }
 }
 
+async function validateClaudeMarketplace() {
+  const marketplaceRel = ".claude-plugin/marketplace.json";
+  const claude = requireObject(await readJson(marketplaceRel), marketplaceRel);
+  requireKebab(claude.name, `${marketplaceRel}.name`);
+  const owner = requireObject(claude.owner, `${marketplaceRel}.owner`);
+  requireString(owner.name, `${marketplaceRel}.owner.name`);
+  if (claude.version !== undefined) {
+    requireSemver(claude.version, `${marketplaceRel}.version`);
+  }
+  if (claude.description !== undefined) {
+    requireString(claude.description, `${marketplaceRel}.description`);
+  }
+
+  const entries = requireArray(claude.plugins, `${marketplaceRel}.plugins`);
+  const names = new Set();
+
+  for (const [index, entryValue] of entries.entries()) {
+    const label = `${marketplaceRel}.plugins[${index}]`;
+    const entry = requireObject(entryValue, label);
+    const name = requireKebab(entry.name, `${label}.name`);
+    const source = entry.source;
+
+    if (name) {
+      if (names.has(name)) {
+        fail(`${label}.name duplicates ${name}`);
+      }
+      names.add(name);
+    }
+
+    if (typeof source === "string") {
+      requireString(source, `${label}.source`);
+      if (!source.startsWith("./") && !isExternalRef(source)) {
+        fail(`${label}.source must be a ./ path or external URL`);
+      }
+      if (source.startsWith("./")) {
+        existsRel(source, `${label}.source`);
+      }
+    } else {
+      const sourceObject = requireObject(source, `${label}.source`);
+      const sourceKind = requireString(sourceObject.source, `${label}.source.source`);
+      if (!["github", "url", "git-subdir", "npm"].includes(sourceKind)) {
+        fail(`${label}.source.source must be github, url, git-subdir, or npm`);
+      }
+      if (sourceKind === "github") {
+        requireString(sourceObject.repo, `${label}.source.repo`);
+      }
+      if (sourceKind === "url") {
+        requireString(sourceObject.url, `${label}.source.url`);
+      }
+      if (sourceKind === "git-subdir") {
+        requireString(sourceObject.url, `${label}.source.url`);
+        requireString(sourceObject.path, `${label}.source.path`);
+      }
+      if (sourceKind === "npm") {
+        requireString(sourceObject.package, `${label}.source.package`);
+      }
+    }
+  }
+}
+
 async function validateClaudeSkills() {
   const skillRoot = ".claude/skills";
   const absSkillRoot = path.resolve(root, skillRoot);
@@ -329,6 +389,7 @@ async function validateClaudeSkills() {
 
 await validateNeutralMarketplace();
 await validateCodexMarketplace();
+await validateClaudeMarketplace();
 await validateClaudeSkills();
 await Promise.all(pending);
 

@@ -4,7 +4,10 @@ The platform-neutral catalog is intentionally small. It should be easy for anoth
 
 ## Top-Level Marketplace
 
-`marketplace.json` identifies the repository catalog and points to external package metadata or platform-specific sources.
+`marketplace.json` identifies the repository catalog and points to external package metadata or platform-specific sources. Native platform catalogs live beside it:
+
+- Codex: `.agents/plugins/marketplace.json`
+- Claude Code: `.claude-plugin/marketplace.json`
 
 Required fields:
 

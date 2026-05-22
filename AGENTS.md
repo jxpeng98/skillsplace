@@ -2,7 +2,7 @@
 
 This repository hosts marketplace metadata only.
 
-- Keep `marketplace.json` and `.agents/plugins/marketplace.json` in sync.
+- Keep `marketplace.json`, `.agents/plugins/marketplace.json`, and `.claude-plugin/marketplace.json` in sync.
 - Do not add bundled skills, plugins, hooks, MCP configs, or package source trees unless the repository purpose changes explicitly.
 - Run `npm run validate` after any marketplace metadata change.
 - Do not commit secrets, API keys, local absolute paths, or user-specific machine paths.

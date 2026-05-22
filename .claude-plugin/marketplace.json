@@ -1,0 +1,9 @@
+{
+  "name": "skillsplace",
+  "owner": {
+    "name": "jxpeng98"
+  },
+  "description": "A catalog-only marketplace for Claude Code plugins.",
+  "version": "0.1.0",
+  "plugins": []
+}
