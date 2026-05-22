@@ -1,0 +1,14 @@
+{
+  "name": "skillsplace-marketplace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A platform-neutral marketplace repository for agent skills and Codex plugins.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "validate": "node scripts/validate.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

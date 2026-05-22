@@ -1,0 +1,38 @@
+{
+  "$schema": "../../schemas/package.schema.json",
+  "name": "Starter Toolkit",
+  "slug": "starter-toolkit",
+  "version": "0.1.0",
+  "description": "A small skill package used to verify that this marketplace can be consumed by Codex and Claude Code.",
+  "license": "UNLICENSED",
+  "publisher": {
+    "name": "Marketplace Maintainers"
+  },
+  "categories": [
+    "Productivity",
+    "Developer Tools"
+  ],
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "claude",
+    "marketplace"
+  ],
+  "platforms": {
+    "codex": {
+      "kind": "plugin",
+      "path": "../../plugins/starter-toolkit",
+      "manifest": "../../plugins/starter-toolkit/.codex-plugin/plugin.json"
+    },
+    "claude": {
+      "kind": "skill",
+      "path": "../../.claude/skills/starter-toolkit",
+      "manifest": "../../.claude/skills/starter-toolkit/SKILL.md"
+    }
+  },
+  "security": {
+    "network": "none",
+    "secrets": "none",
+    "dataAccess": "repository metadata only"
+  }
+}
