@@ -1,45 +1,49 @@
 # Publishing Guide
 
-Use this checklist when adding or changing a package.
+Use this checklist when adding or changing marketplace metadata.
 
-## Package Checklist
+## Catalog-Only Rule
+
+This repository is a marketplace host only. Do not add bundled skills, plugin source trees, hooks, MCP server configs, or executable package artifacts here.
+
+## Entry Checklist
 
 1. Choose a kebab-case slug, for example `release-helper`.
-2. Create `packages/<slug>/manifest.json`.
-3. Add at least one platform artifact:
-   - Codex plugin under `plugins/<slug>/`.
-   - Claude Code skill under `.claude/skills/<slug>/`.
-4. Add the package to the top-level `marketplace.json`.
-5. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
-6. Run `npm run validate`.
-7. Review the package for secrets, local paths, shell side effects, and unclear install instructions.
+2. Add the package summary to the top-level `marketplace.json`.
+3. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
+4. Point Codex entries at reviewed external sources, such as a Git URL and pinned `ref` or `sha`.
+5. Run `npm run validate`.
+6. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
 
 ## Codex
 
-Codex reads a repository marketplace from `.agents/plugins/marketplace.json`. Keep each `source.path` relative to the repository root and inside the repository.
+Codex reads a repository marketplace from `.agents/plugins/marketplace.json`.
 
-For a plugin package, the required entry point is:
+Prefer Git-backed entries for this repository:
 
-```text
-plugins/<slug>/.codex-plugin/plugin.json
-```
-
-Bundled skills should live under:
-
-```text
-plugins/<slug>/skills/<skill-name>/SKILL.md
+```json
+{
+  "name": "external-plugin",
+  "source": {
+    "source": "git-subdir",
+    "url": "https://github.com/example/agent-packages.git",
+    "path": "./plugins/external-plugin",
+    "ref": "main"
+  },
+  "policy": {
+    "installation": "AVAILABLE",
+    "authentication": "ON_INSTALL"
+  },
+  "category": "Productivity"
+}
 ```
 
 ## Claude Code
 
-Claude Code project skills live under:
+Claude Code skills are not bundled in this repository. Reference Claude-compatible package locations in `marketplace.json` until you publish them from a separate repository or managed distribution channel.
 
-```text
-.claude/skills/<skill-name>/SKILL.md
-```
-
-Keep skill frontmatter concise. The `description` should say what the skill does and when it should be used.
+Do not add `.claude/skills/<name>/SKILL.md` here while this repository remains catalog-only.
 
 ## Other Platforms
 
-Use `marketplace.json` and `packages/<slug>/manifest.json` as the stable adapter contract. Add a new platform key under `platforms` instead of changing existing Codex or Claude paths.
+Use `marketplace.json` as the stable adapter contract. Add a new platform key under `platforms` instead of changing existing Codex or Claude entries.

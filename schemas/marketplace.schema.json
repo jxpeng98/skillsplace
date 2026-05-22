@@ -33,7 +33,6 @@
     },
     "packages": {
       "type": "array",
-      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -64,7 +63,7 @@
           },
           "manifest": {
             "type": "string",
-            "pattern": "^\\./"
+            "minLength": 1
           },
           "platforms": {
             "type": "object",
@@ -87,11 +86,11 @@
                 },
                 "path": {
                   "type": "string",
-                  "pattern": "^\\./"
+                  "minLength": 1
                 },
                 "marketplace": {
                   "type": "string",
-                  "pattern": "^\\./"
+                  "minLength": 1
                 }
               }
             }

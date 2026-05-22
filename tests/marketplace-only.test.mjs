@@ -1,0 +1,31 @@
+import { existsSync } from "node:fs";
+import { readFile, readdir } from "node:fs/promises";
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+async function readJson(relativePath) {
+  return JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
+}
+
+async function directoryEntries(relativePath) {
+  const absolutePath = path.join(root, relativePath);
+  if (!existsSync(absolutePath)) {
+    return [];
+  }
+  return readdir(absolutePath);
+}
+
+test("repository starts as a marketplace-only catalog", async () => {
+  const marketplace = await readJson("marketplace.json");
+  const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
+
+  assert.deepEqual(marketplace.packages, []);
+  assert.deepEqual(codexMarketplace.plugins, []);
+  assert.deepEqual(await directoryEntries("packages"), []);
+  assert.deepEqual(await directoryEntries("plugins"), []);
+  assert.deepEqual(await directoryEntries(".claude/skills"), []);
+});

@@ -4,8 +4,24 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const root = resolveRoot(process.argv.slice(2));
 const errors = [];
+
+function resolveRoot(args) {
+  const rootIndex = args.indexOf("--root");
+  if (rootIndex === -1) {
+    return defaultRoot;
+  }
+
+  const value = args[rootIndex + 1];
+  if (!value) {
+    console.error("Missing value for --root");
+    process.exit(1);
+  }
+
+  return path.resolve(value);
+}
 
 function fail(message) {
   errors.push(message);
@@ -24,11 +40,19 @@ function requireObject(value, label) {
 }
 
 function requireArray(value, label) {
-  if (!Array.isArray(value) || value.length === 0) {
-    fail(`${label} must be a non-empty array`);
+  if (!Array.isArray(value)) {
+    fail(`${label} must be an array`);
     return [];
   }
   return value;
+}
+
+function requireNonEmptyArray(value, label) {
+  const items = requireArray(value, label);
+  if (items.length === 0) {
+    fail(`${label} must be a non-empty array`);
+  }
+  return items;
 }
 
 function requireString(value, label) {
@@ -91,6 +115,10 @@ function existsRel(relPath, label) {
 
 function normalizeRel(relPath) {
   return path.normalize(relPath.replace(/^\.\//, ""));
+}
+
+function isExternalRef(value) {
+  return /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
 }
 
 function joinRel(...parts) {
@@ -157,7 +185,7 @@ async function validateNeutralMarketplace() {
       slugs.add(slug);
     }
 
-    if (manifestPath && existsRel(manifestPath, `${label}.manifest`)) {
+    if (manifestPath && !isExternalRef(manifestPath) && existsRel(manifestPath, `${label}.manifest`)) {
       const manifestRel = pathFromRoot(manifestPath);
       const manifest = requireObject(await readJson(manifestRel), manifestRel);
       if (manifest.name !== name) {
@@ -177,10 +205,10 @@ async function validateNeutralMarketplace() {
       const platform = requireObject(platformValue, `${label}.platforms.${platformName}`);
       requireString(platform.type, `${label}.platforms.${platformName}.type`);
       const platformPath = requireString(platform.path, `${label}.platforms.${platformName}.path`);
-      if (platformPath) {
+      if (platformPath && !isExternalRef(platformPath)) {
         existsRel(platformPath, `${label}.platforms.${platformName}.path`);
       }
-      if (platform.marketplace) {
+      if (platform.marketplace && !isExternalRef(platform.marketplace)) {
         existsRel(platform.marketplace, `${label}.platforms.${platformName}.marketplace`);
       }
     }
@@ -191,7 +219,7 @@ function validatePackageManifest(manifest, manifestRel) {
   requireString(manifest.description, `${manifestRel}.description`);
   requireString(manifest.license, `${manifestRel}.license`);
   requireObject(manifest.publisher, `${manifestRel}.publisher`);
-  requireArray(manifest.categories, `${manifestRel}.categories`);
+  requireNonEmptyArray(manifest.categories, `${manifestRel}.categories`);
   requireArray(manifest.keywords, `${manifestRel}.keywords`);
   requireObject(manifest.security, `${manifestRel}.security`);
 
@@ -231,17 +259,25 @@ async function validateCodexMarketplace() {
     const installation = requireString(policy.installation, `${label}.policy.installation`);
     const authentication = requireString(policy.authentication, `${label}.policy.authentication`);
     const source = entry.source;
+    let sourceKind = "local";
     let pluginPath = "";
 
     if (typeof source === "string") {
       pluginPath = source;
     } else {
       const sourceObject = requireObject(source, `${label}.source`);
-      const sourceKind = requireString(sourceObject.source, `${label}.source.source`);
+      sourceKind = requireString(sourceObject.source, `${label}.source.source`);
       if (!["local", "url", "git-subdir"].includes(sourceKind)) {
         fail(`${label}.source.source must be local, url, or git-subdir`);
       }
-      pluginPath = requireString(sourceObject.path, `${label}.source.path`);
+      if (sourceKind === "local" || sourceKind === "git-subdir") {
+        pluginPath = requireString(sourceObject.path, `${label}.source.path`);
+      } else if (sourceObject.path !== undefined) {
+        pluginPath = requireString(sourceObject.path, `${label}.source.path`);
+      }
+      if (sourceKind !== "local") {
+        requireString(sourceObject.url, `${label}.source.url`);
+      }
     }
 
     if (installation && !["AVAILABLE", "INSTALLED_BY_DEFAULT", "NOT_AVAILABLE"].includes(installation)) {
@@ -253,11 +289,11 @@ async function validateCodexMarketplace() {
     if (!category) {
       fail(`${label}.category is required`);
     }
-    if (pluginPath && !pluginPath.startsWith("./")) {
+    if (pluginPath && !pluginPath.startsWith("./") && !isExternalRef(pluginPath)) {
       fail(`${label}.source.path must start with ./`);
     }
 
-    if (pluginPath && existsRel(pluginPath, `${label}.source.path`)) {
+    if (pluginPath && sourceKind === "local" && existsRel(pluginPath, `${label}.source.path`)) {
       const pluginRel = pathFromRoot(pluginPath);
       const pluginManifestRel = joinRel(pluginRel, ".codex-plugin/plugin.json");
       const pluginManifest = requireObject(await readJson(pluginManifestRel), pluginManifestRel);
@@ -276,11 +312,11 @@ async function validateCodexMarketplace() {
 
 async function validateClaudeSkills() {
   const skillRoot = ".claude/skills";
-  if (!existsRel(skillRoot, skillRoot)) {
+  const absSkillRoot = path.resolve(root, skillRoot);
+  if (!existsSync(absSkillRoot)) {
     return;
   }
 
-  const absSkillRoot = path.resolve(root, skillRoot);
   for (const name of await import("node:fs/promises").then((fs) => fs.readdir(absSkillRoot))) {
     const relPath = joinRel(skillRoot, name, "SKILL.md");
     if (existsSync(path.resolve(root, relPath)) && statSync(path.resolve(root, relPath)).isFile()) {

@@ -4,7 +4,7 @@ The platform-neutral catalog is intentionally small. It should be easy for anoth
 
 ## Top-Level Marketplace
 
-`marketplace.json` identifies the repository catalog and points to package manifests.
+`marketplace.json` identifies the repository catalog and points to external package metadata or platform-specific sources.
 
 Required fields:
 
@@ -12,11 +12,11 @@ Required fields:
 - `displayName`: human-readable marketplace name.
 - `version`: catalog schema/content version.
 - `description`: short purpose statement.
-- `packages`: package summary list.
+- `packages`: package summary list. It can be empty while no entries are published.
 
 ## Package Manifest
 
-`packages/<slug>/manifest.json` is the package source of truth.
+This catalog-only repository does not store package manifests by default. If an external package exposes its own manifest, point to it from `marketplace.json`.
 
 Required fields:
 
@@ -28,14 +28,13 @@ Required fields:
 
 ## Platform Entry Shape
 
-Each platform entry uses:
+Each platform entry records how a consumer can find the package:
 
 ```json
 {
-  "kind": "skill",
-  "path": "../../.claude/skills/starter-toolkit",
-  "manifest": "../../.claude/skills/starter-toolkit/SKILL.md"
+  "type": "plugin",
+  "path": "https://github.com/example/agent-packages/tree/main/plugins/release-helper"
 }
 ```
 
-Paths inside package manifests are relative to the package manifest file. Paths inside `marketplace.json` are relative to the repository root.
+Local paths inside `marketplace.json` are relative to the repository root. Prefer URLs or Git-backed Codex entries while this repository remains catalog-only.

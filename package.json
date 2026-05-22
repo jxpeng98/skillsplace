@@ -6,7 +6,8 @@
   "description": "A platform-neutral marketplace repository for agent skills and Codex plugins.",
   "license": "UNLICENSED",
   "scripts": {
-    "validate": "node scripts/validate.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate.mjs && node --test tests/*.test.mjs"
   },
   "engines": {
     "node": ">=18"

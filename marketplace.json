@@ -4,24 +4,5 @@
   "displayName": "Skillsplace Marketplace",
   "version": "0.1.0",
   "description": "A platform-neutral catalog for distributing agent skills and plugins across Codex, Claude Code, and compatible tools.",
-  "packages": [
-    {
-      "name": "Starter Toolkit",
-      "slug": "starter-toolkit",
-      "version": "0.1.0",
-      "description": "A minimal package used to validate marketplace ingestion across Codex and Claude Code.",
-      "manifest": "./packages/starter-toolkit/manifest.json",
-      "platforms": {
-        "codex": {
-          "type": "plugin",
-          "path": "./plugins/starter-toolkit",
-          "marketplace": "./.agents/plugins/marketplace.json"
-        },
-        "claude": {
-          "type": "skill",
-          "path": "./.claude/skills/starter-toolkit"
-        }
-      }
-    }
-  ]
+  "packages": []
 }

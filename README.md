@@ -1,14 +1,13 @@
 # Skillsplace Marketplace
 
-Skillsplace is a repository template for hosting reusable agent skills and plugins across Codex, Claude Code, and compatible tools.
+Skillsplace is a repository for hosting marketplace metadata for Codex, Claude Code, and compatible agent platforms.
 
-It keeps three layers separate:
+This repository is catalog-only. It does not ship bundled skills, plugins, hooks, scripts, or platform artifacts. Add entries that point to packages hosted elsewhere, or extend the catalog structure when you are ready to publish installable artifacts from separate repositories.
+
+It keeps two catalog layers separate:
 
 - `marketplace.json`: platform-neutral catalog for humans, tooling, and future adapters.
 - `.agents/plugins/marketplace.json`: Codex-native plugin marketplace.
-- `.claude/skills/`: Claude Code project skills.
-
-The starter package is intentionally small. It exists to prove that marketplace discovery, package metadata, Codex plugin packaging, and Claude skill discovery all work from one repository.
 
 ## Quick Start
 
@@ -30,7 +29,7 @@ After the repository is pushed to GitHub, Codex can also add it by repository so
 codex plugin marketplace add OWNER/REPO
 ```
 
-Use it locally with Claude Code by running Claude from this repository root. Claude Code discovers project skills from `.claude/skills/`. To make a skill personal instead, copy the skill directory to `~/.claude/skills/`.
+Claude Code does not consume a marketplace file directly from this repository. Keep Claude-facing references in the platform-neutral `marketplace.json` until you publish a separate package repository or managed skill distribution.
 
 ## Repository Layout
 
@@ -38,25 +37,18 @@ Use it locally with Claude Code by running Claude from this repository root. Cla
 .
 ├── marketplace.json
 ├── .agents/plugins/marketplace.json
-├── .claude/skills/starter-toolkit/SKILL.md
-├── plugins/starter-toolkit/
-│   ├── .codex-plugin/plugin.json
-│   └── skills/starter-toolkit/SKILL.md
-├── packages/starter-toolkit/manifest.json
 ├── schemas/
 ├── scripts/validate.mjs
+├── tests/
 └── docs/
 ```
 
-## Adding Packages
+## Adding Marketplace Entries
 
-1. Create `packages/<slug>/manifest.json` from the schema in `schemas/package.schema.json`.
-2. Add platform artifacts:
-   - Codex plugin: `plugins/<slug>/.codex-plugin/plugin.json` and optional `plugins/<slug>/skills/`.
-   - Claude skill: `.claude/skills/<slug>/SKILL.md`.
-3. Add the package to `marketplace.json`.
-4. Add Codex install metadata to `.agents/plugins/marketplace.json`.
-5. Run `npm run validate`.
+1. Add a package summary to `marketplace.json`.
+2. For Codex, add a plugin entry to `.agents/plugins/marketplace.json` that points to a Git-backed source or another reviewed source.
+3. Keep local `plugins/`, `packages/`, and `.claude/skills/` empty unless this repository intentionally changes from catalog-only to artifact-hosting.
+4. Run `npm run validate`.
 
 See `docs/publishing.md` for the full checklist.
 
