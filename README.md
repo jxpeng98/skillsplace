@@ -1,46 +1,74 @@
 # Skillsplace Marketplace
 
-Skillsplace is a repository for hosting marketplace metadata for Codex, Claude Code, and compatible agent platforms.
+Skillsplace is a catalog-only marketplace for agent plugins and skills. It is the aggregation point for packages that live in separate repositories.
 
-This repository is catalog-only. It does not ship bundled skills, plugins, hooks, scripts, or platform artifacts. Add entries that point to packages hosted elsewhere, or extend the catalog structure when you are ready to publish installable artifacts from separate repositories.
+The current marketplace entry is:
 
-It keeps three catalog layers separate:
+| Package | Source | Platforms | Description |
+| --- | --- | --- | --- |
+| `qiongli` | [`jxpeng98/qiongli`](https://github.com/jxpeng98/qiongli) | Codex, Claude Code | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
 
-- `marketplace.json`: platform-neutral catalog for humans, tooling, and future adapters.
-- `.agents/plugins/marketplace.json`: Codex-native plugin marketplace.
-- `.claude-plugin/marketplace.json`: Claude Code-native plugin marketplace.
+This repository does not vendor plugin source code, skills, hooks, MCP servers, or executable package artifacts. It only points supported platforms to reviewed external sources.
 
-## Quick Start
+## Install Qiongli
 
-Validate the repository:
+### Codex
 
-```bash
-npm run validate
-```
-
-Use it locally with Codex:
-
-```bash
-codex plugin marketplace add ./path/to/skillsplace
-```
-
-After the repository is pushed to GitHub, Codex can add it by repository source:
+Add this marketplace:
 
 ```bash
 codex plugin marketplace add jxpeng98/skillsplace --ref main
 ```
 
-Use it locally with Claude Code:
+Then install or enable `qiongli` from the Codex plugin UI. To confirm the marketplace is registered:
 
 ```bash
-claude plugin marketplace add ./path/to/skillsplace
+codex plugin marketplace list
 ```
 
-After the repository is pushed to GitHub, Claude Code can add it by repository source:
+### Claude Code
+
+Add this marketplace:
 
 ```bash
 claude plugin marketplace add jxpeng98/skillsplace@main
 ```
+
+Install `qiongli` from this marketplace:
+
+```bash
+claude plugin install qiongli@skillsplace
+```
+
+In an interactive Claude Code session, the equivalent slash commands are:
+
+```text
+/plugin marketplace add jxpeng98/skillsplace@main
+/plugin install qiongli@skillsplace
+```
+
+## Local Development
+
+Validate the marketplace before publishing:
+
+```bash
+npm run validate
+```
+
+Use the local checkout while editing:
+
+```bash
+codex plugin marketplace add /path/to/skillsplace
+claude plugin marketplace add /path/to/skillsplace
+```
+
+## Catalog Files
+
+Skillsplace keeps three catalog layers separate:
+
+- `marketplace.json`: platform-neutral catalog for humans, tooling, and future adapters.
+- `.agents/plugins/marketplace.json`: Codex-native plugin marketplace.
+- `.claude-plugin/marketplace.json`: Claude Code-native plugin marketplace.
 
 ## Repository Layout
 
@@ -55,7 +83,7 @@ claude plugin marketplace add jxpeng98/skillsplace@main
 └── docs/
 ```
 
-## Adding Marketplace Entries
+## Add Marketplace Entries
 
 1. Add a package summary to `marketplace.json`.
 2. For Codex, add a plugin entry to `.agents/plugins/marketplace.json` that points to a Git-backed source or another reviewed source.
@@ -65,7 +93,7 @@ claude plugin marketplace add jxpeng98/skillsplace@main
 
 See `docs/publishing.md` for the full checklist.
 
-## Reference Formats
+## References
 
 This repository follows the Codex plugin marketplace layout documented by OpenAI and the Claude Code skill layout documented by Anthropic:
 
