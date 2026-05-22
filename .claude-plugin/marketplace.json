@@ -5,5 +5,29 @@
   },
   "description": "A catalog-only marketplace for Claude Code plugins.",
   "version": "0.1.0",
-  "plugins": []
+  "plugins": [
+    {
+      "name": "qiongli",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli",
+        "ref": "main"
+      },
+      "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
+      "version": "0.10.1",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review"
+      ]
+    }
+  ]
 }

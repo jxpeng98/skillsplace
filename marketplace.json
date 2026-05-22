@@ -4,5 +4,25 @@
   "displayName": "Skillsplace Marketplace",
   "version": "0.1.0",
   "description": "A platform-neutral catalog for distributing agent skills and plugins across Codex, Claude Code, and compatible tools.",
-  "packages": []
+  "packages": [
+    {
+      "name": "Qiongli",
+      "slug": "qiongli",
+      "version": "0.10.1",
+      "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
+      "manifest": "https://github.com/jxpeng98/qiongli/blob/main/pyproject.toml",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
+          "marketplace": "https://github.com/jxpeng98/qiongli/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
+          "marketplace": "https://github.com/jxpeng98/qiongli/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    }
+  ]
 }
