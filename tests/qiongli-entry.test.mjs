@@ -14,6 +14,7 @@ test("qiongli is listed as an external marketplace package", async () => {
   const marketplace = await readJson("marketplace.json");
   const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
+  const antigravityCatalog = await readJson(".antigravity/catalog.json");
 
   assert.deepEqual(marketplace.packages, [
     {
@@ -26,13 +27,16 @@ test("qiongli is listed as an external marketplace package", async () => {
       platforms: {
         codex: {
           type: "plugin",
-          path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
-          marketplace: "https://github.com/jxpeng98/qiongli/blob/main/.agents/plugins/marketplace.json"
+          path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
         },
         claude: {
           type: "plugin",
+          path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
+        },
+        antigravity: {
+          type: "plugin",
           path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
-          marketplace: "https://github.com/jxpeng98/qiongli/blob/main/.claude-plugin/marketplace.json"
+          marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
         }
       }
     }
@@ -79,6 +83,32 @@ test("qiongli is listed as an external marketplace package", async () => {
         "academic-writing",
         "literature-review"
       ]
+    }
+  ]);
+
+  assert.deepEqual(antigravityCatalog.plugins, [
+    {
+      name: "qiongli",
+      version: "0.10.1",
+      description:
+        "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
+      source: {
+        source: "git-subdir",
+        url: "https://github.com/jxpeng98/qiongli.git",
+        path: "plugins/qiongli",
+        ref: "main"
+      },
+      plugin: {
+        status: "pending-native-manifest",
+        requiredRootFile: "plugin.json",
+        workspaceInstallPath: ".agents/plugins/qiongli",
+        globalInstallPath: "~/.gemini/config/plugins/qiongli"
+      },
+      extension: {
+        status: "not-published",
+        registry: "open-vsx",
+        extensionId: null
+      }
     }
   ]);
 });

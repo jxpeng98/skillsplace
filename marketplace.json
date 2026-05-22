@@ -14,13 +14,16 @@
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
-          "marketplace": "https://github.com/jxpeng98/qiongli/blob/main/.agents/plugins/marketplace.json"
+          "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
         },
         "claude": {
           "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
+        },
+        "antigravity": {
+          "type": "plugin",
           "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
-          "marketplace": "https://github.com/jxpeng98/qiongli/blob/main/.claude-plugin/marketplace.json"
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
         }
       }
     }
