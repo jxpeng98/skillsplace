@@ -79,6 +79,50 @@ function requireSemver(value, label) {
   return text;
 }
 
+function requireEnum(value, allowedValues, label) {
+  const text = requireString(value, label);
+  if (text && !allowedValues.includes(text)) {
+    fail(`${label} has unsupported value ${text}`);
+  }
+  return text;
+}
+
+function requirePortableReference(value, label, options = {}) {
+  const text = requireString(value, label);
+  if (!text) {
+    return text;
+  }
+
+  const normalized = text.replace(/\\/g, "/");
+  if (/^file:\/\//i.test(normalized)) {
+    fail(`${label} must not use file:// URLs`);
+  }
+  if (/^[A-Za-z]:\//.test(normalized) || normalized.startsWith("/")) {
+    fail(`${label} must not use a local absolute path`);
+  }
+  if (normalized.startsWith("~/") && !options.allowHomePath) {
+    fail(`${label} must not use a user home path`);
+  }
+  return text;
+}
+
+function indexByName(entries, label) {
+  const index = new Map();
+  for (const [entryIndex, entryValue] of entries.entries()) {
+    const entry = requireObject(entryValue, `${label}[${entryIndex}]`);
+    const name = requireString(entry.name, `${label}[${entryIndex}].name`);
+    if (!name) {
+      continue;
+    }
+    if (index.has(name)) {
+      fail(`${label}[${entryIndex}].name duplicates ${name}`);
+      continue;
+    }
+    index.set(name, { entry, index: entryIndex });
+  }
+  return index;
+}
+
 async function readJson(relPath) {
   const absPath = path.resolve(root, relPath);
   try {
@@ -114,7 +158,7 @@ function existsRel(relPath, label) {
 }
 
 function normalizeRel(relPath) {
-  return path.normalize(relPath.replace(/^\.\//, ""));
+  return path.posix.normalize(relPath.replace(/\\/g, "/").replace(/^\.\//, ""));
 }
 
 function isExternalRef(value) {
@@ -176,7 +220,7 @@ async function validateNeutralMarketplace() {
     const slug = requireKebab(entry.slug, `${label}.slug`);
     const version = requireSemver(entry.version, `${label}.version`);
     requireString(entry.description, `${label}.description`);
-    const manifestPath = requireString(entry.manifest, `${label}.manifest`);
+    const manifestPath = requirePortableReference(entry.manifest, `${label}.manifest`);
 
     if (slug) {
       if (slugs.has(slug)) {
@@ -204,12 +248,18 @@ async function validateNeutralMarketplace() {
     for (const [platformName, platformValue] of Object.entries(platforms)) {
       const platform = requireObject(platformValue, `${label}.platforms.${platformName}`);
       requireString(platform.type, `${label}.platforms.${platformName}.type`);
-      const platformPath = requireString(platform.path, `${label}.platforms.${platformName}.path`);
+      const platformPath = requirePortableReference(platform.path, `${label}.platforms.${platformName}.path`);
       if (platformPath && !isExternalRef(platformPath)) {
         existsRel(platformPath, `${label}.platforms.${platformName}.path`);
       }
       if (platform.marketplace && !isExternalRef(platform.marketplace)) {
-        existsRel(platform.marketplace, `${label}.platforms.${platformName}.marketplace`);
+        const marketplacePath = requirePortableReference(
+          platform.marketplace,
+          `${label}.platforms.${platformName}.marketplace`
+        );
+        existsRel(marketplacePath, `${label}.platforms.${platformName}.marketplace`);
+      } else if (platform.marketplace) {
+        requirePortableReference(platform.marketplace, `${label}.platforms.${platformName}.marketplace`);
       }
     }
   }
@@ -263,7 +313,7 @@ async function validateCodexMarketplace() {
     let pluginPath = "";
 
     if (typeof source === "string") {
-      pluginPath = source;
+      pluginPath = requirePortableReference(source, `${label}.source`);
     } else {
       const sourceObject = requireObject(source, `${label}.source`);
       sourceKind = requireString(sourceObject.source, `${label}.source.source`);
@@ -271,12 +321,15 @@ async function validateCodexMarketplace() {
         fail(`${label}.source.source must be local, url, or git-subdir`);
       }
       if (sourceKind === "local" || sourceKind === "git-subdir") {
-        pluginPath = requireString(sourceObject.path, `${label}.source.path`);
+        pluginPath = requirePortableReference(sourceObject.path, `${label}.source.path`);
       } else if (sourceObject.path !== undefined) {
-        pluginPath = requireString(sourceObject.path, `${label}.source.path`);
+        pluginPath = requirePortableReference(sourceObject.path, `${label}.source.path`);
       }
       if (sourceKind !== "local") {
-        requireString(sourceObject.url, `${label}.source.url`);
+        requirePortableReference(sourceObject.url, `${label}.source.url`);
+      }
+      if (sourceKind === "git-subdir") {
+        requireString(sourceObject.ref, `${label}.source.ref`);
       }
     }
 
@@ -340,7 +393,7 @@ async function validateClaudeMarketplace() {
     }
 
     if (typeof source === "string") {
-      requireString(source, `${label}.source`);
+      requirePortableReference(source, `${label}.source`);
       if (!source.startsWith("./") && !isExternalRef(source)) {
         fail(`${label}.source must be a ./ path or external URL`);
       }
@@ -355,13 +408,15 @@ async function validateClaudeMarketplace() {
       }
       if (sourceKind === "github") {
         requireString(sourceObject.repo, `${label}.source.repo`);
+        requireString(sourceObject.ref, `${label}.source.ref`);
       }
       if (sourceKind === "url") {
-        requireString(sourceObject.url, `${label}.source.url`);
+        requirePortableReference(sourceObject.url, `${label}.source.url`);
       }
       if (sourceKind === "git-subdir") {
-        requireString(sourceObject.url, `${label}.source.url`);
-        requireString(sourceObject.path, `${label}.source.path`);
+        requirePortableReference(sourceObject.url, `${label}.source.url`);
+        requirePortableReference(sourceObject.path, `${label}.source.path`);
+        requireString(sourceObject.ref, `${label}.source.ref`);
       }
       if (sourceKind === "npm") {
         requireString(sourceObject.package, `${label}.source.package`);
@@ -387,10 +442,156 @@ async function validateClaudeSkills() {
   }
 }
 
+async function validateAntigravityCatalog() {
+  const catalogRel = ".antigravity/catalog.json";
+  if (!existsSync(path.resolve(root, catalogRel))) {
+    return;
+  }
+
+  const catalog = requireObject(await readJson(catalogRel), catalogRel);
+  requireKebab(catalog.name, `${catalogRel}.name`);
+  requireString(catalog.displayName, `${catalogRel}.displayName`);
+  requireSemver(catalog.version, `${catalogRel}.version`);
+  requireString(catalog.description, `${catalogRel}.description`);
+
+  const entries = requireArray(catalog.plugins, `${catalogRel}.plugins`);
+  const names = new Set();
+
+  for (const [index, entryValue] of entries.entries()) {
+    const label = `${catalogRel}.plugins[${index}]`;
+    const entry = requireObject(entryValue, label);
+    const name = requireKebab(entry.name, `${label}.name`);
+    requireSemver(entry.version, `${label}.version`);
+    requireString(entry.description, `${label}.description`);
+
+    if (name) {
+      if (names.has(name)) {
+        fail(`${label}.name duplicates ${name}`);
+      }
+      names.add(name);
+    }
+
+    const source = requireObject(entry.source, `${label}.source`);
+    const sourceKind = requireEnum(source.source, ["local", "url", "git-subdir"], `${label}.source.source`);
+    if (sourceKind === "local") {
+      const sourcePath = requirePortableReference(source.path, `${label}.source.path`);
+      if (sourcePath && existsRel(sourcePath, `${label}.source.path`)) {
+        existsRel(joinRel(sourcePath, "plugin.json"), `${label}.source.plugin.json`);
+      }
+    }
+    if (sourceKind === "url") {
+      requirePortableReference(source.url, `${label}.source.url`);
+    }
+    if (sourceKind === "git-subdir") {
+      requirePortableReference(source.url, `${label}.source.url`);
+      requirePortableReference(source.path, `${label}.source.path`);
+      requireString(source.ref, `${label}.source.ref`);
+    }
+
+    const plugin = requireObject(entry.plugin, `${label}.plugin`);
+    requireEnum(plugin.status, ["ready", "pending-native-manifest", "not-supported"], `${label}.plugin.status`);
+    requireString(plugin.requiredRootFile, `${label}.plugin.requiredRootFile`);
+    requireString(plugin.workspaceInstallPath, `${label}.plugin.workspaceInstallPath`);
+    requireString(plugin.globalInstallPath, `${label}.plugin.globalInstallPath`);
+
+    const extension = requireObject(entry.extension, `${label}.extension`);
+    const extensionStatus = requireEnum(
+      extension.status,
+      ["published", "not-published", "not-supported"],
+      `${label}.extension.status`
+    );
+    requireEnum(extension.registry, ["open-vsx", "none"], `${label}.extension.registry`);
+    if (extensionStatus === "published") {
+      requireString(extension.extensionId, `${label}.extension.extensionId`);
+    } else if (extension.extensionId !== null && extension.extensionId !== undefined) {
+      requireString(extension.extensionId, `${label}.extension.extensionId`);
+    }
+  }
+}
+
+async function validatePlatformCatalogSync() {
+  const marketplaceRel = "marketplace.json";
+  const codexRel = ".agents/plugins/marketplace.json";
+  const claudeRel = ".claude-plugin/marketplace.json";
+  const antigravityRel = ".antigravity/catalog.json";
+
+  const marketplace = requireObject(await readJson(marketplaceRel), marketplaceRel);
+  const codex = requireObject(await readJson(codexRel), codexRel);
+  const claude = requireObject(await readJson(claudeRel), claudeRel);
+  const antigravityExists = existsSync(path.resolve(root, antigravityRel));
+  const antigravity = antigravityExists ? requireObject(await readJson(antigravityRel), antigravityRel) : null;
+
+  const codexIndex = indexByName(requireArray(codex.plugins, `${codexRel}.plugins`), `${codexRel}.plugins`);
+  const claudeIndex = indexByName(requireArray(claude.plugins, `${claudeRel}.plugins`), `${claudeRel}.plugins`);
+  const antigravityIndex = antigravity
+    ? indexByName(requireArray(antigravity.plugins, `${antigravityRel}.plugins`), `${antigravityRel}.plugins`)
+    : new Map();
+
+  const declared = {
+    codex: new Set(),
+    claude: new Set(),
+    antigravity: new Set()
+  };
+
+  for (const [packageIndex, entryValue] of requireArray(marketplace.packages, `${marketplaceRel}.packages`).entries()) {
+    const label = `${marketplaceRel}.packages[${packageIndex}]`;
+    const entry = requireObject(entryValue, label);
+    const slug = requireKebab(entry.slug, `${label}.slug`);
+    const platforms = requireObject(entry.platforms, `${label}.platforms`);
+
+    if (!slug) {
+      continue;
+    }
+
+    requirePlatformEntry(platforms, "codex", slug, codexIndex, `${codexRel}.plugins`, declared.codex, label);
+    requirePlatformEntry(platforms, "claude", slug, claudeIndex, `${claudeRel}.plugins`, declared.claude, label);
+
+    if (platforms.antigravity !== undefined && !antigravityExists) {
+      fail(`${label}.platforms.antigravity requires ${antigravityRel}`);
+    }
+    requirePlatformEntry(
+      platforms,
+      "antigravity",
+      slug,
+      antigravityIndex,
+      `${antigravityRel}.plugins`,
+      declared.antigravity,
+      label
+    );
+  }
+
+  forbidUndeclaredPlatformEntries(codexIndex, declared.codex, `${codexRel}.plugins`, "codex");
+  forbidUndeclaredPlatformEntries(claudeIndex, declared.claude, `${claudeRel}.plugins`, "claude");
+  if (antigravityExists) {
+    forbidUndeclaredPlatformEntries(antigravityIndex, declared.antigravity, `${antigravityRel}.plugins`, "antigravity");
+  }
+}
+
+function requirePlatformEntry(platforms, platformName, slug, platformIndex, platformLabel, declared, packageLabel) {
+  if (platforms[platformName] === undefined) {
+    return;
+  }
+
+  declared.add(slug);
+  if (!platformIndex.has(slug)) {
+    fail(`${packageLabel}.platforms.${platformName} requires ${platformLabel} entry named ${slug}`);
+  }
+}
+
+function forbidUndeclaredPlatformEntries(platformIndex, declared, platformLabel, platformName) {
+  for (const [name, value] of platformIndex.entries()) {
+    if (!declared.has(name)) {
+      fail(`${platformLabel}[${value.index}].name must be declared in marketplace.json platforms.${platformName}`);
+    }
+  }
+}
+
 await validateNeutralMarketplace();
 await validateCodexMarketplace();
 await validateClaudeMarketplace();
 await validateClaudeSkills();
+await validateAntigravityCatalog();
+await validatePlatformCatalogSync();
 await Promise.all(pending);
 
 if (errors.length > 0) {

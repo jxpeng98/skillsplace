@@ -15,13 +15,17 @@ async function writeJson(filePath, value) {
   await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-async function createFixture(name, marketplace, codexMarketplace, claudeMarketplace) {
+async function createFixture(name, marketplace, codexMarketplace, claudeMarketplace, antigravityCatalog = null) {
   const fixtureRoot = await mkdtemp(path.join(tmpdir(), `${name}-`));
   await mkdir(path.join(fixtureRoot, ".agents/plugins"), { recursive: true });
   await mkdir(path.join(fixtureRoot, ".claude-plugin"), { recursive: true });
   await writeJson(path.join(fixtureRoot, "marketplace.json"), marketplace);
   await writeJson(path.join(fixtureRoot, ".agents/plugins/marketplace.json"), codexMarketplace);
   await writeJson(path.join(fixtureRoot, ".claude-plugin/marketplace.json"), claudeMarketplace);
+  if (antigravityCatalog) {
+    await mkdir(path.join(fixtureRoot, ".antigravity"), { recursive: true });
+    await writeJson(path.join(fixtureRoot, ".antigravity/catalog.json"), antigravityCatalog);
+  }
   return fixtureRoot;
 }
 
@@ -131,5 +135,172 @@ test("validator uses the root passed with --root", async () => {
   await assert.rejects(
     execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
     /marketplace\.name must be kebab-case/
+  );
+});
+
+test("validator requires neutral platform entries to have matching platform catalog entries", async () => {
+  const fixtureRoot = await createFixture(
+    "skillsplace-missing-platform-entry",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "Marketplace fixture with a missing Codex entry.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: "https://github.com/example/agent-packages/blob/main/packages/release-helper/manifest.json",
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: "https://github.com/example/agent-packages/tree/main/plugins/release-helper"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: []
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      plugins: []
+    }
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /marketplace\.json\.packages\[0\]\.platforms\.codex requires \.agents\/plugins\/marketplace\.json\.plugins entry named release-helper/
+  );
+});
+
+test("validator requires git-subdir platform sources to pin a ref", async () => {
+  const fixtureRoot = await createFixture(
+    "skillsplace-missing-git-ref",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "Marketplace fixture with an unpinned Codex source.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: "https://github.com/example/agent-packages/blob/main/packages/release-helper/manifest.json",
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: "https://github.com/example/agent-packages/tree/main/plugins/release-helper"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "git-subdir",
+            url: "https://github.com/example/agent-packages.git",
+            path: "./plugins/release-helper"
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Productivity"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      plugins: []
+    }
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /\.agents\/plugins\/marketplace\.json\.plugins\[0\]\.source\.ref must be a non-empty string/
+  );
+});
+
+test("validator rejects machine-local source URLs", async () => {
+  const fixtureRoot = await createFixture(
+    "skillsplace-local-source-url",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "Marketplace fixture with a local source URL.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: "https://github.com/example/agent-packages/blob/main/packages/release-helper/manifest.json",
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: "https://github.com/example/agent-packages/tree/main/plugins/release-helper"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "git-subdir",
+            url: "file:///Users/example/agent-packages.git",
+            path: "./plugins/release-helper",
+            ref: "main"
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Productivity"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      plugins: []
+    }
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /\.agents\/plugins\/marketplace\.json\.plugins\[0\]\.source\.url must not use file:\/\/ URLs/
   );
 });
