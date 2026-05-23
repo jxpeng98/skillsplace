@@ -8,6 +8,7 @@ The platform-neutral catalog is intentionally small. It should be easy for anoth
 
 - Codex: `.agents/plugins/marketplace.json`
 - Claude Code: `.claude-plugin/marketplace.json`
+- Antigravity: `.antigravity/catalog.json`
 
 Required fields:
 
@@ -41,3 +42,9 @@ Each platform entry records how a consumer can find the package:
 ```
 
 Local paths inside `marketplace.json` are relative to the repository root. Prefer URLs or Git-backed Codex entries while this repository remains catalog-only.
+
+## Antigravity Adapter Entries
+
+Antigravity custom plugins require a root `plugin.json` file in the plugin directory. The Antigravity adapter catalog records whether an external source is ready for that native plugin route and whether an Open VSX editor extension is published.
+
+The adapter catalog is metadata for humans and tooling. It is not a claim that Antigravity reads this repository as an official marketplace.

@@ -1,0 +1,30 @@
+{
+  "name": "skillsplace",
+  "displayName": "Skillsplace Antigravity Catalog",
+  "version": "0.1.0",
+  "description": "Adapter metadata for installing Skillsplace packages in Antigravity through plugin or extension routes.",
+  "plugins": [
+    {
+      "name": "qiongli",
+      "version": "0.10.1",
+      "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli",
+        "ref": "main"
+      },
+      "plugin": {
+        "status": "pending-native-manifest",
+        "requiredRootFile": "plugin.json",
+        "workspaceInstallPath": ".agents/plugins/qiongli",
+        "globalInstallPath": "~/.gemini/config/plugins/qiongli"
+      },
+      "extension": {
+        "status": "not-published",
+        "registry": "open-vsx",
+        "extensionId": null
+      }
+    }
+  ]
+}

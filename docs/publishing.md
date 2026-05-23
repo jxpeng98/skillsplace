@@ -12,9 +12,10 @@ This repository is a marketplace host only. Do not add bundled skills, plugin so
 2. Add the package summary to the top-level `marketplace.json`.
 3. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
 4. Add a Claude Code entry to `.claude-plugin/marketplace.json` when the package should appear in Claude Code.
-5. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
-6. Run `npm run validate`.
-7. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
+5. Add an Antigravity entry to `.antigravity/catalog.json` when the package should advertise Antigravity plugin or extension routes.
+6. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
+7. Run `npm run validate`.
+8. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
 
 ## Codex
 
@@ -62,3 +63,34 @@ Do not add `.claude/skills/<name>/SKILL.md` or local plugin source trees here wh
 ## Other Platforms
 
 Use `marketplace.json` as the stable adapter contract. Add a new platform key under `platforms` instead of changing existing Codex or Claude entries.
+
+## Antigravity
+
+Antigravity support is recorded in `.antigravity/catalog.json`.
+
+Use the plugin route when the external source is a valid Antigravity plugin directory with a root `plugin.json` file:
+
+```json
+{
+  "name": "external-plugin",
+  "source": {
+    "source": "git-subdir",
+    "url": "https://github.com/example/agent-packages.git",
+    "path": "plugins/external-plugin",
+    "ref": "main"
+  },
+  "plugin": {
+    "status": "ready",
+    "requiredRootFile": "plugin.json",
+    "workspaceInstallPath": ".agents/plugins/external-plugin",
+    "globalInstallPath": "~/.gemini/config/plugins/external-plugin"
+  },
+  "extension": {
+    "status": "not-published",
+    "registry": "open-vsx",
+    "extensionId": null
+  }
+}
+```
+
+If the package is distributed as an Antigravity Editor extension, publish it to Open VSX and set `extension.status` to `published` with the extension ID.
