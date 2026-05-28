@@ -17,6 +17,62 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Education"
+    },
+    {
+      "name": "productivity",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "./plugins/productivity",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "dev-tools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "./plugins/dev-tools",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "writing-tools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "./plugins/writing-tools",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Writing"
+    },
+    {
+      "name": "presentation-tools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "./plugins/presentation-tools",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }
