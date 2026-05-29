@@ -25,10 +25,13 @@ test("repository starts as a marketplace-only catalog", async () => {
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
   const antigravityCatalog = await readJson(".antigravity/catalog.json");
 
-  assert.equal(marketplace.packages.length, 11);
-  assert.equal(codexMarketplace.plugins.length, 11);
-  assert.equal(claudeMarketplace.plugins.length, 11);
-  assert.equal(antigravityCatalog.plugins.length, 5);
+  assert.ok(marketplace.packages.length >= 1);
+  assert.equal(codexMarketplace.plugins.length, marketplace.packages.filter((entry) => entry.platforms.codex).length);
+  assert.equal(claudeMarketplace.plugins.length, marketplace.packages.filter((entry) => entry.platforms.claude).length);
+  assert.equal(
+    antigravityCatalog.plugins.length,
+    marketplace.packages.filter((entry) => entry.platforms.antigravity).length
+  );
   assert.deepEqual(await directoryEntries("packages"), []);
   assert.deepEqual(await directoryEntries("plugins"), []);
   assert.deepEqual(await directoryEntries(".claude/skills"), []);
