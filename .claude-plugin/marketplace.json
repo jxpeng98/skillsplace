@@ -162,29 +162,6 @@
       ]
     },
     {
-      "name": "productivity",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/skills.git",
-        "path": "plugins/productivity",
-        "ref": "main"
-      },
-      "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Jiaxin Peng"
-      },
-      "homepage": "https://github.com/jxpeng98/skills",
-      "repository": "https://github.com/jxpeng98/skills",
-      "license": "MIT",
-      "category": "productivity",
-      "tags": [
-        "productivity",
-        "planning",
-        "review"
-      ]
-    },
-    {
       "name": "dev-tools",
       "source": {
         "source": "git-subdir",
@@ -208,6 +185,52 @@
       ]
     },
     {
+      "name": "presentation-tools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "plugins/presentation-tools",
+        "ref": "main"
+      },
+      "description": "Presentation skills for creating engineering and project slides with Slidev.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/skills",
+      "repository": "https://github.com/jxpeng98/skills",
+      "license": "MIT",
+      "category": "presentations",
+      "tags": [
+        "presentations",
+        "slidev",
+        "slides"
+      ]
+    },
+    {
+      "name": "productivity",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "plugins/productivity",
+        "ref": "main"
+      },
+      "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/skills",
+      "repository": "https://github.com/jxpeng98/skills",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": [
+        "productivity",
+        "planning",
+        "review"
+      ]
+    },
+    {
       "name": "writing-tools",
       "source": {
         "source": "git-subdir",
@@ -228,29 +251,6 @@
         "writing",
         "editing",
         "summarization"
-      ]
-    },
-    {
-      "name": "presentation-tools",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/skills.git",
-        "path": "plugins/presentation-tools",
-        "ref": "main"
-      },
-      "description": "Presentation skills for creating engineering and project slides with Slidev.",
-      "version": "0.1.0",
-      "author": {
-        "name": "Jiaxin Peng"
-      },
-      "homepage": "https://github.com/jxpeng98/skills",
-      "repository": "https://github.com/jxpeng98/skills",
-      "license": "MIT",
-      "category": "productivity",
-      "tags": [
-        "presentations",
-        "slidev",
-        "slides"
       ]
     }
   ]

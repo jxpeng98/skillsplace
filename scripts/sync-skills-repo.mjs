@@ -45,7 +45,7 @@ function parseArgs(args) {
 }
 
 function readArg(args, name) {
-  const index = args.indexOf(name);
+  const index = args.lastIndexOf(name);
   if (index === -1) {
     return "";
   }
