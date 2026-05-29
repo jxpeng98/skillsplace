@@ -19,6 +19,78 @@
       "category": "Education"
     },
     {
+      "name": "qiongli-core",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-core-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "qiongli-economics",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "qiongli-accounting",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-accounting-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "qiongli-business",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-business-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "qiongli-finance",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-finance-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "qiongli-economics-accounting",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-accounting-codex-plugin-v0.13.0.tar.gz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
       "name": "productivity",
       "source": {
         "source": "git-subdir",

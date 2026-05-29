@@ -8,7 +8,7 @@
     {
       "name": "Qiongli",
       "slug": "qiongli",
-      "version": "0.10.1",
+      "version": "0.13.0",
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
       "manifest": "https://github.com/jxpeng98/qiongli/blob/main/pyproject.toml",
       "platforms": {
@@ -24,6 +24,120 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Core",
+      "slug": "qiongli-core",
+      "version": "0.13.0",
+      "description": "General-purpose Qiongli academic workflow across paper types and methods.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-core-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-core-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-core-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Economics",
+      "slug": "qiongli-economics",
+      "version": "0.13.0",
+      "description": "Economics-focused empirical, theory, and reproducibility workflow.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Accounting",
+      "slug": "qiongli-accounting",
+      "version": "0.13.0",
+      "description": "Accounting-focused archival, disclosure, audit, and measurement workflow.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-accounting-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-accounting-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-accounting-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Business",
+      "slug": "qiongli-business",
+      "version": "0.13.0",
+      "description": "Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-business-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-business-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-business-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Finance",
+      "slug": "qiongli-finance",
+      "version": "0.13.0",
+      "description": "Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-finance-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-finance-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-finance-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Economics + Accounting",
+      "slug": "qiongli-economics-accounting",
+      "version": "0.13.0",
+      "description": "Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research.",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-accounting-codex-plugin-v0.13.0.tar.gz",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-accounting-codex-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-accounting-claude-plugin-v0.13.0.tar.gz",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
     },
