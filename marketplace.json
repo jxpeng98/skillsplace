@@ -142,30 +142,6 @@
       }
     },
     {
-      "name": "Productivity",
-      "slug": "productivity",
-      "version": "0.1.0",
-      "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
-      "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/.codex-plugin/plugin.json",
-      "platforms": {
-        "codex": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
-        },
-        "claude": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
-        },
-        "antigravity": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
-        }
-      }
-    },
-    {
       "name": "Dev Tools",
       "slug": "dev-tools",
       "version": "0.1.0",
@@ -190,30 +166,6 @@
       }
     },
     {
-      "name": "Writing Tools",
-      "slug": "writing-tools",
-      "version": "0.1.0",
-      "description": "Writing skills for clarity, tone, summarization, and reusable text transformation.",
-      "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools/.codex-plugin/plugin.json",
-      "platforms": {
-        "codex": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
-        },
-        "claude": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
-        },
-        "antigravity": {
-          "type": "plugin",
-          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
-          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
-        }
-      }
-    },
-    {
       "name": "Presentation Tools",
       "slug": "presentation-tools",
       "version": "0.1.0",
@@ -233,6 +185,54 @@
         "antigravity": {
           "type": "plugin",
           "path": "https://github.com/jxpeng98/skills/tree/main/plugins/presentation-tools",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        }
+      }
+    },
+    {
+      "name": "Productivity",
+      "slug": "productivity",
+      "version": "0.1.0",
+      "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+      "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/.codex-plugin/plugin.json",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        },
+        "antigravity": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        }
+      }
+    },
+    {
+      "name": "Writing Tools",
+      "slug": "writing-tools",
+      "version": "0.1.0",
+      "description": "Writing skills for clarity, tone, summarization, and reusable text transformation.",
+      "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools/.codex-plugin/plugin.json",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        },
+        "antigravity": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
         }
       }

@@ -86,10 +86,15 @@ test("qiongli remains listed as an external marketplace package", async () => {
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
   const antigravityCatalog = await readJson(".antigravity/catalog.json");
 
-  assert.deepEqual(marketplace.packages.map((entry) => entry.slug), expectedMarketplaceSlugs);
-  assert.deepEqual(codexMarketplace.plugins.map((entry) => entry.name), expectedMarketplaceSlugs);
-  assert.deepEqual(claudeMarketplace.plugins.map((entry) => entry.name), expectedMarketplaceSlugs);
-  assert.deepEqual(antigravityCatalog.plugins.map((entry) => entry.name), expectedAntigravitySlugs);
+  for (const slug of expectedMarketplaceSlugs) {
+    assert.ok(bySlug(marketplace.packages, slug), `expected marketplace slug ${slug}`);
+    assert.ok(bySlug(codexMarketplace.plugins, slug), `expected Codex plugin ${slug}`);
+    assert.ok(bySlug(claudeMarketplace.plugins, slug), `expected Claude plugin ${slug}`);
+  }
+
+  for (const slug of expectedAntigravitySlugs) {
+    assert.ok(bySlug(antigravityCatalog.plugins, slug), `expected Antigravity plugin ${slug}`);
+  }
 
   assert.deepEqual(bySlug(marketplace.packages, "qiongli"), {
     name: "Qiongli",

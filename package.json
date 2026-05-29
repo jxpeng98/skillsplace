@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "test": "node --test",
+    "sync:skills": "node scripts/sync-skills-repo.mjs --source-root ../skills --target-root .",
     "validate": "node scripts/validate.mjs && node --test"
   },
   "engines": {
