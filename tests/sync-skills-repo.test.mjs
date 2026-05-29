@@ -1,0 +1,389 @@
+import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import path from "node:path";
+import { tmpdir } from "node:os";
+import { fileURLToPath } from "node:url";
+
+const execFileAsync = promisify(execFile);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const syncScript = path.join(root, "scripts/sync-skills-repo.mjs");
+const validateScript = path.join(root, "scripts/validate.mjs");
+
+async function writeJson(filePath, value) {
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+async function readJson(filePath) {
+  return JSON.parse(await readFile(filePath, "utf8"));
+}
+
+async function createSkillsplaceFixture(name) {
+  const fixtureRoot = await mkdtemp(path.join(tmpdir(), `${name}-skillsplace-`));
+  await mkdir(path.join(fixtureRoot, ".agents/plugins"), { recursive: true });
+  await mkdir(path.join(fixtureRoot, ".claude-plugin"), { recursive: true });
+  await mkdir(path.join(fixtureRoot, ".antigravity"), { recursive: true });
+
+  await writeJson(path.join(fixtureRoot, "marketplace.json"), {
+    name: "skillsplace",
+    displayName: "Skillsplace Marketplace",
+    version: "0.1.0",
+    description: "Fixture marketplace.",
+    packages: [
+      {
+        name: "Qiongli",
+        slug: "qiongli",
+        version: "0.13.0",
+        description: "Academic paper workflows.",
+        manifest: "https://github.com/jxpeng98/qiongli/blob/main/pyproject.toml",
+        platforms: {
+          codex: {
+            type: "plugin",
+            path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
+          },
+          claude: {
+            type: "plugin",
+            path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
+          }
+        }
+      }
+    ]
+  });
+
+  await writeJson(path.join(fixtureRoot, ".agents/plugins/marketplace.json"), {
+    name: "skillsplace",
+    interface: {
+      displayName: "Skillsplace Marketplace"
+    },
+    plugins: [
+      {
+        name: "qiongli",
+        source: {
+          source: "git-subdir",
+          url: "https://github.com/jxpeng98/qiongli.git",
+          path: "./plugins/qiongli",
+          ref: "main"
+        },
+        policy: {
+          installation: "AVAILABLE",
+          authentication: "ON_INSTALL"
+        },
+        category: "Education"
+      }
+    ]
+  });
+
+  await writeJson(path.join(fixtureRoot, ".claude-plugin/marketplace.json"), {
+    name: "skillsplace",
+    owner: {
+      name: "jxpeng98"
+    },
+    description: "Fixture marketplace.",
+    version: "0.1.0",
+    plugins: [
+      {
+        name: "qiongli",
+        source: {
+          source: "git-subdir",
+          url: "https://github.com/jxpeng98/qiongli.git",
+          path: "plugins/qiongli",
+          ref: "main"
+        },
+        description: "Academic paper workflows.",
+        version: "0.13.0"
+      }
+    ]
+  });
+
+  await writeJson(path.join(fixtureRoot, ".antigravity/catalog.json"), {
+    name: "skillsplace",
+    displayName: "Skillsplace Antigravity Catalog",
+    version: "0.1.0",
+    description: "Fixture Antigravity catalog.",
+    plugins: []
+  });
+
+  return fixtureRoot;
+}
+
+async function createSkillsFixture(name, plugins) {
+  const skillsRoot = await mkdtemp(path.join(tmpdir(), `${name}-skills-`));
+  for (const plugin of plugins) {
+    const directoryName = plugin.directoryName ?? plugin.slug;
+    const pluginRoot = path.join(skillsRoot, "plugins", directoryName);
+    await mkdir(path.join(pluginRoot, ".codex-plugin"), { recursive: true });
+    await mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
+    const { directoryName: _directoryName, ...metadata } = plugin;
+    await writeJson(path.join(pluginRoot, "skillsplace.json"), metadata);
+    await writeJson(path.join(pluginRoot, ".codex-plugin/plugin.json"), {
+      name: plugin.slug,
+      version: plugin.version,
+      description: plugin.description,
+      skills: "skills"
+    });
+  }
+  return skillsRoot;
+}
+
+function bySlug(entries, slug) {
+  return entries.find((entry) => entry.slug === slug || entry.name === slug);
+}
+
+function isMissingSyncScript(error) {
+  return error?.code === 1 && error?.stderr?.includes(`Cannot find module '${syncScript}'`);
+}
+
+test("sync inserts skills repo plugins into every requested catalog", async () => {
+  const targetRoot = await createSkillsplaceFixture("insert");
+  const sourceRoot = await createSkillsFixture("insert", [
+    {
+      name: "Productivity",
+      slug: "productivity",
+      version: "0.1.0",
+      description: "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+      manifest: ".codex-plugin/plugin.json",
+      category: {
+        codex: "Productivity",
+        claude: "productivity"
+      },
+      tags: ["productivity", "planning", "review"],
+      platforms: {
+        codex: true,
+        claude: true,
+        antigravity: {
+          status: "ready",
+          requiredRootFile: "plugin.json"
+        }
+      }
+    }
+  ]);
+
+  await execFileAsync(process.execPath, [
+    syncScript,
+    "--source-root",
+    sourceRoot,
+    "--target-root",
+    targetRoot
+  ]);
+
+  const marketplace = await readJson(path.join(targetRoot, "marketplace.json"));
+  const codex = await readJson(path.join(targetRoot, ".agents/plugins/marketplace.json"));
+  const claude = await readJson(path.join(targetRoot, ".claude-plugin/marketplace.json"));
+  const antigravity = await readJson(path.join(targetRoot, ".antigravity/catalog.json"));
+
+  assert.equal(bySlug(marketplace.packages, "qiongli").name, "Qiongli");
+  assert.deepEqual(bySlug(marketplace.packages, "productivity"), {
+    name: "Productivity",
+    slug: "productivity",
+    version: "0.1.0",
+    description: "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+    manifest: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/.codex-plugin/plugin.json",
+    platforms: {
+      codex: {
+        type: "plugin",
+        path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+      },
+      claude: {
+        type: "plugin",
+        path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+      },
+      antigravity: {
+        type: "plugin",
+        path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+      }
+    }
+  });
+
+  assert.deepEqual(bySlug(codex.plugins, "productivity"), {
+    name: "productivity",
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/skills.git",
+      path: "./plugins/productivity",
+      ref: "main"
+    },
+    policy: {
+      installation: "AVAILABLE",
+      authentication: "ON_INSTALL"
+    },
+    category: "Productivity"
+  });
+
+  assert.deepEqual(bySlug(claude.plugins, "productivity"), {
+    name: "productivity",
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/skills.git",
+      path: "plugins/productivity",
+      ref: "main"
+    },
+    description: "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+    version: "0.1.0",
+    author: {
+      name: "Jiaxin Peng"
+    },
+    homepage: "https://github.com/jxpeng98/skills",
+    repository: "https://github.com/jxpeng98/skills",
+    license: "MIT",
+    category: "productivity",
+    tags: ["productivity", "planning", "review"]
+  });
+
+  assert.deepEqual(bySlug(antigravity.plugins, "productivity"), {
+    name: "productivity",
+    version: "0.1.0",
+    description: "Productivity skills for planning, critique, decisions, commits, and pull requests.",
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/skills.git",
+      path: "plugins/productivity",
+      ref: "main"
+    },
+    plugin: {
+      status: "ready",
+      requiredRootFile: "plugin.json",
+      workspaceInstallPath: ".agents/plugins/productivity",
+      globalInstallPath: "~/.gemini/config/plugins/productivity"
+    },
+    extension: {
+      status: "not-published",
+      registry: "open-vsx",
+      extensionId: null
+    }
+  });
+
+  const validateResult = await execFileAsync(process.execPath, [validateScript, "--root", targetRoot]);
+  assert.match(validateResult.stdout, /Marketplace validation passed/);
+});
+
+test("sync removes stale entries previously managed from the skills repo", async () => {
+  const targetRoot = await createSkillsplaceFixture("remove-stale");
+  const sourceRoot = await createSkillsFixture("remove-stale", []);
+
+  const marketplacePath = path.join(targetRoot, "marketplace.json");
+  const codexPath = path.join(targetRoot, ".agents/plugins/marketplace.json");
+  const claudePath = path.join(targetRoot, ".claude-plugin/marketplace.json");
+
+  const marketplace = await readJson(marketplacePath);
+  marketplace.packages.push({
+    name: "Stale Plugin",
+    slug: "stale-plugin",
+    version: "0.1.0",
+    description: "A stale generated plugin.",
+    manifest: "https://github.com/jxpeng98/skills/tree/main/plugins/stale-plugin/.codex-plugin/plugin.json",
+    platforms: {
+      codex: {
+        type: "plugin",
+        path: "https://github.com/jxpeng98/skills/tree/main/plugins/stale-plugin"
+      }
+    }
+  });
+  await writeJson(marketplacePath, marketplace);
+
+  const codex = await readJson(codexPath);
+  codex.plugins.push({
+    name: "stale-plugin",
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/skills.git",
+      path: "./plugins/stale-plugin",
+      ref: "main"
+    },
+    policy: {
+      installation: "AVAILABLE",
+      authentication: "ON_INSTALL"
+    },
+    category: "Productivity"
+  });
+  await writeJson(codexPath, codex);
+
+  const claude = await readJson(claudePath);
+  claude.plugins.push({
+    name: "stale-plugin",
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/skills.git",
+      path: "plugins/stale-plugin",
+      ref: "main"
+    },
+    description: "A stale generated plugin."
+  });
+  await writeJson(claudePath, claude);
+
+  await execFileAsync(process.execPath, [
+    syncScript,
+    "--source-root",
+    sourceRoot,
+    "--target-root",
+    targetRoot
+  ]);
+
+  const updatedMarketplace = await readJson(marketplacePath);
+  const updatedCodex = await readJson(codexPath);
+  const updatedClaude = await readJson(claudePath);
+
+  assert.equal(bySlug(updatedMarketplace.packages, "qiongli").name, "Qiongli");
+  assert.equal(bySlug(updatedMarketplace.packages, "stale-plugin"), undefined);
+  assert.equal(bySlug(updatedCodex.plugins, "stale-plugin"), undefined);
+  assert.equal(bySlug(updatedClaude.plugins, "stale-plugin"), undefined);
+});
+
+test("sync rejects invalid plugin metadata before writing catalogs", async () => {
+  const targetRoot = await createSkillsplaceFixture("invalid");
+  const sourceRoot = await createSkillsFixture("invalid", [
+    {
+      directoryName: "invalid-plugin",
+      name: "Invalid Plugin",
+      slug: "other-plugin",
+      version: "0.1.0",
+      description: "Invalid plugin metadata.",
+      manifest: ".codex-plugin/plugin.json",
+      category: {
+        codex: "Productivity",
+        claude: "productivity"
+      },
+      platforms: {
+        codex: true
+      }
+    }
+  ]);
+
+  const marketplacePath = path.join(targetRoot, "marketplace.json");
+  const codexPath = path.join(targetRoot, ".agents/plugins/marketplace.json");
+  const claudePath = path.join(targetRoot, ".claude-plugin/marketplace.json");
+  const antigravityPath = path.join(targetRoot, ".antigravity/catalog.json");
+  const before = {
+    marketplace: await readJson(marketplacePath),
+    codex: await readJson(codexPath),
+    claude: await readJson(claudePath),
+    antigravity: await readJson(antigravityPath)
+  };
+
+  try {
+    await execFileAsync(process.execPath, [
+      syncScript,
+      "--source-root",
+      sourceRoot,
+      "--target-root",
+      targetRoot
+    ]);
+    assert.fail("Expected invalid plugin metadata to be rejected");
+  } catch (error) {
+    if (isMissingSyncScript(error)) {
+      throw error;
+    }
+
+    assert.match(`${error.message}\n${error.stderr ?? ""}`, /slug must match plugin directory name/);
+  }
+
+  assert.deepEqual(await readJson(marketplacePath), before.marketplace);
+  assert.deepEqual(await readJson(codexPath), before.codex);
+  assert.deepEqual(await readJson(claudePath), before.claude);
+  assert.deepEqual(await readJson(antigravityPath), before.antigravity);
+});
