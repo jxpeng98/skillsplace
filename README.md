@@ -2,15 +2,25 @@
 
 Skillsplace is a catalog-only marketplace for agent plugins and skills. It is the aggregation point for packages that live in separate repositories.
 
-The current marketplace entry is:
+The current marketplace entries are:
 
-| Package | Source | Platforms | Description |
-| --- | --- | --- | --- |
-| `qiongli` | [`jxpeng98/qiongli`](https://github.com/jxpeng98/qiongli) | Codex, Claude Code, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
+| Package | Version | Source | Platforms | Description |
+| --- | --- | --- | --- | --- |
+| `qiongli` | `0.13.0` | [`jxpeng98/qiongli`](https://github.com/jxpeng98/qiongli) | Codex, Claude Code, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
+| `qiongli-core` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
+| `qiongli-economics` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
+| `qiongli-accounting` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Accounting-focused archival, disclosure, audit, and measurement workflow. |
+| `qiongli-business` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts. |
+| `qiongli-finance` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts. |
+| `qiongli-economics-accounting` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research. |
+| `productivity` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Productivity skills for planning, critique, decisions, commits, and pull requests. |
+| `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Developer skills for repository boundaries, validation, and release readiness. |
+| `writing-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Writing skills for clarity, tone, summarization, and reusable text transformation. |
+| `presentation-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Presentation skills for creating engineering and project slides with Slidev. |
 
 This repository does not vendor plugin source code, skills, hooks, MCP servers, or executable package artifacts. It only points supported platforms to reviewed external sources.
 
-## Install Qiongli
+## Install Plugins
 
 ### Codex
 
@@ -20,7 +30,9 @@ Add this marketplace:
 codex plugin marketplace add jxpeng98/skillsplace --ref main
 ```
 
-Then install or enable `qiongli` from the Codex plugin UI. To confirm the marketplace is registered:
+Then install or enable a plugin from the Codex plugin UI. Use one of the package names listed above, such as `qiongli-core`, `productivity`, or `dev-tools`.
+
+To confirm the marketplace is registered:
 
 ```bash
 codex plugin marketplace list
@@ -34,17 +46,17 @@ Add this marketplace:
 claude plugin marketplace add jxpeng98/skillsplace@main
 ```
 
-Install `qiongli` from this marketplace:
+Install a plugin from this marketplace by replacing `<plugin-name>` with any package name listed above:
 
 ```bash
-claude plugin install qiongli@skillsplace
+claude plugin install <plugin-name>@skillsplace
 ```
 
 In an interactive Claude Code session, the equivalent slash commands are:
 
 ```text
 /plugin marketplace add jxpeng98/skillsplace@main
-/plugin install qiongli@skillsplace
+/plugin install <plugin-name>@skillsplace
 ```
 
 ### Antigravity
@@ -55,7 +67,13 @@ Skillsplace publishes Antigravity adapter metadata at:
 .antigravity/catalog.json
 ```
 
-Antigravity currently uses custom plugin directories with a root `plugin.json`, or editor extensions from Open VSX. The `qiongli` entry is listed in the Antigravity catalog, but native Antigravity plugin installation is marked pending until `jxpeng98/qiongli` adds `plugins/qiongli/plugin.json`.
+Antigravity currently uses custom plugin directories with a root `plugin.json`, or editor extensions from Open VSX.
+
+Current Antigravity entries:
+
+- `productivity`, `dev-tools`, `writing-tools`, and `presentation-tools` are marked ready for the native plugin route.
+- `qiongli` is listed in the Antigravity catalog, but native Antigravity plugin installation is marked pending until `jxpeng98/qiongli` adds `plugins/qiongli/plugin.json`.
+- The subject-specific Qiongli release packages are currently listed for Codex and Claude Code only.
 
 See `docs/antigravity.md` for the exact plugin and Open VSX extension routes.
 
