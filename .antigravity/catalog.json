@@ -94,8 +94,8 @@
     },
     {
       "name": "writing-tools",
-      "version": "0.1.0",
-      "description": "Writing skills for clarity, tone, summarization, and reusable text transformation.",
+      "version": "0.1.1",
+      "description": "Writing skills for clarity, tone, humanization, summarization, and reusable text transformation.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/skills.git",
