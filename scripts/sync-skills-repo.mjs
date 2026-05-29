@@ -54,16 +54,7 @@ function readArg(args, name) {
 
 async function readPluginMetadata(root) {
   const pluginsRoot = path.join(root, "plugins");
-  let entries;
-
-  try {
-    entries = await readdir(pluginsRoot, { withFileTypes: true });
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      return [];
-    }
-    throw error;
-  }
+  const entries = await readdir(pluginsRoot, { withFileTypes: true });
 
   const plugins = [];
   for (const entry of entries) {
@@ -202,7 +193,7 @@ function normalizePlatforms(platforms, metadataPath) {
       ),
       requiredRootFile: antigravity.requiredRootFile === undefined
         ? "plugin.json"
-        : requireString(antigravity.requiredRootFile, `${metadataPath}.platforms.antigravity.requiredRootFile`),
+        : requireRelativePath(antigravity.requiredRootFile, `${metadataPath}.platforms.antigravity.requiredRootFile`),
       extension: {
         status: extensionStatus,
         registry: normalizeEnum(
@@ -515,24 +506,42 @@ function pluginWebPath(slug) {
 }
 
 function isManagedPackage(entry) {
-  return [
-    entry?.manifest,
-    ...Object.values(entry?.platforms ?? {}).map((platform) => platform?.path)
-  ].some(isManagedUrl);
+  const slug = entry?.slug;
+  if (!isKebabString(slug)) {
+    return false;
+  }
+
+  const basePath = pluginWebPath(slug);
+  return typeof entry.manifest === "string" && entry.manifest.startsWith(`${basePath}/`);
 }
 
 function isManagedSource(source) {
   if (!source || typeof source !== "object") {
     return false;
   }
-  return isManagedUrl(source.url);
-}
-
-function isManagedUrl(value) {
-  if (typeof value !== "string") {
+  if (source.source !== "git-subdir" || source.url !== SKILLS_REPO_GIT || source.ref !== REF) {
     return false;
   }
-  return value === SKILLS_REPO || value === SKILLS_REPO_GIT || value.startsWith(`${SKILLS_REPO}/`);
+
+  return managedPluginPath(source.path) !== "";
+}
+
+function managedPluginPath(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const normalized = normalizeRel(value);
+  const parts = normalized.split("/");
+  if (parts.length !== 2 || parts[0] !== "plugins" || !isKebabString(parts[1])) {
+    return "";
+  }
+
+  return normalized;
+}
+
+function isKebabString(value) {
+  return typeof value === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/.test(value);
 }
 
 function requireObject(value, label) {
@@ -581,8 +590,16 @@ function requireSemver(value, label) {
 
 function requireRelativePath(value, label) {
   const text = requireString(value, label);
-  const normalized = text.replace(/\\/g, "/");
-  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(normalized) || normalized.startsWith("/") || normalized.startsWith("~/")) {
+  const slashNormalized = text.replace(/\\/g, "/");
+  const normalized = normalizeRel(text);
+  if (
+    /^[a-z][a-z0-9+.-]*:\/\//i.test(slashNormalized) ||
+    /^[A-Za-z]:\//.test(slashNormalized) ||
+    slashNormalized.startsWith("/") ||
+    slashNormalized.startsWith("~/") ||
+    normalized === ".." ||
+    normalized.startsWith("../")
+  ) {
     throw new Error(`${label} must be a repository-relative path`);
   }
   return text;

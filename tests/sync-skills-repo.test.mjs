@@ -111,6 +111,7 @@ async function createSkillsplaceFixture(name) {
 
 async function createSkillsFixture(name, plugins) {
   const skillsRoot = await mkdtemp(path.join(tmpdir(), `${name}-skills-`));
+  await mkdir(path.join(skillsRoot, "plugins"), { recursive: true });
   for (const plugin of plugins) {
     const directoryName = plugin.directoryName ?? plugin.slug;
     const pluginRoot = path.join(skillsRoot, "plugins", directoryName);
