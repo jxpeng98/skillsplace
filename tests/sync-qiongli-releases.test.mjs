@@ -3,10 +3,11 @@ import { tmpdir } from "node:os";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const scriptPath = path.join(root, "scripts/sync-qiongli-releases.mjs");
+const scriptUrl = pathToFileURL(scriptPath).href;
 
 async function writeJson(filePath, value) {
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -180,7 +181,7 @@ function bySlug(entries, slug) {
 }
 
 test("selectLatestQiongliReleases separates latest stable and prerelease by semver", async () => {
-  const { selectLatestQiongliReleases } = await import(scriptPath);
+  const { selectLatestQiongliReleases } = await import(scriptUrl);
   const selected = selectLatestQiongliReleases([
     release("v0.22.0-beta.1", true, ["qiongli"]),
     release("v0.19.0", false, ["qiongli"]),
@@ -194,7 +195,7 @@ test("selectLatestQiongliReleases separates latest stable and prerelease by semv
 });
 
 test("syncQiongliReleases rewrites qiongli catalogs from release assets", async () => {
-  const { syncQiongliReleases } = await import(scriptPath);
+  const { syncQiongliReleases } = await import(scriptUrl);
   const fixtureRoot = await createFixture();
 
   await syncQiongliReleases({
