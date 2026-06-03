@@ -9,13 +9,11 @@
     {
       "name": "qiongli",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "plugins/qiongli",
-        "ref": "main"
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -30,13 +28,35 @@
       ]
     },
     {
+      "name": "qiongli-next",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.0.0-beta.2/qiongli-claude-plugin-v1.0.0-beta.2.tar.gz"
+      },
+      "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
+      "version": "1.0.0-beta.2",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "pre-release"
+      ]
+    },
+    {
       "name": "qiongli-core",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-core-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-core-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "General-purpose Qiongli academic workflow across paper types and methods.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -55,10 +75,10 @@
       "name": "qiongli-economics",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-economics-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Economics-focused empirical, theory, and reproducibility workflow.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -77,10 +97,10 @@
       "name": "qiongli-accounting",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-accounting-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-accounting-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Accounting-focused archival, disclosure, audit, and measurement workflow.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -99,10 +119,10 @@
       "name": "qiongli-business",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-business-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-business-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -121,10 +141,10 @@
       "name": "qiongli-finance",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-finance-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-finance-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts.",
-      "version": "0.13.0",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -143,10 +163,54 @@
       "name": "qiongli-economics-accounting",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.13.0/qiongli-economics-accounting-claude-plugin-v0.13.0.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-economics-accounting-claude-plugin-v0.14.0.tar.gz"
       },
       "description": "Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research.",
-      "version": "0.13.0",
+      "version": "0.14.0",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "subject-package"
+      ]
+    },
+    {
+      "name": "qiongli-political-economy",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-political-economy-claude-plugin-v0.14.0.tar.gz"
+      },
+      "description": "Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis.",
+      "version": "0.14.0",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "subject-package"
+      ]
+    },
+    {
+      "name": "qiongli-geoeconomics",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v0.14.0/qiongli-geoeconomics-claude-plugin-v0.14.0.tar.gz"
+      },
+      "description": "Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy.",
+      "version": "0.14.0",
       "author": {
         "name": "Jiaxin Peng"
       },

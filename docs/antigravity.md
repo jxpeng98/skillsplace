@@ -18,7 +18,7 @@ This repository exposes Antigravity adapter metadata at:
 The catalog entry for `qiongli` points to the external package source:
 
 ```text
-https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli
+https://github.com/jxpeng98/qiongli/tree/v0.14.0/plugins/qiongli
 ```
 
 The entry marks the native Antigravity plugin route as `pending-native-manifest` because `qiongli` still needs a root `plugins/qiongli/plugin.json` file before that folder is a complete Antigravity plugin.
