@@ -13,9 +13,10 @@ This repository is a marketplace host only. Do not add bundled skills, plugin so
 3. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
 4. Add a Claude Code entry to `.claude-plugin/marketplace.json` when the package should appear in Claude Code.
 5. Add an Antigravity entry to `.antigravity/catalog.json` when the package should advertise Antigravity plugin or extension routes.
-6. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
-7. Run `npm run validate`.
-8. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
+6. Add a Hermes entry to `.hermes/marketplace.json` when the package exposes installable external `SKILL.md` directories.
+7. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
+8. Run `npm run validate`.
+9. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
 
 ## Codex
 
@@ -63,6 +64,36 @@ Do not add `.claude/skills/<name>/SKILL.md` or local plugin source trees here wh
 ## Other Platforms
 
 Use `marketplace.json` as the stable adapter contract. Add a new platform key under `platforms` instead of changing existing Codex or Claude entries.
+
+## Hermes
+
+Hermes support is recorded in `.hermes/marketplace.json`.
+
+Use Hermes entries only for external directories that contain a `SKILL.md` file:
+
+```json
+{
+  "name": "commit-message",
+  "package": "productivity",
+  "version": "0.1.0",
+  "description": "Use when the user asks for a Git commit message.",
+  "source": {
+    "source": "github",
+    "identifier": "jxpeng98/skills/plugins/productivity/skills/commit-message",
+    "repo": "jxpeng98/skills",
+    "path": "plugins/productivity/skills/commit-message",
+    "ref": "main"
+  },
+  "install": {
+    "command": "hermes skills install jxpeng98/skills/plugins/productivity/skills/commit-message",
+    "source": "github",
+    "trust": "community"
+  },
+  "tags": ["productivity"]
+}
+```
+
+Do not copy `SKILL.md` files into this repository while it remains catalog-only.
 
 ## Antigravity
 

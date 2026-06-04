@@ -1,0 +1,241 @@
+{
+  "name": "skillsplace",
+  "displayName": "Skillsplace Hermes Skills Catalog",
+  "version": "0.1.0",
+  "description": "Adapter metadata for installing Skillsplace packages as Hermes skills through GitHub skill identifiers.",
+  "skills": [
+    {
+      "name": "release-readiness",
+      "package": "dev-tools",
+      "version": "0.1.0",
+      "description": "Use when preparing a skill, plugin, repository change, or marketplace update for release, publication, installation testing, or handoff to reviewers.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/dev-tools/skills/release-readiness",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/dev-tools/skills/release-readiness",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/dev-tools/skills/release-readiness",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "development",
+        "repository",
+        "release"
+      ]
+    },
+    {
+      "name": "repo-boundary-review",
+      "package": "dev-tools",
+      "version": "0.1.0",
+      "description": "Use when changes touch a skills repository, plugin layout, marketplace integration, repository boundaries, installable skill packaging, or files that may belong in a separate marketplace catalog.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/dev-tools/skills/repo-boundary-review",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/dev-tools/skills/repo-boundary-review",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/dev-tools/skills/repo-boundary-review",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "development",
+        "repository",
+        "release"
+      ]
+    },
+    {
+      "name": "slidev-slides",
+      "package": "presentation-tools",
+      "version": "0.1.0",
+      "description": "Use when the user wants to create, edit, review, present, build, or export slides with Slidev; asks for a Markdown-based deck; or needs engineering, product, architecture, demo, project-review, or technical-talk slides.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/presentation-tools/skills/slidev-slides",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/presentation-tools/skills/slidev-slides",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/presentation-tools/skills/slidev-slides",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "presentations",
+        "slidev",
+        "slides"
+      ]
+    },
+    {
+      "name": "commit-message",
+      "package": "productivity",
+      "version": "0.1.0",
+      "description": "Use when the user asks for a Git commit message, wants staged or unstaged changes summarized into a Conventional Commit, or needs commit scope and type chosen from a diff.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/productivity/skills/commit-message",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/productivity/skills/commit-message",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/productivity/skills/commit-message",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "productivity",
+        "planning",
+        "review"
+      ]
+    },
+    {
+      "name": "decide-between-options",
+      "package": "productivity",
+      "version": "0.1.0",
+      "description": "Use when the user has multiple approaches, tools, architectures, designs, vendors, workflows, or plans and needs a recommendation with explicit tradeoffs, assumptions, and decision criteria.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/productivity/skills/decide-between-options",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/productivity/skills/decide-between-options",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/productivity/skills/decide-between-options",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "productivity",
+        "planning",
+        "review"
+      ]
+    },
+    {
+      "name": "grill-me",
+      "package": "productivity",
+      "version": "0.1.0",
+      "description": "Use when the user wants to stress-test a plan, design, argument, product idea, discovery direction, or implementation strategy; asks to be grilled; or needs assumptions, tradeoffs, risks, and missing decisions exposed before committing.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/productivity/skills/grill-me",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/productivity/skills/grill-me",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/productivity/skills/grill-me",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "productivity",
+        "planning",
+        "review"
+      ]
+    },
+    {
+      "name": "pr-description",
+      "package": "productivity",
+      "version": "0.1.0",
+      "description": "Use when the user asks for a pull request description, merge request description, release note draft, reviewer instructions, or a structured summary of code changes for review.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/productivity/skills/pr-description",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/productivity/skills/pr-description",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/productivity/skills/pr-description",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "productivity",
+        "planning",
+        "review"
+      ]
+    },
+    {
+      "name": "humanizer",
+      "package": "writing-tools",
+      "version": "0.1.1",
+      "description": "Use when the user wants text to sound more natural, human, conversational, warm, direct, less robotic, less generic, or closer to a specific authentic voice while preserving meaning and truthfulness.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/writing-tools/skills/humanizer",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/writing-tools/skills/humanizer",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/writing-tools/skills/humanizer",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "writing",
+        "editing",
+        "humanizer",
+        "summarization"
+      ]
+    },
+    {
+      "name": "rewrite-for-clarity",
+      "package": "writing-tools",
+      "version": "0.1.1",
+      "description": "Use when the user wants text rewritten, edited, tightened, translated in tone, made more direct, made more professional, or adapted for a specific audience while preserving meaning.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/writing-tools/skills/rewrite-for-clarity",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/writing-tools/skills/rewrite-for-clarity",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/writing-tools/skills/rewrite-for-clarity",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "writing",
+        "editing",
+        "humanizer",
+        "summarization"
+      ]
+    },
+    {
+      "name": "summarize-material",
+      "package": "writing-tools",
+      "version": "0.1.1",
+      "description": "Use when the user provides notes, articles, transcripts, documents, meeting records, or long context and wants a concise summary, decision record, action list, or synthesis.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/writing-tools/skills/summarize-material",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/writing-tools/skills/summarize-material",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/writing-tools/skills/summarize-material",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "writing",
+        "editing",
+        "humanizer",
+        "summarization"
+      ]
+    }
+  ]
+}

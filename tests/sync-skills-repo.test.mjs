@@ -26,6 +26,7 @@ async function createSkillsplaceFixture(name) {
   await mkdir(path.join(fixtureRoot, ".agents/plugins"), { recursive: true });
   await mkdir(path.join(fixtureRoot, ".claude-plugin"), { recursive: true });
   await mkdir(path.join(fixtureRoot, ".antigravity"), { recursive: true });
+  await mkdir(path.join(fixtureRoot, ".hermes"), { recursive: true });
 
   await writeJson(path.join(fixtureRoot, "marketplace.json"), {
     name: "skillsplace",
@@ -105,6 +106,13 @@ async function createSkillsplaceFixture(name) {
     description: "Fixture Antigravity catalog.",
     plugins: []
   });
+  await writeJson(path.join(fixtureRoot, ".hermes/marketplace.json"), {
+    name: "skillsplace",
+    displayName: "Skillsplace Hermes Skills Catalog",
+    version: "0.1.0",
+    description: "Fixture Hermes catalog.",
+    skills: []
+  });
 
   return fixtureRoot;
 }
@@ -117,7 +125,7 @@ async function createSkillsFixture(name, plugins) {
     const pluginRoot = path.join(skillsRoot, "plugins", directoryName);
     await mkdir(path.join(pluginRoot, ".codex-plugin"), { recursive: true });
     await mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
-    const { directoryName: _directoryName, ...metadata } = plugin;
+    const { directoryName: _directoryName, skills = [], ...metadata } = plugin;
     await writeJson(path.join(pluginRoot, "skillsplace.json"), metadata);
     await writeJson(path.join(pluginRoot, ".codex-plugin/plugin.json"), {
       name: plugin.slug,
@@ -125,6 +133,21 @@ async function createSkillsFixture(name, plugins) {
       description: plugin.description,
       skills: "skills"
     });
+    for (const skill of skills) {
+      await mkdir(path.join(pluginRoot, "skills", skill.slug), { recursive: true });
+      await writeFile(
+        path.join(pluginRoot, "skills", skill.slug, "SKILL.md"),
+        [
+          "---",
+          `name: ${skill.slug}`,
+          `description: ${skill.description}`,
+          "---",
+          "",
+          `# ${skill.title ?? skill.slug}`,
+          ""
+        ].join("\n")
+      );
+    }
   }
   return skillsRoot;
 }
@@ -158,7 +181,14 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
           status: "ready",
           requiredRootFile: "plugin.json"
         }
-      }
+      },
+      skills: [
+        {
+          slug: "commit-message",
+          title: "Commit Message",
+          description: "Use when the user asks for a Git commit message."
+        }
+      ]
     }
   ]);
 
@@ -174,6 +204,7 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
   const codex = await readJson(path.join(targetRoot, ".agents/plugins/marketplace.json"));
   const claude = await readJson(path.join(targetRoot, ".claude-plugin/marketplace.json"));
   const antigravity = await readJson(path.join(targetRoot, ".antigravity/catalog.json"));
+  const hermes = await readJson(path.join(targetRoot, ".hermes/marketplace.json"));
 
   assert.equal(bySlug(marketplace.packages, "qiongli").name, "Qiongli");
   assert.deepEqual(bySlug(marketplace.packages, "productivity"), {
@@ -197,6 +228,11 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
         type: "plugin",
         path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+      },
+      hermes: {
+        type: "adapter",
+        path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/skills",
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.hermes/marketplace.json"
       }
     }
   });
@@ -257,6 +293,26 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
       registry: "open-vsx",
       extensionId: null
     }
+  });
+
+  assert.deepEqual(bySlug(hermes.skills, "commit-message"), {
+    name: "commit-message",
+    package: "productivity",
+    version: "0.1.0",
+    description: "Use when the user asks for a Git commit message.",
+    source: {
+      source: "github",
+      identifier: "jxpeng98/skills/plugins/productivity/skills/commit-message",
+      repo: "jxpeng98/skills",
+      path: "plugins/productivity/skills/commit-message",
+      ref: "main"
+    },
+    install: {
+      command: "hermes skills install jxpeng98/skills/plugins/productivity/skills/commit-message",
+      source: "github",
+      trust: "community"
+    },
+    tags: ["productivity", "planning", "review"]
   });
 
   const validateResult = await execFileAsync(process.execPath, [validateScript, "--root", targetRoot]);
@@ -359,11 +415,13 @@ test("sync rejects invalid plugin metadata before writing catalogs", async () =>
   const codexPath = path.join(targetRoot, ".agents/plugins/marketplace.json");
   const claudePath = path.join(targetRoot, ".claude-plugin/marketplace.json");
   const antigravityPath = path.join(targetRoot, ".antigravity/catalog.json");
+  const hermesPath = path.join(targetRoot, ".hermes/marketplace.json");
   const before = {
     marketplace: await readJson(marketplacePath),
     codex: await readJson(codexPath),
     claude: await readJson(claudePath),
-    antigravity: await readJson(antigravityPath)
+    antigravity: await readJson(antigravityPath),
+    hermes: await readJson(hermesPath)
   };
 
   try {
@@ -387,4 +445,5 @@ test("sync rejects invalid plugin metadata before writing catalogs", async () =>
   assert.deepEqual(await readJson(codexPath), before.codex);
   assert.deepEqual(await readJson(claudePath), before.claude);
   assert.deepEqual(await readJson(antigravityPath), before.antigravity);
+  assert.deepEqual(await readJson(hermesPath), before.hermes);
 });

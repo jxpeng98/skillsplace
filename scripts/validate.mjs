@@ -509,28 +509,93 @@ async function validateAntigravityCatalog() {
   }
 }
 
+async function validateHermesCatalog() {
+  const catalogRel = ".hermes/marketplace.json";
+  if (!existsSync(path.resolve(root, catalogRel))) {
+    return;
+  }
+
+  const catalog = requireObject(await readJson(catalogRel), catalogRel);
+  requireKebab(catalog.name, `${catalogRel}.name`);
+  requireString(catalog.displayName, `${catalogRel}.displayName`);
+  requireSemver(catalog.version, `${catalogRel}.version`);
+  requireString(catalog.description, `${catalogRel}.description`);
+
+  const entries = requireArray(catalog.skills, `${catalogRel}.skills`);
+  const names = new Set();
+
+  for (const [index, entryValue] of entries.entries()) {
+    const label = `${catalogRel}.skills[${index}]`;
+    const entry = requireObject(entryValue, label);
+    const name = requireKebab(entry.name, `${label}.name`);
+    requireKebab(entry.package, `${label}.package`);
+    requireSemver(entry.version, `${label}.version`);
+    requireString(entry.description, `${label}.description`);
+
+    if (name) {
+      if (names.has(name)) {
+        fail(`${label}.name duplicates ${name}`);
+      }
+      names.add(name);
+    }
+
+    const source = requireObject(entry.source, `${label}.source`);
+    requireEnum(source.source, ["github"], `${label}.source.source`);
+    const identifier = requirePortableReference(source.identifier, `${label}.source.identifier`);
+    const repo = requireString(source.repo, `${label}.source.repo`);
+    const sourcePath = requirePortableReference(source.path, `${label}.source.path`);
+    requireString(source.ref, `${label}.source.ref`);
+
+    if (repo && !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+      fail(`${label}.source.repo must be an owner/repo GitHub identifier`);
+    }
+    if (identifier && repo && sourcePath && identifier !== `${repo}/${sourcePath}`) {
+      fail(`${label}.source.identifier must match source.repo/source.path`);
+    }
+
+    const install = requireObject(entry.install, `${label}.install`);
+    const command = requireString(install.command, `${label}.install.command`);
+    requireEnum(install.source, ["github"], `${label}.install.source`);
+    requireEnum(install.trust, ["builtin", "trusted", "community"], `${label}.install.trust`);
+    if (identifier && command && command !== `hermes skills install ${identifier}`) {
+      fail(`${label}.install.command must install ${identifier}`);
+    }
+
+    for (const [tagIndex, tagValue] of requireArray(entry.tags, `${label}.tags`).entries()) {
+      requireString(tagValue, `${label}.tags[${tagIndex}]`);
+    }
+  }
+}
+
 async function validatePlatformCatalogSync() {
   const marketplaceRel = "marketplace.json";
   const codexRel = ".agents/plugins/marketplace.json";
   const claudeRel = ".claude-plugin/marketplace.json";
   const antigravityRel = ".antigravity/catalog.json";
+  const hermesRel = ".hermes/marketplace.json";
 
   const marketplace = requireObject(await readJson(marketplaceRel), marketplaceRel);
   const codex = requireObject(await readJson(codexRel), codexRel);
   const claude = requireObject(await readJson(claudeRel), claudeRel);
   const antigravityExists = existsSync(path.resolve(root, antigravityRel));
   const antigravity = antigravityExists ? requireObject(await readJson(antigravityRel), antigravityRel) : null;
+  const hermesExists = existsSync(path.resolve(root, hermesRel));
+  const hermes = hermesExists ? requireObject(await readJson(hermesRel), hermesRel) : null;
 
   const codexIndex = indexByName(requireArray(codex.plugins, `${codexRel}.plugins`), `${codexRel}.plugins`);
   const claudeIndex = indexByName(requireArray(claude.plugins, `${claudeRel}.plugins`), `${claudeRel}.plugins`);
   const antigravityIndex = antigravity
     ? indexByName(requireArray(antigravity.plugins, `${antigravityRel}.plugins`), `${antigravityRel}.plugins`)
     : new Map();
+  const hermesPackageIndex = hermes
+    ? indexHermesPackages(requireArray(hermes.skills, `${hermesRel}.skills`), `${hermesRel}.skills`)
+    : new Map();
 
   const declared = {
     codex: new Set(),
     claude: new Set(),
-    antigravity: new Set()
+    antigravity: new Set(),
+    hermes: new Set()
   };
 
   for (const [packageIndex, entryValue] of requireArray(marketplace.packages, `${marketplaceRel}.packages`).entries()) {
@@ -558,12 +623,20 @@ async function validatePlatformCatalogSync() {
       declared.antigravity,
       label
     );
+
+    if (platforms.hermes !== undefined && !hermesExists) {
+      fail(`${label}.platforms.hermes requires ${hermesRel}`);
+    }
+    requireHermesPackageEntry(platforms, slug, hermesPackageIndex, `${hermesRel}.skills`, declared.hermes, label);
   }
 
   forbidUndeclaredPlatformEntries(codexIndex, declared.codex, `${codexRel}.plugins`, "codex");
   forbidUndeclaredPlatformEntries(claudeIndex, declared.claude, `${claudeRel}.plugins`, "claude");
   if (antigravityExists) {
     forbidUndeclaredPlatformEntries(antigravityIndex, declared.antigravity, `${antigravityRel}.plugins`, "antigravity");
+  }
+  if (hermesExists) {
+    forbidUndeclaredHermesPackageEntries(hermesPackageIndex, declared.hermes, `${hermesRel}.skills`);
   }
 }
 
@@ -575,6 +648,42 @@ function requirePlatformEntry(platforms, platformName, slug, platformIndex, plat
   declared.add(slug);
   if (!platformIndex.has(slug)) {
     fail(`${packageLabel}.platforms.${platformName} requires ${platformLabel} entry named ${slug}`);
+  }
+}
+
+function indexHermesPackages(entries, label) {
+  const index = new Map();
+  for (const [entryIndex, entryValue] of entries.entries()) {
+    const entry = requireObject(entryValue, `${label}[${entryIndex}]`);
+    const packageName = requireKebab(entry.package, `${label}[${entryIndex}].package`);
+    if (!packageName) {
+      continue;
+    }
+    const values = index.get(packageName) ?? [];
+    values.push({ entry, index: entryIndex });
+    index.set(packageName, values);
+  }
+  return index;
+}
+
+function requireHermesPackageEntry(platforms, slug, hermesPackageIndex, hermesLabel, declared, packageLabel) {
+  if (platforms.hermes === undefined) {
+    return;
+  }
+
+  declared.add(slug);
+  if (!hermesPackageIndex.has(slug)) {
+    fail(`${packageLabel}.platforms.hermes requires ${hermesLabel} entry with package ${slug}`);
+  }
+}
+
+function forbidUndeclaredHermesPackageEntries(hermesPackageIndex, declared, hermesLabel) {
+  for (const [packageName, values] of hermesPackageIndex.entries()) {
+    if (!declared.has(packageName)) {
+      for (const value of values) {
+        fail(`${hermesLabel}[${value.index}].package must be declared in marketplace.json platforms.hermes`);
+      }
+    }
   }
 }
 
@@ -591,6 +700,7 @@ await validateCodexMarketplace();
 await validateClaudeMarketplace();
 await validateClaudeSkills();
 await validateAntigravityCatalog();
+await validateHermesCatalog();
 await validatePlatformCatalogSync();
 await Promise.all(pending);
 

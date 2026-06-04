@@ -16,10 +16,10 @@ The current marketplace entries are:
 | `qiongli-economics-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research. |
 | `qiongli-political-economy` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis. |
 | `qiongli-geoeconomics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy. |
-| `productivity` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Productivity skills for planning, critique, decisions, commits, and pull requests. |
-| `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Developer skills for repository boundaries, validation, and release readiness. |
-| `writing-tools` | `0.1.1` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Writing skills for clarity, tone, humanization, summarization, and reusable text transformation. |
-| `presentation-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity | Presentation skills for creating engineering and project slides with Slidev. |
+| `productivity` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Productivity skills for planning, critique, decisions, commits, and pull requests. |
+| `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Developer skills for repository boundaries, validation, and release readiness. |
+| `writing-tools` | `0.1.1` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Writing skills for clarity, tone, humanization, summarization, and reusable text transformation. |
+| `presentation-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Presentation skills for creating engineering and project slides with Slidev. |
 
 This repository does not vendor plugin source code, skills, hooks, MCP servers, or executable package artifacts. It only points supported platforms to reviewed external sources.
 
@@ -80,6 +80,34 @@ Current Antigravity entries:
 
 See `docs/antigravity.md` for the exact plugin and Open VSX extension routes.
 
+### Hermes
+
+Skillsplace publishes Hermes adapter metadata at:
+
+```text
+.hermes/marketplace.json
+```
+
+Hermes installs individual skills rather than multi-skill plugin bundles. The Hermes catalog therefore
+maps supported packages to GitHub skill identifiers in `jxpeng98/skills`, without copying skill source
+into this catalog-only repository.
+
+Install a skill by identifier:
+
+```bash
+hermes skills install jxpeng98/skills/plugins/productivity/skills/commit-message
+hermes skills install jxpeng98/skills/plugins/dev-tools/skills/release-readiness
+```
+
+List the supported identifiers from this checkout:
+
+```bash
+node -e "const c=require('./.hermes/marketplace.json'); for (const s of c.skills) console.log(s.source.identifier)"
+```
+
+If using Hermes global search, register or index this marketplace as a Hermes source first; the catalog
+contains the installable identifiers and package mapping that Hermes-compatible tooling needs.
+
 ## Local Development
 
 Validate the marketplace before publishing:
@@ -112,12 +140,13 @@ claude plugin marketplace add /path/to/skillsplace
 
 ## Catalog Files
 
-Skillsplace keeps three catalog layers separate:
+Skillsplace keeps catalog layers separate:
 
 - `marketplace.json`: platform-neutral catalog for humans, tooling, and future adapters.
 - `.agents/plugins/marketplace.json`: Codex-native plugin marketplace.
 - `.claude-plugin/marketplace.json`: Claude Code-native plugin marketplace.
 - `.antigravity/catalog.json`: Antigravity adapter catalog for plugin and Open VSX extension routes.
+- `.hermes/marketplace.json`: Hermes adapter catalog for GitHub skill identifiers.
 
 ## Repository Layout
 
@@ -127,6 +156,7 @@ Skillsplace keeps three catalog layers separate:
 ├── .agents/plugins/marketplace.json
 ├── .claude-plugin/marketplace.json
 ├── .antigravity/catalog.json
+├── .hermes/marketplace.json
 ├── schemas/
 ├── scripts/validate.mjs
 ├── tests/
@@ -139,8 +169,9 @@ Skillsplace keeps three catalog layers separate:
 2. For Codex, add a plugin entry to `.agents/plugins/marketplace.json` that points to a Git-backed source or another reviewed source.
 3. For Claude Code, add a plugin entry to `.claude-plugin/marketplace.json` that points to a GitHub, Git URL, git-subdir, npm, or reviewed relative source.
 4. For Antigravity, add or update a metadata entry in `.antigravity/catalog.json` that records the plugin source and Open VSX extension status.
-5. Keep local `plugins/`, `packages/`, and `.claude/skills/` empty unless this repository intentionally changes from catalog-only to artifact-hosting.
-6. Run `npm run validate`.
+5. For Hermes, add or update `.hermes/marketplace.json` entries that point to external GitHub skill directories.
+6. Keep local `plugins/`, `packages/`, `.claude/skills/`, and `.hermes/skills/` empty unless this repository intentionally changes from catalog-only to artifact-hosting.
+7. Run `npm run validate`.
 
 See `docs/publishing.md` for the full checklist.
 

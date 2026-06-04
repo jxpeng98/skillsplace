@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const SKILLS_REPO = "https://github.com/jxpeng98/skills";
 const SKILLS_REPO_GIT = `${SKILLS_REPO}.git`;
+const SKILLS_REPO_ID = "jxpeng98/skills";
 const SKILLSPLACE_REPO = "https://github.com/jxpeng98/skillsplace";
 const DEFAULT_AUTHOR = { name: "Jiaxin Peng" };
 const DEFAULT_LICENSE = "MIT";
@@ -23,7 +24,8 @@ const CATALOGS = {
   marketplace: "marketplace.json",
   codex: ".agents/plugins/marketplace.json",
   claude: ".claude-plugin/marketplace.json",
-  antigravity: ".antigravity/catalog.json"
+  antigravity: ".antigravity/catalog.json",
+  hermes: ".hermes/marketplace.json"
 };
 
 const { sourceRoot, targetRoot } = parseArgs(process.argv.slice(2));
@@ -82,10 +84,81 @@ async function readPluginMetadata(root) {
       throw new Error(`${metadataPath} is not valid JSON: ${error.message}`);
     }
 
-    plugins.push(normalizePluginMetadata(metadata, directoryName, metadataPath));
+    const plugin = normalizePluginMetadata(metadata, directoryName, metadataPath);
+    plugin.hermesSkills = await readHermesSkills(path.join(pluginsRoot, directoryName), plugin);
+    plugins.push(plugin);
   }
 
   return plugins.sort((left, right) => left.slug.localeCompare(right.slug));
+}
+
+async function readHermesSkills(pluginRoot, plugin) {
+  const skillsRoot = path.join(pluginRoot, "skills");
+  let entries;
+
+  try {
+    entries = await readdir(skillsRoot, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+
+  const skills = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory() || entry.name.startsWith(".") || entry.name.startsWith("_")) {
+      continue;
+    }
+
+    const skillDirectory = entry.name;
+    const skillPath = path.join(skillsRoot, skillDirectory, "SKILL.md");
+    let text;
+    try {
+      text = await readFile(skillPath, "utf8");
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        continue;
+      }
+      throw error;
+    }
+
+    const frontmatter = parseSkillFrontmatter(text, skillPath);
+    const name = requireKebab(frontmatter.name ?? skillDirectory, `${skillPath}.name`);
+    const description = requireString(frontmatter.description, `${skillPath}.description`);
+
+    skills.push({
+      name,
+      directory: skillDirectory,
+      package: plugin.slug,
+      version: plugin.version,
+      description,
+      tags: plugin.tags
+    });
+  }
+
+  return skills.sort((left, right) => left.name.localeCompare(right.name));
+}
+
+function parseSkillFrontmatter(text, label) {
+  if (!text.startsWith("---\n")) {
+    throw new Error(`${label} must start with YAML frontmatter`);
+  }
+
+  const end = text.indexOf("\n---", 4);
+  if (end === -1) {
+    throw new Error(`${label} frontmatter is not closed`);
+  }
+
+  const metadata = {};
+  const frontmatter = text.slice(4, end);
+  for (const line of frontmatter.split("\n")) {
+    const match = /^(name|description):\s*(.*)$/.exec(line);
+    if (match) {
+      metadata[match[1]] = match[2].trim().replace(/^["']|["']$/g, "");
+    }
+  }
+  return metadata;
 }
 
 function normalizePluginMetadata(metadata, directoryName, metadataPath) {
@@ -234,6 +307,7 @@ async function syncCatalogs(root, plugins) {
   const codex = await readJson(path.join(root, CATALOGS.codex));
   const claude = await readJson(path.join(root, CATALOGS.claude));
   const antigravity = await readJson(path.join(root, CATALOGS.antigravity));
+  const hermes = await readJson(path.join(root, CATALOGS.hermes));
 
   marketplace.packages = [
     ...requireArray(marketplace.packages, `${CATALOGS.marketplace}.packages`).filter((entry) => !isManagedPackage(entry)),
@@ -251,14 +325,19 @@ async function syncCatalogs(root, plugins) {
     ...requireArray(antigravity.plugins, `${CATALOGS.antigravity}.plugins`).filter((entry) => !isManagedSource(entry.source)),
     ...plugins.filter((plugin) => plugin.platforms.antigravity).map(toAntigravityEntry)
   ];
+  hermes.skills = [
+    ...requireArray(hermes.skills, `${CATALOGS.hermes}.skills`).filter((entry) => !isManagedHermesSource(entry.source)),
+    ...plugins.flatMap((plugin) => plugin.hermesSkills.map((skill) => toHermesEntry(plugin, skill)))
+  ];
 
-  validateMergedCatalogs({ marketplace, codex, claude, antigravity });
-  await validateMergedCatalogFiles({ marketplace, codex, claude, antigravity });
+  validateMergedCatalogs({ marketplace, codex, claude, antigravity, hermes });
+  await validateMergedCatalogFiles({ marketplace, codex, claude, antigravity, hermes });
 
   await writeJson(path.join(root, CATALOGS.marketplace), marketplace);
   await writeJson(path.join(root, CATALOGS.codex), codex);
   await writeJson(path.join(root, CATALOGS.claude), claude);
   await writeJson(path.join(root, CATALOGS.antigravity), antigravity);
+  await writeJson(path.join(root, CATALOGS.hermes), hermes);
 }
 
 async function validateMergedCatalogFiles(catalogs) {
@@ -270,6 +349,9 @@ async function validateMergedCatalogFiles(catalogs) {
     await writeJsonInRoot(tempRoot, CATALOGS.claude, catalogs.claude);
     if (catalogs.antigravity) {
       await writeJsonInRoot(tempRoot, CATALOGS.antigravity, catalogs.antigravity);
+    }
+    if (catalogs.hermes) {
+      await writeJsonInRoot(tempRoot, CATALOGS.hermes, catalogs.hermes);
     }
 
     await execFileAsync(process.execPath, [VALIDATE_SCRIPT, "--root", tempRoot], {
@@ -293,13 +375,14 @@ async function writeJsonInRoot(root, relPath, value) {
   await writeJson(absPath, value);
 }
 
-function validateMergedCatalogs({ marketplace, codex, claude, antigravity }) {
+function validateMergedCatalogs({ marketplace, codex, claude, antigravity, hermes }) {
   const packages = requireArray(marketplace.packages, `${CATALOGS.marketplace}.packages`);
   const codexPlugins = requireArray(codex.plugins, `${CATALOGS.codex}.plugins`);
   const claudePlugins = requireArray(claude.plugins, `${CATALOGS.claude}.plugins`);
   const antigravityPlugins = antigravity
     ? requireArray(antigravity.plugins, `${CATALOGS.antigravity}.plugins`)
     : [];
+  const hermesSkills = hermes ? requireArray(hermes.skills, `${CATALOGS.hermes}.skills`) : [];
 
   assertUniqueKey(packages, "slug", `${CATALOGS.marketplace}.packages`);
   const codexNames = assertUniqueKey(codexPlugins, "name", `${CATALOGS.codex}.plugins`);
@@ -307,6 +390,7 @@ function validateMergedCatalogs({ marketplace, codex, claude, antigravity }) {
   const antigravityNames = antigravity
     ? assertUniqueKey(antigravityPlugins, "name", `${CATALOGS.antigravity}.plugins`)
     : new Map();
+  const hermesPackages = hermes ? indexHermesPackages(hermesSkills, `${CATALOGS.hermes}.skills`) : new Map();
   if (antigravity) {
     validateMergedAntigravityEntries(antigravityPlugins);
   }
@@ -314,7 +398,8 @@ function validateMergedCatalogs({ marketplace, codex, claude, antigravity }) {
   const declared = {
     codex: new Set(),
     claude: new Set(),
-    antigravity: new Set()
+    antigravity: new Set(),
+    hermes: new Set()
   };
 
   for (const [index, entry] of packages.entries()) {
@@ -325,6 +410,7 @@ function validateMergedCatalogs({ marketplace, codex, claude, antigravity }) {
     requireDeclaredPlatform(platforms, "codex", slug, codexNames, declared.codex, label);
     requireDeclaredPlatform(platforms, "claude", slug, claudeNames, declared.claude, label);
     requireDeclaredPlatform(platforms, "antigravity", slug, antigravityNames, declared.antigravity, label);
+    requireDeclaredHermesPackage(platforms, slug, hermesPackages, declared.hermes, label);
   }
 
   rejectUndeclaredPlatformEntries(codexNames, declared.codex, `${CATALOGS.codex}.plugins`, "codex");
@@ -336,6 +422,9 @@ function validateMergedCatalogs({ marketplace, codex, claude, antigravity }) {
       `${CATALOGS.antigravity}.plugins`,
       "antigravity"
     );
+  }
+  if (hermes) {
+    rejectUndeclaredHermesPackages(hermesPackages, declared.hermes, `${CATALOGS.hermes}.skills`);
   }
 }
 
@@ -392,6 +481,47 @@ function rejectUndeclaredPlatformEntries(platformNames, declared, platformLabel,
   }
 }
 
+function indexHermesPackages(entries, label) {
+  const index = new Map();
+  const names = new Set();
+
+  for (const [entryIndex, entry] of entries.entries()) {
+    const name = requireString(entry?.name, `${label}[${entryIndex}].name`);
+    if (names.has(name)) {
+      throw new Error(`${label}[${entryIndex}].name duplicates ${name}`);
+    }
+    names.add(name);
+
+    const packageName = requireString(entry?.package, `${label}[${entryIndex}].package`);
+    const values = index.get(packageName) ?? [];
+    values.push(entryIndex);
+    index.set(packageName, values);
+  }
+
+  return index;
+}
+
+function requireDeclaredHermesPackage(platforms, slug, hermesPackages, declared, packageLabel) {
+  if (platforms.hermes === undefined) {
+    return;
+  }
+
+  declared.add(slug);
+  if (!hermesPackages.has(slug)) {
+    throw new Error(`${packageLabel}.platforms.hermes declares ${slug}, but Hermes catalog entry is missing`);
+  }
+}
+
+function rejectUndeclaredHermesPackages(hermesPackages, declared, label) {
+  for (const [packageName, indexes] of hermesPackages.entries()) {
+    if (!declared.has(packageName)) {
+      for (const index of indexes) {
+        throw new Error(`${label}[${index}].package ${packageName} is missing from marketplace.json platforms.hermes`);
+      }
+    }
+  }
+}
+
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
 }
@@ -431,6 +561,14 @@ function toMarketplacePackage(plugin) {
       type: "plugin",
       path: pluginWebPath(plugin.slug),
       marketplace: `${SKILLSPLACE_REPO}/blob/main/${CATALOGS.antigravity}`
+    };
+  }
+
+  if (plugin.hermesSkills.length > 0) {
+    packageEntry.platforms.hermes = {
+      type: "adapter",
+      path: `${pluginWebPath(plugin.slug)}/skills`,
+      marketplace: `${SKILLSPLACE_REPO}/blob/main/${CATALOGS.hermes}`
     };
   }
 
@@ -501,8 +639,36 @@ function toAntigravityEntry(plugin) {
   };
 }
 
+function toHermesEntry(plugin, skill) {
+  const identifier = hermesIdentifier(plugin.slug, skill.directory);
+
+  return {
+    name: skill.name,
+    package: plugin.slug,
+    version: plugin.version,
+    description: skill.description,
+    source: {
+      source: "github",
+      identifier,
+      repo: SKILLS_REPO_ID,
+      path: `plugins/${plugin.slug}/skills/${skill.directory}`,
+      ref: REF
+    },
+    install: {
+      command: `hermes skills install ${identifier}`,
+      source: "github",
+      trust: "community"
+    },
+    tags: plugin.tags
+  };
+}
+
 function pluginWebPath(slug) {
   return `${SKILLS_REPO}/tree/main/plugins/${slug}`;
+}
+
+function hermesIdentifier(pluginSlug, skillDirectory) {
+  return `${SKILLS_REPO_ID}/plugins/${pluginSlug}/skills/${skillDirectory}`;
 }
 
 function isManagedPackage(entry) {
@@ -524,6 +690,18 @@ function isManagedSource(source) {
   }
 
   return managedPluginPath(source.path) !== "";
+}
+
+function isManagedHermesSource(source) {
+  return (
+    source &&
+    typeof source === "object" &&
+    source.source === "github" &&
+    source.repo === SKILLS_REPO_ID &&
+    typeof source.path === "string" &&
+    source.path.startsWith("plugins/") &&
+    source.path.includes("/skills/")
+  );
 }
 
 function managedPluginPath(value) {

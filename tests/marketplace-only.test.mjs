@@ -24,6 +24,8 @@ test("repository keeps only marketplace catalogs without vendored plugin sources
   const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
   const antigravityCatalog = await readJson(".antigravity/catalog.json");
+  const hermesCatalog = await readJson(".hermes/marketplace.json");
+  const hermesPackages = new Set(hermesCatalog.skills.map((entry) => entry.package));
 
   assert.ok(marketplace.packages.length >= 1);
   assert.equal(codexMarketplace.plugins.length, marketplace.packages.filter((entry) => entry.platforms.codex).length);
@@ -32,8 +34,10 @@ test("repository keeps only marketplace catalogs without vendored plugin sources
     antigravityCatalog.plugins.length,
     marketplace.packages.filter((entry) => entry.platforms.antigravity).length
   );
+  assert.equal(hermesPackages.size, marketplace.packages.filter((entry) => entry.platforms.hermes).length);
   assert.deepEqual(await directoryEntries("packages"), []);
   assert.deepEqual(await directoryEntries("plugins"), []);
   assert.deepEqual(await directoryEntries(".claude/skills"), []);
   assert.deepEqual(await directoryEntries(".antigravity/plugins"), []);
+  assert.deepEqual(await directoryEntries(".hermes/skills"), []);
 });

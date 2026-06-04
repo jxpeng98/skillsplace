@@ -176,6 +176,11 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/skills/tree/main/plugins/dev-tools",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        },
+        "hermes": {
+          "type": "adapter",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/dev-tools/skills",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.hermes/marketplace.json"
         }
       }
     },
@@ -200,6 +205,11 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/skills/tree/main/plugins/presentation-tools",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        },
+        "hermes": {
+          "type": "adapter",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/presentation-tools/skills",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.hermes/marketplace.json"
         }
       }
     },
@@ -224,6 +234,11 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        },
+        "hermes": {
+          "type": "adapter",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/skills",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.hermes/marketplace.json"
         }
       }
     },
@@ -248,6 +263,11 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
+        },
+        "hermes": {
+          "type": "adapter",
+          "path": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools/skills",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.hermes/marketplace.json"
         }
       }
     }
