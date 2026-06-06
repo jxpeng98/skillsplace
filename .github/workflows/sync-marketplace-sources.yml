@@ -49,6 +49,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           path: skillsplace
+          token: ${{ secrets.SKILLS_REPO_TOKEN || github.token }}
           branch: chore/sync-marketplace-sources
           delete-branch: true
           title: "chore: sync marketplace source metadata"
