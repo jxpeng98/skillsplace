@@ -9,7 +9,15 @@ const qiongliDescription =
   "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.";
 const qiongliNextDescription =
   "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.";
-const expectedSharedSlugs = ["qiongli", "qiongli-next", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
+const expectedMarketplaceAndClaudeSlugs = [
+  "qiongli",
+  "qiongli-next",
+  "productivity",
+  "dev-tools",
+  "writing-tools",
+  "presentation-tools"
+];
+const expectedCodexSlugs = ["qiongli", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
 const expectedAntigravitySlugs = ["qiongli", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
 
 async function readJson(relativePath) {
@@ -44,10 +52,13 @@ test("qiongli remains listed as an external marketplace package", async () => {
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
   const antigravityCatalog = await readJson(".antigravity/catalog.json");
 
-  for (const slug of expectedSharedSlugs) {
+  for (const slug of expectedMarketplaceAndClaudeSlugs) {
     assert.ok(bySlug(marketplace.packages, slug), `expected marketplace slug ${slug}`);
-    assert.ok(bySlug(codexMarketplace.plugins, slug), `expected Codex plugin ${slug}`);
     assert.ok(bySlug(claudeMarketplace.plugins, slug), `expected Claude plugin ${slug}`);
+  }
+
+  for (const slug of expectedCodexSlugs) {
+    assert.ok(bySlug(codexMarketplace.plugins, slug), `expected Codex plugin ${slug}`);
   }
 
   for (const slug of expectedAntigravitySlugs) {
@@ -62,11 +73,11 @@ test("qiongli remains listed as an external marketplace package", async () => {
     slug: "qiongli",
     version: qiongliVersion,
     description: qiongliDescription,
-    manifest: releaseAsset("qiongli", "codex", qiongliVersion),
+    manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
     platforms: {
       codex: {
         type: "plugin",
-        path: releaseAsset("qiongli", "codex", qiongliVersion),
+        path: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
       },
       claude: {
@@ -85,8 +96,10 @@ test("qiongli remains listed as an external marketplace package", async () => {
   assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli"), {
     name: "qiongli",
     source: {
-      source: "url",
-      url: releaseAsset("qiongli", "codex", qiongliVersion)
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/qiongli.git",
+      path: "./plugins/qiongli",
+      ref: `v${qiongliVersion}`
     },
     policy: {
       installation: "AVAILABLE",
@@ -150,13 +163,8 @@ test("qiongli pre-release is exposed through an explicit next channel", async ()
     slug: "qiongli-next",
     version: qiongliPrereleaseVersion,
     description: qiongliNextDescription,
-    manifest: releaseAsset("qiongli", "codex", qiongliPrereleaseVersion),
+    manifest: releaseAsset("qiongli", "claude", qiongliPrereleaseVersion),
     platforms: {
-      codex: {
-        type: "plugin",
-        path: releaseAsset("qiongli", "codex", qiongliPrereleaseVersion),
-        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
-      },
       claude: {
         type: "plugin",
         path: releaseAsset("qiongli", "claude", qiongliPrereleaseVersion),
@@ -165,18 +173,7 @@ test("qiongli pre-release is exposed through an explicit next channel", async ()
     }
   });
 
-  assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli-next"), {
-    name: "qiongli-next",
-    source: {
-      source: "url",
-      url: releaseAsset("qiongli", "codex", qiongliPrereleaseVersion)
-    },
-    policy: {
-      installation: "AVAILABLE",
-      authentication: "ON_INSTALL"
-    },
-    category: "Education"
-  });
+  assert.equal(bySlug(codexMarketplace.plugins, "qiongli-next"), undefined);
 
   assert.deepEqual(bySlug(claudeMarketplace.plugins, "qiongli-next"), {
     name: "qiongli-next",
@@ -204,13 +201,8 @@ test("qiongli subject packages are listed as release artifact installs", async (
   const subjectPackages = qiongliSubjectPackages(marketplace.packages);
 
   for (const subject of subjectPackages) {
-    assert.equal(subject.manifest, releaseAsset(subject.slug, "codex", subject.version));
+    assert.equal(subject.manifest, releaseAsset(subject.slug, "claude", subject.version));
     assert.deepEqual(subject.platforms, {
-      codex: {
-        type: "plugin",
-        path: releaseAsset(subject.slug, "codex", subject.version),
-        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
-      },
       claude: {
         type: "plugin",
         path: releaseAsset(subject.slug, "claude", subject.version),
@@ -218,18 +210,7 @@ test("qiongli subject packages are listed as release artifact installs", async (
       }
     });
 
-    assert.deepEqual(bySlug(codexMarketplace.plugins, subject.slug), {
-      name: subject.slug,
-      source: {
-        source: "url",
-        url: releaseAsset(subject.slug, "codex", subject.version)
-      },
-      policy: {
-        installation: "AVAILABLE",
-        authentication: "ON_INSTALL"
-      },
-      category: "Education"
-    });
+    assert.equal(bySlug(codexMarketplace.plugins, subject.slug), undefined);
 
     assert.deepEqual(bySlug(claudeMarketplace.plugins, subject.slug), {
       name: subject.slug,

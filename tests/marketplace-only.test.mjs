@@ -19,7 +19,7 @@ async function directoryEntries(relativePath) {
   return readdir(absolutePath);
 }
 
-test("repository starts as a marketplace-only catalog", async () => {
+test("repository keeps only marketplace catalogs without vendored plugin sources", async () => {
   const marketplace = await readJson("marketplace.json");
   const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
