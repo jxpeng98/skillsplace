@@ -32,18 +32,18 @@
     {
       "name": "Qiongli Next",
       "slug": "qiongli-next",
-      "version": "1.1.0-beta.2",
+      "version": "1.1.0-beta.3",
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.2/qiongli-next-codex-plugin-v1.1.0-beta.2.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.3/qiongli-next-codex-plugin-v1.1.0-beta.3.tar.gz",
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.2/qiongli-next-codex-plugin-v1.1.0-beta.2.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.3/qiongli-next-codex-plugin-v1.1.0-beta.3.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
         },
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.2/qiongli-next-claude-plugin-v1.1.0-beta.2.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.3/qiongli-next-claude-plugin-v1.1.0-beta.3.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
