@@ -46,6 +46,7 @@ jobs:
         run: npm run validate
 
       - name: Create pull request
+        id: create-pr
         uses: peter-evans/create-pull-request@v6
         with:
           path: skillsplace
@@ -69,3 +70,10 @@ jobs:
           labels: |
             automation
             marketplace
+
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number != ''
+        working-directory: skillsplace
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge --squash --auto --delete-branch "${{ steps.create-pr.outputs.pull-request-number }}"

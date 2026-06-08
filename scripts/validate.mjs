@@ -317,15 +317,13 @@ async function validateCodexMarketplace() {
     } else {
       const sourceObject = requireObject(source, `${label}.source`);
       sourceKind = requireString(sourceObject.source, `${label}.source.source`);
-      if (!["local", "url", "git-subdir"].includes(sourceKind)) {
-        fail(`${label}.source.source must be local, url, or git-subdir`);
+      if (!["local", "git-subdir", "url"].includes(sourceKind)) {
+        fail(`${label}.source.source must be local, git-subdir, or url`);
       }
       if (sourceKind === "local" || sourceKind === "git-subdir") {
         pluginPath = requirePortableReference(sourceObject.path, `${label}.source.path`);
-      } else if (sourceObject.path !== undefined) {
-        pluginPath = requirePortableReference(sourceObject.path, `${label}.source.path`);
       }
-      if (sourceKind !== "local") {
+      if (sourceKind === "git-subdir" || sourceKind === "url") {
         requirePortableReference(sourceObject.url, `${label}.source.url`);
       }
       if (sourceKind === "git-subdir") {

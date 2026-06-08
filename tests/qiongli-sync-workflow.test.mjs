@@ -33,3 +33,15 @@ test("external marketplace sync workflow updates all managed sources through one
   assert.match(workflow, /path: skillsplace/);
   assert.match(workflow, /branch: chore\/sync-marketplace-sources/);
 });
+
+test("external marketplace sync workflow enables auto-merge after opening a pull request", async () => {
+  const workflow = await readWorkflow();
+
+  assert.match(workflow, /id: create-pr/);
+  assert.match(workflow, /if: steps\.create-pr\.outputs\.pull-request-number != ''/);
+  assert.match(workflow, /GH_TOKEN: \$\{\{ github\.token \}\}/);
+  assert.match(
+    workflow,
+    /gh pr merge --squash --auto --delete-branch "\$\{\{ steps\.create-pr\.outputs\.pull-request-number \}\}"/
+  );
+});

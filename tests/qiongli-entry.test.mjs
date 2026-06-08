@@ -17,7 +17,7 @@ const expectedMarketplaceAndClaudeSlugs = [
   "writing-tools",
   "presentation-tools"
 ];
-const expectedCodexSlugs = ["qiongli", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
+const expectedCodexSlugs = ["qiongli", "qiongli-next", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
 const expectedAntigravitySlugs = ["qiongli", "productivity", "dev-tools", "writing-tools", "presentation-tools"];
 
 async function readJson(relativePath) {
@@ -42,6 +42,51 @@ function releaseAsset(slug, platform, version) {
   );
 }
 
+function qiongliCodexPluginPath(version) {
+  return version.startsWith("0.") ? "plugins/qiongli" : "packages/qiongli-plugin";
+}
+
+function qiongliCodexPlatform(version) {
+  const pluginPath = qiongliCodexPluginPath(version);
+  return {
+    type: "plugin",
+    path: `https://github.com/jxpeng98/qiongli/tree/v${version}/${pluginPath}`,
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+  };
+}
+
+function qiongliCodexEntry(name, version) {
+  return {
+    name,
+    source: {
+      source: "git-subdir",
+      url: "https://github.com/jxpeng98/qiongli.git",
+      path: `./${qiongliCodexPluginPath(version)}`,
+      ref: `v${version}`
+    },
+    policy: {
+      installation: "AVAILABLE",
+      authentication: "ON_INSTALL"
+    },
+    category: "Education"
+  };
+}
+
+function qiongliNextCodexEntry(version) {
+  return {
+    name: "qiongli-next",
+    source: {
+      source: "url",
+      url: releaseAsset("qiongli-next", "codex", version)
+    },
+    policy: {
+      installation: "AVAILABLE",
+      authentication: "ON_INSTALL"
+    },
+    category: "Education"
+  };
+}
+
 function qiongliSubjectPackages(packages) {
   return packages.filter((entry) => entry.slug.startsWith("qiongli-") && entry.slug !== "qiongli-next");
 }
@@ -56,6 +101,9 @@ test("qiongli remains listed as an external marketplace package", async () => {
     assert.ok(bySlug(marketplace.packages, slug), `expected marketplace slug ${slug}`);
     assert.ok(bySlug(claudeMarketplace.plugins, slug), `expected Claude plugin ${slug}`);
   }
+  assert.ok(bySlug(marketplace.packages, "qiongli-next"), "expected marketplace slug qiongli-next");
+  assert.ok(bySlug(codexMarketplace.plugins, "qiongli-next"), "expected Codex plugin qiongli-next");
+  assert.ok(bySlug(claudeMarketplace.plugins, "qiongli-next"), "expected Claude plugin qiongli-next");
 
   for (const slug of expectedCodexSlugs) {
     assert.ok(bySlug(codexMarketplace.plugins, slug), `expected Codex plugin ${slug}`);
@@ -75,11 +123,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     description: qiongliDescription,
     manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
     platforms: {
-      codex: {
-        type: "plugin",
-        path: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
-        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
-      },
+      codex: qiongliCodexPlatform(qiongliVersion),
       claude: {
         type: "plugin",
         path: releaseAsset("qiongli", "claude", qiongliVersion),
@@ -93,20 +137,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     }
   });
 
-  assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli"), {
-    name: "qiongli",
-    source: {
-      source: "git-subdir",
-      url: "https://github.com/jxpeng98/qiongli.git",
-      path: "./plugins/qiongli",
-      ref: `v${qiongliVersion}`
-    },
-    policy: {
-      installation: "AVAILABLE",
-      authentication: "ON_INSTALL"
-    },
-    category: "Education"
-  });
+  assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli"), qiongliCodexEntry("qiongli", qiongliVersion));
 
   assert.deepEqual(bySlug(claudeMarketplace.plugins, "qiongli"), {
     name: "qiongli",
@@ -163,23 +194,28 @@ test("qiongli pre-release is exposed through an explicit next channel", async ()
     slug: "qiongli-next",
     version: qiongliPrereleaseVersion,
     description: qiongliNextDescription,
-    manifest: releaseAsset("qiongli", "claude", qiongliPrereleaseVersion),
+    manifest: releaseAsset("qiongli-next", "codex", qiongliPrereleaseVersion),
     platforms: {
+      codex: {
+        type: "plugin",
+        path: releaseAsset("qiongli-next", "codex", qiongliPrereleaseVersion),
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+      },
       claude: {
         type: "plugin",
-        path: releaseAsset("qiongli", "claude", qiongliPrereleaseVersion),
+        path: releaseAsset("qiongli-next", "claude", qiongliPrereleaseVersion),
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
       }
     }
   });
 
-  assert.equal(bySlug(codexMarketplace.plugins, "qiongli-next"), undefined);
+  assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli-next"), qiongliNextCodexEntry(qiongliPrereleaseVersion));
 
   assert.deepEqual(bySlug(claudeMarketplace.plugins, "qiongli-next"), {
     name: "qiongli-next",
     source: {
       source: "url",
-      url: releaseAsset("qiongli", "claude", qiongliPrereleaseVersion)
+      url: releaseAsset("qiongli-next", "claude", qiongliPrereleaseVersion)
     },
     description: qiongliNextDescription,
     version: qiongliPrereleaseVersion,
@@ -194,7 +230,7 @@ test("qiongli pre-release is exposed through an explicit next channel", async ()
   });
 });
 
-test("qiongli subject packages are listed as release artifact installs", async () => {
+test("qiongli subject packages are listed as Claude release artifact installs", async () => {
   const marketplace = await readJson("marketplace.json");
   const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");

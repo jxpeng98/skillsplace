@@ -106,6 +106,68 @@ test("validator accepts marketplace entries that point to external package sourc
   assert.match(result.stdout, /Marketplace validation passed/);
 });
 
+test("validator accepts Codex marketplace entries that point to external URL sources", async () => {
+  const artifactUrl = "https://github.com/example/agent-packages/releases/download/v1.2.3/release-helper-codex-plugin-v1.2.3.tar.gz";
+  const fixtureRoot = await createFixture(
+    "skillsplace-valid-codex-url",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "External-only marketplace fixture.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: artifactUrl,
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: artifactUrl,
+              marketplace: "./.agents/plugins/marketplace.json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "url",
+            url: artifactUrl
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Productivity"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      description: "External-only marketplace fixture.",
+      version: "0.1.0",
+      plugins: []
+    }
+  );
+
+  const result = await execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]);
+
+  assert.match(result.stdout, /Marketplace validation passed/);
+});
+
 test("validator uses the root passed with --root", async () => {
   const fixtureRoot = await createFixture(
     "skillsplace-invalid-root",
@@ -241,6 +303,64 @@ test("validator requires git-subdir platform sources to pin a ref", async () => 
   await assert.rejects(
     execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
     /\.agents\/plugins\/marketplace\.json\.plugins\[0\]\.source\.ref must be a non-empty string/
+  );
+});
+
+test("validator rejects Codex URL sources without a portable URL", async () => {
+  const fixtureRoot = await createFixture(
+    "skillsplace-codex-url-source",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "Marketplace fixture with an unsupported Codex URL source.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: "https://github.com/example/agent-packages/blob/main/packages/release-helper/manifest.json",
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: "https://github.com/example/agent-packages/releases/download/v1.2.3/release-helper.tar.gz"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "url"
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Productivity"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      plugins: []
+    }
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /\.agents\/plugins\/marketplace\.json\.plugins\[0\]\.source\.url must be a non-empty string/
   );
 });
 

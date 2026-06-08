@@ -7,15 +7,15 @@ The current marketplace entries are:
 | Package | Version | Source | Platforms | Description |
 | --- | --- | --- | --- | --- |
 | `qiongli` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
-| `qiongli-next` | `1.0.0-beta.2` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.0.0-beta.2) | Codex, Claude Code | Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry. |
-| `qiongli-core` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
-| `qiongli-economics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
-| `qiongli-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Accounting-focused archival, disclosure, audit, and measurement workflow. |
-| `qiongli-business` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts. |
-| `qiongli-finance` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts. |
-| `qiongli-economics-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research. |
-| `qiongli-political-economy` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis. |
-| `qiongli-geoeconomics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code | Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy. |
+| `qiongli-next` | `1.1.0-beta.2` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.1.0-beta.2) | Codex, Claude Code | Pre-release Qiongli channel for testing the core package layout before it becomes the stable marketplace entry. |
+| `qiongli-core` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
+| `qiongli-economics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
+| `qiongli-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Accounting-focused archival, disclosure, audit, and measurement workflow. |
+| `qiongli-business` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts. |
+| `qiongli-finance` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts. |
+| `qiongli-economics-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research. |
+| `qiongli-political-economy` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis. |
+| `qiongli-geoeconomics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy. |
 | `productivity` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Productivity skills for planning, critique, decisions, commits, and pull requests. |
 | `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Developer skills for repository boundaries, validation, and release readiness. |
 | `writing-tools` | `0.1.1` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Writing skills for clarity, tone, humanization, summarization, and reusable text transformation. |
@@ -33,7 +33,8 @@ Add this marketplace:
 codex plugin marketplace add jxpeng98/skillsplace --ref main
 ```
 
-Then install or enable a plugin from the Codex plugin UI. Use one of the package names listed above, such as `qiongli`, `qiongli-next`, `qiongli-core`, `productivity`, or `dev-tools`.
+Then install or enable a plugin from the Codex plugin UI. Use one of the Codex package names listed
+above, such as `qiongli`, `productivity`, or `dev-tools`.
 
 To confirm the marketplace is registered:
 
@@ -76,7 +77,8 @@ Current Antigravity entries:
 
 - `productivity`, `dev-tools`, `writing-tools`, and `presentation-tools` are marked ready for the native plugin route.
 - `qiongli` is listed in the Antigravity catalog at stable tag `v0.14.0`, but native Antigravity plugin installation is marked pending until `jxpeng98/qiongli` adds `plugins/qiongli/plugin.json`.
-- The subject-specific Qiongli release packages and `qiongli-next` pre-release channel are currently listed for Codex and Claude Code only.
+- The `qiongli-next` pre-release channel is listed for Codex and Claude Code through reviewed release
+  artifacts. Subject-specific Qiongli release packages remain Claude Code only.
 
 See `docs/antigravity.md` for the exact plugin and Open VSX extension routes.
 

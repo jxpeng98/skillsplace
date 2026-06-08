@@ -5,6 +5,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const REPO = "https://github.com/jxpeng98/qiongli";
+const REPO_GIT = `${REPO}.git`;
 const API_RELEASES = "https://api.github.com/repos/jxpeng98/qiongli/releases";
 const SKILLSPLACE = "https://github.com/jxpeng98/skillsplace/blob/main";
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -15,6 +16,7 @@ const QIONGLI_DESCRIPTION =
   "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.";
 const NEXT_DESCRIPTION =
   "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.";
+const NEXT_SLUG = "qiongli-next";
 
 const SUBJECT_METADATA = {
   "qiongli-core": {
@@ -145,26 +147,31 @@ function compareSemver(leftVersion, rightVersion) {
   return 0;
 }
 
-function hasCoreClaudePluginAsset(release) {
+function hasPluginAssets(release, slug) {
   const version = stripTag(release.tag_name ?? "");
   const names = new Set((release.assets ?? []).map((asset) => asset.name));
-  return names.has(`qiongli-claude-plugin-v${version}.tar.gz`);
+  return names.has(`${slug}-codex-plugin-v${version}.tar.gz`) && names.has(`${slug}-claude-plugin-v${version}.tar.gz`);
+}
+
+function hasClaudePluginAsset(release, slug) {
+  const version = stripTag(release.tag_name ?? "");
+  const names = new Set((release.assets ?? []).map((asset) => asset.name));
+  return names.has(`${slug}-claude-plugin-v${version}.tar.gz`);
 }
 
 export function selectLatestQiongliReleases(releases) {
-  const eligible = releases.filter(
+  const candidates = releases.filter(
     (release) =>
       release &&
       !release.draft &&
       parseSemver(release.tag_name) &&
-      Array.isArray(release.assets) &&
-      hasCoreClaudePluginAsset(release)
+      Array.isArray(release.assets)
   );
 
   const byVersionDesc = (left, right) => compareSemver(right.tag_name, left.tag_name);
   return {
-    stable: eligible.filter((release) => !release.prerelease).sort(byVersionDesc)[0] ?? null,
-    prerelease: eligible.filter((release) => release.prerelease).sort(byVersionDesc)[0] ?? null
+    stable: candidates.filter((release) => !release.prerelease && hasClaudePluginAsset(release, "qiongli")).sort(byVersionDesc)[0] ?? null,
+    prerelease: candidates.filter((release) => release.prerelease && hasPluginAssets(release, NEXT_SLUG)).sort(byVersionDesc)[0] ?? null
   };
 }
 
@@ -192,7 +199,9 @@ function releaseAssetsBySlug(release) {
 }
 
 function orderedSubjectSlugs(assetMap) {
-  const slugs = [...assetMap.keys()].filter((slug) => slug !== "qiongli" && assetMap.get(slug).claude);
+  const slugs = [...assetMap.keys()].filter(
+    (slug) => slug !== "qiongli" && slug !== NEXT_SLUG && assetMap.get(slug).claude
+  );
   const known = SUBJECT_ORDER.filter((slug) => slugs.includes(slug));
   const unknown = slugs.filter((slug) => !SUBJECT_ORDER.includes(slug)).sort();
   return [...known, ...unknown];
@@ -230,14 +239,51 @@ function marketplacePackage(slug, name, version, description, manifest, platform
   };
 }
 
+function qiongliNextMarketplacePackage(version, codexUrl, claudeUrl) {
+  return {
+    name: "Qiongli Next",
+    slug: NEXT_SLUG,
+    version,
+    description: NEXT_DESCRIPTION,
+    manifest: codexUrl,
+    platforms: {
+      codex: {
+        type: "plugin",
+        path: codexUrl,
+        marketplace: `${SKILLSPLACE}/.agents/plugins/marketplace.json`
+      },
+      claude: {
+        type: "plugin",
+        path: claudeUrl,
+        marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
+      }
+    }
+  };
+}
+
 function codexEntry(name, ref) {
   return {
     name,
     source: {
       source: "git-subdir",
-      url: `${REPO}.git`,
+      url: REPO_GIT,
       path: "./plugins/qiongli",
       ref
+    },
+    policy: {
+      installation: "AVAILABLE",
+      authentication: "ON_INSTALL"
+    },
+    category: "Education"
+  };
+}
+
+function codexUrlEntry(name, url) {
+  return {
+    name,
+    source: {
+      source: "url",
+      url
     },
     policy: {
       installation: "AVAILABLE",
@@ -270,13 +316,13 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
   const stableAssets = releaseAssetsBySlug(stableRelease);
   const stableCore = stableAssets.get("qiongli");
   const prereleaseVersion = stripTag(prereleaseRelease.tag_name);
-  const prereleaseCore = releaseAssetsBySlug(prereleaseRelease).get("qiongli");
+  const prereleaseCore = releaseAssetsBySlug(prereleaseRelease).get(NEXT_SLUG);
 
   if (!stableCore?.claude) {
     throw new Error(`${stableRelease.tag_name} is missing the qiongli Claude plugin asset`);
   }
-  if (!prereleaseCore?.claude) {
-    throw new Error(`${prereleaseRelease.tag_name} is missing the qiongli pre-release Claude plugin asset`);
+  if (!prereleaseCore?.codex || !prereleaseCore?.claude) {
+    throw new Error(`${prereleaseRelease.tag_name} is missing qiongli-next pre-release Codex or Claude plugin assets`);
   }
 
   const subjects = orderedSubjectSlugs(stableAssets).map((slug) => {
@@ -314,13 +360,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
           marketplace: `${SKILLSPLACE}/.antigravity/catalog.json`
         }
       }),
-      marketplacePackage("qiongli-next", "Qiongli Next", prereleaseVersion, NEXT_DESCRIPTION, prereleaseCore.claude, {
-        claude: {
-          type: "plugin",
-          path: prereleaseCore.claude,
-          marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
-        }
-      }),
+      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCore.codex, prereleaseCore.claude),
       ...subjects.map((subject) =>
         marketplacePackage(subject.slug, subject.name, subject.version, subject.description, subject.claudeUrl, {
           claude: {
@@ -331,7 +371,10 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
         })
       )
     ],
-    codex: [codexEntry("qiongli", `v${stableVersion}`)],
+    codex: [
+      codexEntry("qiongli", `v${stableVersion}`),
+      codexUrlEntry(NEXT_SLUG, prereleaseCore.codex)
+    ],
     claude: [
       claudeEntry("qiongli", stableCore.claude, QIONGLI_DESCRIPTION, stableVersion, BASE_TAGS),
       claudeEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [...BASE_TAGS, "pre-release"]),
