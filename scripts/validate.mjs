@@ -165,6 +165,10 @@ function isExternalRef(value) {
   return /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
 }
 
+function isArchiveArtifactRef(value) {
+  return /\.(?:tar\.gz|tgz|zip)(?:[?#]|$)/i.test(value);
+}
+
 function joinRel(...parts) {
   return normalizeRel(path.join(...parts));
 }
@@ -249,6 +253,9 @@ async function validateNeutralMarketplace() {
       const platform = requireObject(platformValue, `${label}.platforms.${platformName}`);
       requireString(platform.type, `${label}.platforms.${platformName}.type`);
       const platformPath = requirePortableReference(platform.path, `${label}.platforms.${platformName}.path`);
+      if (platformName === "codex" && platformPath && isArchiveArtifactRef(platformPath)) {
+        fail(`${label}.platforms.codex.path: Codex URL sources must point to Git-backed plugin sources, not archive artifacts`);
+      }
       if (platformPath && !isExternalRef(platformPath)) {
         existsRel(platformPath, `${label}.platforms.${platformName}.path`);
       }
@@ -324,7 +331,10 @@ async function validateCodexMarketplace() {
         pluginPath = requirePortableReference(sourceObject.path, `${label}.source.path`);
       }
       if (sourceKind === "git-subdir" || sourceKind === "url") {
-        requirePortableReference(sourceObject.url, `${label}.source.url`);
+        const sourceUrl = requirePortableReference(sourceObject.url, `${label}.source.url`);
+        if (sourceKind === "url" && sourceUrl && isArchiveArtifactRef(sourceUrl)) {
+          fail(`${label}.source.url: Codex URL sources must point to Git-backed plugin sources, not archive artifacts`);
+        }
       }
       if (sourceKind === "git-subdir") {
         requireString(sourceObject.ref, `${label}.source.ref`);

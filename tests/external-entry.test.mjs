@@ -107,9 +107,71 @@ test("validator accepts marketplace entries that point to external package sourc
 });
 
 test("validator accepts Codex marketplace entries that point to external URL sources", async () => {
-  const artifactUrl = "https://github.com/example/agent-packages/releases/download/v1.2.3/release-helper-codex-plugin-v1.2.3.tar.gz";
+  const sourceUrl = "https://github.com/example/agent-packages.git";
   const fixtureRoot = await createFixture(
     "skillsplace-valid-codex-url",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "External-only marketplace fixture.",
+      packages: [
+        {
+          name: "Release Helper",
+          slug: "release-helper",
+          version: "1.2.3",
+          description: "Release workflow package hosted outside this marketplace.",
+          manifest: "https://github.com/example/agent-packages/blob/main/plugins/release-helper/.codex-plugin/plugin.json",
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: sourceUrl,
+              marketplace: "./.agents/plugins/marketplace.json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "release-helper",
+          source: {
+            source: "url",
+            url: sourceUrl
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Productivity"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      description: "External-only marketplace fixture.",
+      version: "0.1.0",
+      plugins: []
+    }
+  );
+
+  const result = await execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]);
+
+  assert.match(result.stdout, /Marketplace validation passed/);
+});
+
+test("validator rejects Codex URL sources that point to archive artifacts", async () => {
+  const artifactUrl = "https://github.com/example/agent-packages/releases/download/v1.2.3/release-helper-codex-plugin-v1.2.3.tar.gz";
+  const fixtureRoot = await createFixture(
+    "skillsplace-invalid-codex-archive-url",
     {
       name: "skillsplace",
       displayName: "Skillsplace Marketplace",
@@ -163,9 +225,10 @@ test("validator accepts Codex marketplace entries that point to external URL sou
     }
   );
 
-  const result = await execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]);
-
-  assert.match(result.stdout, /Marketplace validation passed/);
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /Codex URL sources must point to Git-backed plugin sources, not archive artifacts/
+  );
 });
 
 test("validator uses the root passed with --root", async () => {

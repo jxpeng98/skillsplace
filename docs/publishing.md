@@ -41,6 +41,10 @@ Prefer Git-backed entries for this repository:
 }
 ```
 
+Do not use release archive URLs such as `.tar.gz`, `.tgz`, or `.zip` for Codex marketplace
+entries. Codex plugin installs currently expect Git-backed plugin sources, and the validator rejects
+archive artifact URLs for Codex entries.
+
 ## Claude Code
 
 Claude Code reads a plugin marketplace from `.claude-plugin/marketplace.json`. The marketplace requires `name`, `owner`, and `plugins`.
