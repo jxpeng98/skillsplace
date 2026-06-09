@@ -179,16 +179,16 @@ function bySlug(entries, slug) {
 test("selectLatestQiongliReleases separates latest stable and prerelease by semver", async () => {
   const { selectLatestQiongliReleases } = await import(scriptUrl);
   const selected = selectLatestQiongliReleases([
-    release("v0.22.0-beta.1", true, ["qiongli-next"]),
+    release("v1.1.0-beta.5", true, ["qiongli-next"], ["claude"]),
     release("v0.19.0", false, ["qiongli"]),
     { ...release("v9.0.0", false, ["qiongli"]), draft: true },
     release("v0.20.0", false, ["qiongli"], ["claude"]),
-    release("v0.21.0-beta.2", true, ["qiongli-next"]),
-    release("v0.23.0-beta.1", true, ["qiongli"])
+    release("v1.1.0-beta.6", true, ["qiongli-next"], ["claude"]),
+    release("v1.1.0-beta.7", true, ["qiongli"])
   ]);
 
   assert.equal(selected.stable.tag_name, "v0.20.0");
-  assert.equal(selected.prerelease.tag_name, "v0.22.0-beta.1");
+  assert.equal(selected.prerelease.tag_name, "v1.1.0-beta.6");
 });
 
 test("syncQiongliReleases rewrites qiongli catalogs from release assets", async () => {
@@ -199,7 +199,7 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
     root: fixtureRoot,
     releases: [
       release("v0.20.0", false, ["qiongli", "qiongli-core", "qiongli-political-economy"], ["claude"]),
-      release("v0.21.0-beta.1", true, ["qiongli-next"])
+      release("v1.1.0-beta.6", true, ["qiongli-next"])
     ]
   });
 
@@ -209,18 +209,19 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   const antigravity = await readJson(path.join(fixtureRoot, ".antigravity/catalog.json"));
 
   assert.equal(bySlug(marketplace.packages, "qiongli").version, "0.20.0");
-  assert.equal(bySlug(marketplace.packages, "qiongli-next").version, "0.21.0-beta.1");
+  assert.equal(bySlug(marketplace.packages, "qiongli-next").version, "1.1.0-beta.6");
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").manifest,
-    "https://github.com/jxpeng98/qiongli/releases/download/v0.21.0-beta.1/qiongli-next-codex-plugin-v0.21.0-beta.1.tar.gz"
+    "https://github.com/jxpeng98/qiongli/tree/v1.1.0-beta.6/packages/qiongli-next-plugin"
   );
-  assert.equal(
-    bySlug(marketplace.packages, "qiongli-next").platforms.codex.path,
-    "https://github.com/jxpeng98/qiongli/releases/download/v0.21.0-beta.1/qiongli-next-codex-plugin-v0.21.0-beta.1.tar.gz"
-  );
+  assert.deepEqual(bySlug(marketplace.packages, "qiongli-next").platforms.codex, {
+    type: "plugin",
+    path: "https://github.com/jxpeng98/qiongli/tree/v1.1.0-beta.6/packages/qiongli-next-plugin",
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+  });
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").platforms.claude.path,
-    "https://github.com/jxpeng98/qiongli/releases/download/v0.21.0-beta.1/qiongli-next-claude-plugin-v0.21.0-beta.1.tar.gz"
+    "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.6/qiongli-next-claude-plugin-v1.1.0-beta.6.tar.gz"
   );
   assert.equal(bySlug(marketplace.packages, "qiongli-core").version, "0.20.0");
   assert.equal(bySlug(marketplace.packages, "qiongli-political-economy").version, "0.20.0");
@@ -232,17 +233,18 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
     path: "./plugins/qiongli",
     ref: "v0.20.0"
   });
-  assert.equal(bySlug(codex.plugins, "qiongli-next").source.source, "url");
-  assert.equal(
-    bySlug(codex.plugins, "qiongli-next").source.url,
-    "https://github.com/jxpeng98/qiongli/releases/download/v0.21.0-beta.1/qiongli-next-codex-plugin-v0.21.0-beta.1.tar.gz"
-  );
+  assert.deepEqual(bySlug(codex.plugins, "qiongli-next").source, {
+    source: "git-subdir",
+    url: "https://github.com/jxpeng98/qiongli.git",
+    path: "./packages/qiongli-next-plugin",
+    ref: "v1.1.0-beta.6"
+  });
   assert.equal(bySlug(codex.plugins, "qiongli-core"), undefined);
   assert.equal(bySlug(marketplace.packages, "qiongli-core").platforms.codex, undefined);
-  assert.equal(bySlug(claude.plugins, "qiongli-next").version, "0.21.0-beta.1");
+  assert.equal(bySlug(claude.plugins, "qiongli-next").version, "1.1.0-beta.6");
   assert.equal(
     bySlug(claude.plugins, "qiongli-next").source.url,
-    "https://github.com/jxpeng98/qiongli/releases/download/v0.21.0-beta.1/qiongli-next-claude-plugin-v0.21.0-beta.1.tar.gz"
+    "https://github.com/jxpeng98/qiongli/releases/download/v1.1.0-beta.6/qiongli-next-claude-plugin-v1.1.0-beta.6.tar.gz"
   );
   assert.equal(bySlug(antigravity.plugins, "qiongli").source.ref, "v0.20.0");
 });

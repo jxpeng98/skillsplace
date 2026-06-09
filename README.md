@@ -7,7 +7,7 @@ The current marketplace entries are:
 | Package | Version | Source | Platforms | Description |
 | --- | --- | --- | --- | --- |
 | `qiongli` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Codex, Claude Code, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
-| `qiongli-next` | `1.1.0-beta.2` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.1.0-beta.2) | Codex, Claude Code | Pre-release Qiongli channel for testing the core package layout before it becomes the stable marketplace entry. |
+| `qiongli-next` | `1.1.0-beta.6` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.1.0-beta.6) | Codex, Claude Code | Pre-release Qiongli channel for testing the core package layout before it becomes the stable marketplace entry. |
 | `qiongli-core` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
 | `qiongli-economics` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
 | `qiongli-accounting` | `0.14.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.14.0) | Claude Code | Accounting-focused archival, disclosure, audit, and measurement workflow. |
@@ -77,8 +77,9 @@ Current Antigravity entries:
 
 - `productivity`, `dev-tools`, `writing-tools`, and `presentation-tools` are marked ready for the native plugin route.
 - `qiongli` is listed in the Antigravity catalog at stable tag `v0.14.0`, but native Antigravity plugin installation is marked pending until `jxpeng98/qiongli` adds `plugins/qiongli/plugin.json`.
-- The `qiongli-next` pre-release channel is listed for Codex and Claude Code through reviewed release
-  artifacts. Subject-specific Qiongli release packages remain Claude Code only.
+- The `qiongli-next` pre-release channel is listed for Codex through the upstream Git-backed
+  `packages/qiongli-next-plugin` directory and for Claude Code through reviewed release artifacts.
+  Subject-specific Qiongli release packages remain Claude Code only.
 
 See `docs/antigravity.md` for the exact plugin and Open VSX extension routes.
 
@@ -126,8 +127,9 @@ npm run validate
 ```
 
 The sync selects the latest non-prerelease Qiongli release for `qiongli` and the latest prerelease
-for `qiongli-next`, then rewrites the platform catalogs to concrete release artifacts. Review the
-resulting diff before publishing.
+for `qiongli-next`, then rewrites the platform catalogs to installable platform sources. Codex uses
+Git-backed plugin directories for `qiongli` and `qiongli-next`; Claude Code uses reviewed release
+artifacts for Qiongli packages. Review the resulting diff before publishing.
 
 GitHub Actions also runs `.github/workflows/sync-marketplace-sources.yml` on a daily schedule and via
 manual dispatch. It syncs both `jxpeng98/skills` package metadata and Qiongli release metadata, then
