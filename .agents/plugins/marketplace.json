@@ -9,8 +9,8 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "./plugins/qiongli",
-        "ref": "v0.14.0"
+        "path": "./packages/qiongli-plugin",
+        "ref": "v1.2.0"
       },
       "policy": {
         "installation": "AVAILABLE",

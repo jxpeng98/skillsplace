@@ -135,7 +135,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     slug: "qiongli",
     version: qiongliVersion,
     description: qiongliDescription,
-    manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
+    manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/${qiongliCodexPluginPath(qiongliVersion)}`,
     platforms: {
       codex: qiongliCodexPlatform(qiongliVersion),
       claude: {
@@ -145,7 +145,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
       },
       antigravity: {
         type: "plugin",
-        path: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/plugins/qiongli`,
+        path: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/${qiongliCodexPluginPath(qiongliVersion)}`,
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
       }
     }
@@ -178,7 +178,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     source: {
       source: "git-subdir",
       url: "https://github.com/jxpeng98/qiongli.git",
-      path: "plugins/qiongli",
+      path: qiongliCodexPluginPath(qiongliVersion),
       ref: `v${qiongliVersion}`
     },
     plugin: {

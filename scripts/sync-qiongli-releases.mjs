@@ -251,6 +251,10 @@ function marketplacePackage(slug, name, version, description, manifest, platform
   };
 }
 
+function qiongliCodexPluginPath(version) {
+  return parseSemver(version)?.major === 0 ? "plugins/qiongli" : "packages/qiongli-plugin";
+}
+
 function qiongliNextCodexPluginUrl(version) {
   return `${REPO}/tree/v${version}/${NEXT_CODEX_PLUGIN_PATH}`;
 }
@@ -278,13 +282,13 @@ function qiongliNextMarketplacePackage(version, claudeUrl) {
   };
 }
 
-function codexEntry(name, ref) {
+function codexEntry(name, ref, pluginPath) {
   return {
     name,
     source: {
       source: "git-subdir",
       url: REPO_GIT,
-      path: "./plugins/qiongli",
+      path: `./${pluginPath}`,
       ref
     },
     policy: {
@@ -356,7 +360,8 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
     };
   });
 
-  const stableCodexPath = `${REPO}/tree/v${stableVersion}/plugins/qiongli`;
+  const stableCodexPluginPath = qiongliCodexPluginPath(stableVersion);
+  const stableCodexPath = `${REPO}/tree/v${stableVersion}/${stableCodexPluginPath}`;
 
   return {
     stableVersion,
@@ -390,7 +395,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
         })
       )
     ],
-    codex: [codexEntry("qiongli", `v${stableVersion}`), qiongliNextCodexEntry(prereleaseVersion)],
+    codex: [codexEntry("qiongli", `v${stableVersion}`, stableCodexPluginPath), qiongliNextCodexEntry(prereleaseVersion)],
     claude: [
       claudeEntry("qiongli", stableCore.claude, QIONGLI_DESCRIPTION, stableVersion, BASE_TAGS),
       claudeEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [...BASE_TAGS, "pre-release"]),
@@ -405,7 +410,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
       source: {
         source: "git-subdir",
         url: `${REPO}.git`,
-        path: "plugins/qiongli",
+        path: stableCodexPluginPath,
         ref: `v${stableVersion}`
       },
       plugin: {

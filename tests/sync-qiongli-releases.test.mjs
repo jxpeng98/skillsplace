@@ -248,3 +248,27 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   );
   assert.equal(bySlug(antigravity.plugins, "qiongli").source.ref, "v0.20.0");
 });
+
+test("syncQiongliReleases uses the restructured stable Codex plugin path for 1.x releases", async () => {
+  const { syncQiongliReleases } = await import(scriptUrl);
+  const fixtureRoot = await createFixture();
+
+  await syncQiongliReleases({
+    root: fixtureRoot,
+    releases: [
+      release("v1.2.0", false, ["qiongli"], ["claude"]),
+      release("v1.1.0-beta.6", true, ["qiongli-next"])
+    ]
+  });
+
+  const marketplace = await readJson(path.join(fixtureRoot, "marketplace.json"));
+  const codex = await readJson(path.join(fixtureRoot, ".agents/plugins/marketplace.json"));
+  const antigravity = await readJson(path.join(fixtureRoot, ".antigravity/catalog.json"));
+
+  assert.equal(
+    bySlug(marketplace.packages, "qiongli").platforms.codex.path,
+    "https://github.com/jxpeng98/qiongli/tree/v1.2.0/packages/qiongli-plugin"
+  );
+  assert.equal(bySlug(codex.plugins, "qiongli").source.path, "./packages/qiongli-plugin");
+  assert.equal(bySlug(antigravity.plugins, "qiongli").source.path, "packages/qiongli-plugin");
+});
