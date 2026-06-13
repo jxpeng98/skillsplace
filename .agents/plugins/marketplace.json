@@ -10,7 +10,7 @@
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "./packages/qiongli-plugin",
-        "ref": "v1.2.1"
+        "ref": "v1.3.0"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -24,7 +24,7 @@
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "./packages/qiongli-next-plugin",
-        "ref": "v1.1.0-beta.7"
+        "ref": "v1.4.0-beta.1"
       },
       "policy": {
         "installation": "AVAILABLE",
