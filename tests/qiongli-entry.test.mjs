@@ -42,28 +42,30 @@ function releaseAsset(slug, platform, version) {
   );
 }
 
+function qiongliCodexArtifact(version) {
+  return releaseAsset("qiongli", "codex", version);
+}
+
 function qiongliCodexPluginPath(version) {
   return version.startsWith("0.") ? "plugins/qiongli" : "packages/qiongli-plugin";
 }
 
 function qiongliCodexPlatform(version) {
-  const pluginPath = qiongliCodexPluginPath(version);
   return {
     type: "plugin",
-    path: `https://github.com/jxpeng98/qiongli/tree/v${version}/${pluginPath}`,
+    path: qiongliCodexArtifact(version),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
   };
 }
 
-function qiongliNextCodexPluginPath() {
-  return "packages/qiongli-next-plugin";
+function qiongliNextCodexArtifact(version) {
+  return releaseAsset("qiongli-next", "codex", version);
 }
 
 function qiongliNextCodexPlatform(version) {
-  const pluginPath = qiongliNextCodexPluginPath();
   return {
     type: "plugin",
-    path: `https://github.com/jxpeng98/qiongli/tree/v${version}/${pluginPath}`,
+    path: qiongliNextCodexArtifact(version),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
   };
 }
@@ -72,10 +74,8 @@ function qiongliCodexEntry(name, version) {
   return {
     name,
     source: {
-      source: "git-subdir",
-      url: "https://github.com/jxpeng98/qiongli.git",
-      path: `./${qiongliCodexPluginPath(version)}`,
-      ref: `v${version}`
+      source: "url",
+      url: qiongliCodexArtifact(version)
     },
     policy: {
       installation: "AVAILABLE",
@@ -89,10 +89,8 @@ function qiongliNextCodexEntry(version) {
   return {
     name: "qiongli-next",
     source: {
-      source: "git-subdir",
-      url: "https://github.com/jxpeng98/qiongli.git",
-      path: `./${qiongliNextCodexPluginPath()}`,
-      ref: `v${version}`
+      source: "url",
+      url: qiongliNextCodexArtifact(version)
     },
     policy: {
       installation: "AVAILABLE",
@@ -135,7 +133,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     slug: "qiongli",
     version: qiongliVersion,
     description: qiongliDescription,
-    manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/${qiongliCodexPluginPath(qiongliVersion)}`,
+    manifest: qiongliCodexArtifact(qiongliVersion),
     platforms: {
       codex: qiongliCodexPlatform(qiongliVersion),
       claude: {
@@ -195,7 +193,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
   });
 });
 
-test("qiongli pre-release is exposed through an explicit Git-backed next channel", async () => {
+test("qiongli pre-release is exposed through an explicit release-archive next channel", async () => {
   const marketplace = await readJson("marketplace.json");
   const codexMarketplace = await readJson(".agents/plugins/marketplace.json");
   const claudeMarketplace = await readJson(".claude-plugin/marketplace.json");
@@ -208,7 +206,7 @@ test("qiongli pre-release is exposed through an explicit Git-backed next channel
     slug: "qiongli-next",
     version: qiongliPrereleaseVersion,
     description: qiongliNextDescription,
-    manifest: `https://github.com/jxpeng98/qiongli/tree/v${qiongliPrereleaseVersion}/${qiongliNextCodexPluginPath()}`,
+    manifest: qiongliNextCodexArtifact(qiongliPrereleaseVersion),
     platforms: {
       codex: qiongliNextCodexPlatform(qiongliPrereleaseVersion),
       claude: {

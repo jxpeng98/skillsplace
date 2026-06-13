@@ -168,7 +168,7 @@ test("validator accepts Codex marketplace entries that point to external URL sou
   assert.match(result.stdout, /Marketplace validation passed/);
 });
 
-test("validator rejects Codex URL sources that point to archive artifacts", async () => {
+test("validator rejects untrusted Codex URL sources that point to archive artifacts", async () => {
   const artifactUrl = "https://github.com/example/agent-packages/releases/download/v1.2.3/release-helper-codex-plugin-v1.2.3.tar.gz";
   const fixtureRoot = await createFixture(
     "skillsplace-invalid-codex-archive-url",
@@ -227,7 +227,71 @@ test("validator rejects Codex URL sources that point to archive artifacts", asyn
 
   await assert.rejects(
     execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
-    /Codex URL sources must point to Git-backed plugin sources, not archive artifacts/
+    /Codex archive URL sources must be trusted Qiongli release artifacts/
+  );
+});
+
+test("validator rejects Qiongli subject Codex archives without a trust rule", async () => {
+  const artifactUrl =
+    "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-core-codex-plugin-v1.3.0.tar.gz";
+  const fixtureRoot = await createFixture(
+    "skillsplace-invalid-qiongli-subject-codex-archive-url",
+    {
+      name: "skillsplace",
+      displayName: "Skillsplace Marketplace",
+      version: "0.1.0",
+      description: "External-only marketplace fixture.",
+      packages: [
+        {
+          name: "Qiongli Core",
+          slug: "qiongli-core",
+          version: "1.3.0",
+          description: "Qiongli subject package fixture.",
+          manifest: artifactUrl,
+          platforms: {
+            codex: {
+              type: "plugin",
+              path: artifactUrl,
+              marketplace: "./.agents/plugins/marketplace.json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      interface: {
+        displayName: "Skillsplace Marketplace"
+      },
+      plugins: [
+        {
+          name: "qiongli-core",
+          source: {
+            source: "url",
+            url: artifactUrl
+          },
+          policy: {
+            installation: "AVAILABLE",
+            authentication: "ON_INSTALL"
+          },
+          category: "Education"
+        }
+      ]
+    },
+    {
+      name: "skillsplace",
+      owner: {
+        name: "jxpeng98"
+      },
+      description: "External-only marketplace fixture.",
+      version: "0.1.0",
+      plugins: []
+    }
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
+    /Codex archive URL sources must be trusted Qiongli release artifacts/
   );
 });
 

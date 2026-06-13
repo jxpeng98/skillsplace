@@ -22,7 +22,8 @@ This repository is a marketplace host only. Do not add bundled skills, plugin so
 
 Codex reads a repository marketplace from `.agents/plugins/marketplace.json`.
 
-Prefer Git-backed entries for this repository:
+Prefer Git-backed entries for this repository when the upstream package stores the plugin source in a
+stable directory:
 
 ```json
 {
@@ -41,9 +42,10 @@ Prefer Git-backed entries for this repository:
 }
 ```
 
-Do not use release archive URLs such as `.tar.gz`, `.tgz`, or `.zip` for Codex marketplace
-entries. Codex plugin installs currently expect Git-backed plugin sources, and the validator rejects
-archive artifact URLs for Codex entries.
+Release archive URLs are allowed only for reviewed Qiongli Codex plugin artifacts published from
+`jxpeng98/qiongli`, such as `qiongli-codex-plugin-v1.3.0.tar.gz` or
+`qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz`. Other Codex archive URLs are rejected by the
+validator until the source has an explicit trust rule.
 
 ## Claude Code
 

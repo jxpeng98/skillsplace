@@ -1,0 +1,19 @@
+{
+  "name": "skillsplace",
+  "owner": {
+    "name": "jxpeng98"
+  },
+  "description": "Fixture marketplace.",
+  "version": "0.1.0",
+  "plugins": [
+    {
+      "name": "qiongli-next",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-claude-plugin-v1.4.0-beta.1.tar.gz"
+      },
+      "description": "Pre-release Qiongli channel.",
+      "version": "1.4.0-beta.1"
+    }
+  ]
+}
