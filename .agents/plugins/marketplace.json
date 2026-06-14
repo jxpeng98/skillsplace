@@ -20,7 +20,7 @@
       "name": "qiongli-next",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0-beta.1/qiongli-next-codex-plugin-v1.5.0-beta.1.tar.gz"
       },
       "policy": {
         "installation": "AVAILABLE",
