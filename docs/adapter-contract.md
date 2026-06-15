@@ -43,9 +43,10 @@ Each platform entry records how a consumer can find the package:
 ```
 
 Local paths inside `marketplace.json` are relative to the repository root. Prefer URLs or Git-backed
-Codex entries while this repository remains catalog-only. Codex release archive URLs are accepted only
-for explicitly trusted upstream artifacts, currently Qiongli Codex plugin archives published from
-`jxpeng98/qiongli`.
+Codex entries while this repository remains catalog-only. Codex archive URL sources are rejected
+because Codex installs plugin directories, not release tarballs. Packages whose source repository does
+not contain a complete installable plugin directory should publish a build-generated dist Git ref and
+use a `git-subdir` Codex entry pinned to that ref.
 
 ## Antigravity Adapter Entries
 

@@ -252,17 +252,33 @@ function qiongliCodexPluginPath(version) {
   return parseSemver(version)?.major === 0 ? "plugins/qiongli" : "packages/qiongli-plugin";
 }
 
-function qiongliNextMarketplacePackage(version, codexUrl, claudeUrl) {
+function qiongliCodexDistRef(version) {
+  return `codex/v${version}`;
+}
+
+function qiongliCodexDistPath(slug) {
+  return `plugins/${slug}`;
+}
+
+function qiongliCodexDistUrl(slug, version) {
+  return `${REPO}/tree/${qiongliCodexDistRef(version)}/${qiongliCodexDistPath(slug)}`;
+}
+
+function qiongliCodexManifestUrl(slug, version) {
+  return `${qiongliCodexDistUrl(slug, version)}/.codex-plugin/plugin.json`;
+}
+
+function qiongliNextMarketplacePackage(version, claudeUrl) {
   return {
     name: "Qiongli Next",
     slug: NEXT_SLUG,
     version,
     description: NEXT_DESCRIPTION,
-    manifest: codexUrl,
+    manifest: qiongliCodexManifestUrl(NEXT_SLUG, version),
     platforms: {
       codex: {
         type: "plugin",
-        path: codexUrl,
+        path: qiongliCodexDistUrl(NEXT_SLUG, version),
         marketplace: `${SKILLSPLACE}/.agents/plugins/marketplace.json`
       },
       claude: {
@@ -274,12 +290,14 @@ function qiongliNextMarketplacePackage(version, codexUrl, claudeUrl) {
   };
 }
 
-function codexArchiveEntry(name, url) {
+function codexDistEntry(name, version) {
   return {
     name,
     source: {
-      source: "url",
-      url
+      source: "git-subdir",
+      url: `${REPO}.git`,
+      path: `./${qiongliCodexDistPath(name)}`,
+      ref: qiongliCodexDistRef(version)
     },
     policy: {
       installation: "AVAILABLE",
@@ -337,31 +355,36 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
 
   const stableCodexPluginPath = qiongliCodexPluginPath(stableVersion);
   const stableCodexPath = `${REPO}/tree/v${stableVersion}/${stableCodexPluginPath}`;
-  const stableCodexUrl = stableCore.codex;
-  const prereleaseCodexUrl = prereleaseCore.codex;
 
   return {
     stableVersion,
     prereleaseVersion,
     marketplace: [
-      marketplacePackage("qiongli", "Qiongli", stableVersion, QIONGLI_DESCRIPTION, stableCodexUrl, {
-        codex: {
-          type: "plugin",
-          path: stableCodexUrl,
-          marketplace: `${SKILLSPLACE}/.agents/plugins/marketplace.json`
-        },
-        claude: {
-          type: "plugin",
-          path: stableCore.claude,
-          marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
-        },
-        antigravity: {
-          type: "plugin",
-          path: stableCodexPath,
-          marketplace: `${SKILLSPLACE}/.antigravity/catalog.json`
+      marketplacePackage(
+        "qiongli",
+        "Qiongli",
+        stableVersion,
+        QIONGLI_DESCRIPTION,
+        qiongliCodexManifestUrl("qiongli", stableVersion),
+        {
+          codex: {
+            type: "plugin",
+            path: qiongliCodexDistUrl("qiongli", stableVersion),
+            marketplace: `${SKILLSPLACE}/.agents/plugins/marketplace.json`
+          },
+          claude: {
+            type: "plugin",
+            path: stableCore.claude,
+            marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
+          },
+          antigravity: {
+            type: "plugin",
+            path: stableCodexPath,
+            marketplace: `${SKILLSPLACE}/.antigravity/catalog.json`
+          }
         }
-      }),
-      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCodexUrl, prereleaseCore.claude),
+      ),
+      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCore.claude),
       ...subjects.map((subject) =>
         marketplacePackage(subject.slug, subject.name, subject.version, subject.description, subject.claudeUrl, {
           claude: {
@@ -372,7 +395,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
         })
       )
     ],
-    codex: [codexArchiveEntry("qiongli", stableCodexUrl), codexArchiveEntry(NEXT_SLUG, prereleaseCodexUrl)],
+    codex: [codexDistEntry("qiongli", stableVersion), codexDistEntry(NEXT_SLUG, prereleaseVersion)],
     claude: [
       claudeEntry("qiongli", stableCore.claude, QIONGLI_DESCRIPTION, stableVersion, BASE_TAGS),
       claudeEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [...BASE_TAGS, "pre-release"]),

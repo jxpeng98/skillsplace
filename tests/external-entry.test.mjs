@@ -227,11 +227,11 @@ test("validator rejects untrusted Codex URL sources that point to archive artifa
 
   await assert.rejects(
     execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
-    /Codex archive URL sources must be trusted Qiongli release artifacts/
+    /Codex archive URL sources are not installable; use git-subdir dist refs/
   );
 });
 
-test("validator rejects Qiongli subject Codex archives without a trust rule", async () => {
+test("validator rejects Qiongli subject Codex archives", async () => {
   const artifactUrl =
     "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-core-codex-plugin-v1.3.0.tar.gz";
   const fixtureRoot = await createFixture(
@@ -291,7 +291,7 @@ test("validator rejects Qiongli subject Codex archives without a trust rule", as
 
   await assert.rejects(
     execFileAsync(process.execPath, [validateScript, "--root", fixtureRoot]),
-    /Codex archive URL sources must be trusted Qiongli release artifacts/
+    /Codex archive URL sources are not installable; use git-subdir dist refs/
   );
 });
 

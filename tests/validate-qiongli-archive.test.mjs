@@ -8,12 +8,13 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-test("validator accepts trusted Qiongli Codex release archive sources", async () => {
+test("validator rejects Qiongli Codex release archive sources", async () => {
   const fixtureRoot = path.join(root, "tests/fixtures/qiongli-archive-marketplace");
 
-  const result = await execFileAsync("node", ["scripts/validate.mjs", "--root", fixtureRoot], {
-    cwd: root
-  });
-
-  assert.match(result.stdout, /Marketplace validation passed/);
+  await assert.rejects(
+    execFileAsync("node", ["scripts/validate.mjs", "--root", fixtureRoot], {
+      cwd: root
+    }),
+    /Codex archive URL sources are not installable; use git-subdir dist refs/
+  );
 });

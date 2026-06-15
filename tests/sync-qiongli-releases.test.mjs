@@ -8,6 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const scriptPath = path.join(root, "scripts/sync-qiongli-releases.mjs");
 const scriptUrl = pathToFileURL(scriptPath).href;
+const qiongliRepo = "https://github.com/jxpeng98/qiongli";
+const qiongliGitUrl = "https://github.com/jxpeng98/qiongli.git";
 
 async function writeJson(filePath, value) {
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -176,6 +178,31 @@ function bySlug(entries, slug) {
   return entries.find((entry) => entry.slug === slug || entry.name === slug);
 }
 
+function codexDistRef(version) {
+  return `codex/v${version}`;
+}
+
+function codexDistPath(slug) {
+  return `plugins/${slug}`;
+}
+
+function codexDistUrl(slug, version) {
+  return `${qiongliRepo}/tree/${codexDistRef(version)}/${codexDistPath(slug)}`;
+}
+
+function codexDistManifest(slug, version) {
+  return `${codexDistUrl(slug, version)}/.codex-plugin/plugin.json`;
+}
+
+function codexDistSource(slug, version) {
+  return {
+    source: "git-subdir",
+    url: qiongliGitUrl,
+    path: `./${codexDistPath(slug)}`,
+    ref: codexDistRef(version)
+  };
+}
+
 test("selectLatestQiongliReleases separates latest stable and prerelease by semver", async () => {
   const { selectLatestQiongliReleases } = await import(scriptUrl);
   const selected = selectLatestQiongliReleases([
@@ -224,11 +251,11 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   assert.equal(bySlug(marketplace.packages, "qiongli-next").version, "1.4.0-beta.1");
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").manifest,
-    "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz"
+    codexDistManifest("qiongli-next", "1.4.0-beta.1")
   );
   assert.deepEqual(bySlug(marketplace.packages, "qiongli-next").platforms.codex, {
     type: "plugin",
-    path: "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz",
+    path: codexDistUrl("qiongli-next", "1.4.0-beta.1"),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
   });
   assert.equal(
@@ -239,14 +266,8 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   assert.equal(bySlug(marketplace.packages, "qiongli-political-economy").version, "1.3.0");
   assert.equal(bySlug(marketplace.packages, "dev-tools").version, "0.1.0");
 
-  assert.deepEqual(bySlug(codex.plugins, "qiongli").source, {
-    source: "url",
-    url: "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-codex-plugin-v1.3.0.tar.gz"
-  });
-  assert.deepEqual(bySlug(codex.plugins, "qiongli-next").source, {
-    source: "url",
-    url: "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz"
-  });
+  assert.deepEqual(bySlug(codex.plugins, "qiongli").source, codexDistSource("qiongli", "1.3.0"));
+  assert.deepEqual(bySlug(codex.plugins, "qiongli-next").source, codexDistSource("qiongli-next", "1.4.0-beta.1"));
   assert.equal(bySlug(codex.plugins, "qiongli-core"), undefined);
   assert.equal(bySlug(marketplace.packages, "qiongli-core").platforms.codex, undefined);
   assert.equal(bySlug(claude.plugins, "qiongli-next").version, "1.4.0-beta.1");
@@ -275,11 +296,8 @@ test("syncQiongliReleases keeps Antigravity on the stable source path for 1.x re
 
   assert.equal(
     bySlug(marketplace.packages, "qiongli").platforms.codex.path,
-    "https://github.com/jxpeng98/qiongli/releases/download/v1.2.0/qiongli-codex-plugin-v1.2.0.tar.gz"
+    codexDistUrl("qiongli", "1.2.0")
   );
-  assert.equal(
-    bySlug(codex.plugins, "qiongli").source.url,
-    "https://github.com/jxpeng98/qiongli/releases/download/v1.2.0/qiongli-codex-plugin-v1.2.0.tar.gz"
-  );
+  assert.deepEqual(bySlug(codex.plugins, "qiongli").source, codexDistSource("qiongli", "1.2.0"));
   assert.equal(bySlug(antigravity.plugins, "qiongli").source.path, "packages/qiongli-plugin");
 });

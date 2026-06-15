@@ -10,11 +10,11 @@
       "slug": "qiongli",
       "version": "1.3.0",
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-codex-plugin-v1.3.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.3.0/plugins/qiongli/.codex-plugin/plugin.json",
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-codex-plugin-v1.3.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.3.0/plugins/qiongli",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
         },
         "claude": {
@@ -34,11 +34,11 @@
       "slug": "qiongli-next",
       "version": "1.5.0-beta.1",
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0-beta.1/qiongli-next-codex-plugin-v1.5.0-beta.1.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.5.0-beta.1/plugins/qiongli-next/.codex-plugin/plugin.json",
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0-beta.1/qiongli-next-codex-plugin-v1.5.0-beta.1.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.5.0-beta.1/plugins/qiongli-next",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
         },
         "claude": {

@@ -7,8 +7,10 @@
     {
       "name": "qiongli",
       "source": {
-        "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.3.0/qiongli-codex-plugin-v1.3.0.tar.gz"
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "./plugins/qiongli",
+        "ref": "codex/v1.3.0"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -19,8 +21,10 @@
     {
       "name": "qiongli-next",
       "source": {
-        "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0-beta.1/qiongli-next-codex-plugin-v1.5.0-beta.1.tar.gz"
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "./plugins/qiongli-next",
+        "ref": "codex/v1.5.0-beta.1"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -42,10 +42,10 @@ stable directory:
 }
 ```
 
-Release archive URLs are allowed only for reviewed Qiongli Codex plugin artifacts published from
-`jxpeng98/qiongli`, such as `qiongli-codex-plugin-v1.3.0.tar.gz` or
-`qiongli-next-codex-plugin-v1.4.0-beta.1.tar.gz`. Other Codex archive URLs are rejected by the
-validator until the source has an explicit trust rule.
+Do not use release archive URLs for Codex entries. Codex expects an installable plugin directory, so
+packages whose source tree is not complete until build time should publish a build-generated dist Git
+ref and use a pinned `git-subdir` entry. Qiongli uses refs such as `codex/v1.3.0` with paths like
+`./plugins/qiongli` and `./plugins/qiongli-next`.
 
 ## Claude Code
 
