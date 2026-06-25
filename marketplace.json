@@ -8,23 +8,23 @@
     {
       "name": "Qiongli",
       "slug": "qiongli",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
-      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.5.0/plugins/qiongli/.codex-plugin/plugin.json",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.6.0/plugins/qiongli/.codex-plugin/plugin.json",
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.5.0/plugins/qiongli",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.6.0/plugins/qiongli",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
         },
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         },
         "antigravity": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/tree/v1.5.0/packages/qiongli-plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/v1.6.0/packages/qiongli-plugin",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.antigravity/catalog.json"
         }
       }
@@ -51,13 +51,13 @@
     {
       "name": "Qiongli Core",
       "slug": "qiongli-core",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "General-purpose Qiongli academic workflow across paper types and methods.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-core-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-core-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-core-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-core-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -65,13 +65,13 @@
     {
       "name": "Qiongli Economics",
       "slug": "qiongli-economics",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Economics-focused empirical, theory, and reproducibility workflow.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-economics-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-economics-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-economics-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-economics-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -79,13 +79,13 @@
     {
       "name": "Qiongli Accounting",
       "slug": "qiongli-accounting",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Accounting-focused archival, disclosure, audit, and measurement workflow.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-accounting-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-accounting-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-accounting-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-accounting-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -93,13 +93,13 @@
     {
       "name": "Qiongli Business",
       "slug": "qiongli-business",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Business-focused management, strategy, organization, marketing, and operations workflow for doctoral-level journal manuscripts.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-business-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-business-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-business-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-business-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -107,13 +107,13 @@
     {
       "name": "Qiongli Finance",
       "slug": "qiongli-finance",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Finance-focused corporate finance, asset pricing, market microstructure, and risk workflow for doctoral-level journal manuscripts.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-finance-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-finance-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-finance-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-finance-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -121,13 +121,13 @@
     {
       "name": "Qiongli Economics + Accounting",
       "slug": "qiongli-economics-accounting",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-economics-accounting-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-economics-accounting-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-economics-accounting-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-economics-accounting-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -135,13 +135,13 @@
     {
       "name": "Qiongli Political Economy",
       "slug": "qiongli-political-economy",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-political-economy-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-political-economy-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-political-economy-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-political-economy-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
@@ -149,13 +149,13 @@
     {
       "name": "Qiongli Geoeconomics",
       "slug": "qiongli-geoeconomics",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy.",
-      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-geoeconomics-claude-plugin-v1.5.0.tar.gz",
+      "manifest": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-geoeconomics-claude-plugin-v1.6.0.tar.gz",
       "platforms": {
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0/qiongli-geoeconomics-claude-plugin-v1.5.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.6.0/qiongli-geoeconomics-claude-plugin-v1.6.0.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
