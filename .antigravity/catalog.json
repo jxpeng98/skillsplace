@@ -6,13 +6,13 @@
   "plugins": [
     {
       "name": "qiongli",
-      "version": "1.10.0",
+      "version": "1.13.0",
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "packages/qiongli-plugin",
-        "ref": "v1.10.0"
+        "ref": "v1.13.0"
       },
       "plugin": {
         "status": "pending-native-manifest",
