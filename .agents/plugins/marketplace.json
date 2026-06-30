@@ -10,7 +10,7 @@
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "./plugins/qiongli",
-        "ref": "codex/v1.13.0"
+        "ref": "codex/v1.14.0"
       },
       "policy": {
         "installation": "AVAILABLE",
