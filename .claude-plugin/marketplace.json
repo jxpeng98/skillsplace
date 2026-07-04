@@ -31,10 +31,10 @@
       "name": "qiongli-next",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.5.0-beta.8/qiongli-next-claude-plugin-v1.5.0-beta.8.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.15.0-beta.1/qiongli-next-claude-plugin-v1.15.0-beta.1.tar.gz"
       },
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "version": "1.5.0-beta.8",
+      "version": "1.15.0-beta.1",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -249,6 +249,30 @@
       ]
     },
     {
+      "name": "faculty-tools",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "plugins/faculty-tools",
+        "ref": "main"
+      },
+      "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/skills",
+      "repository": "https://github.com/jxpeng98/skills",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
       "name": "presentation-tools",
       "source": {
         "source": "git-subdir",
@@ -302,8 +326,8 @@
         "path": "plugins/writing-tools",
         "ref": "main"
       },
-      "description": "Writing skills for clarity, tone, humanization, summarization, and reusable text transformation.",
-      "version": "0.1.1",
+      "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing support, summarization, and reusable text transformation.",
+      "version": "0.1.3",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -315,7 +339,8 @@
         "writing",
         "editing",
         "humanizer",
-        "summarization"
+        "summarization",
+        "university-writing"
       ]
     }
   ]

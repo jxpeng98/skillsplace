@@ -51,6 +51,150 @@
       ]
     },
     {
+      "name": "assignment-brief",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when creating or improving university assignment prompts, essay briefs, report instructions, submission requirements, grading criteria, rubrics, or student-facing task descriptions.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/assignment-brief",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/assignment-brief",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/assignment-brief",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
+      "name": "course-planner",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when planning university courses, weekly classes, seminars, tutorials, reading sessions, classroom activities, learning outcomes, or teaching schedules.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/course-planner",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/course-planner",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/course-planner",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
+      "name": "faculty-email",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when writing university faculty emails to students, colleagues, administrators, committees, supervisors, external partners, or teaching teams.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/faculty-email",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/faculty-email",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/faculty-email",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
+      "name": "feedback-writer",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when writing constructive feedback on student essays, reports, assignments, drafts, presentations, reflections, or project work.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/feedback-writer",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/feedback-writer",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/feedback-writer",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
+      "name": "meeting-synthesizer",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when summarizing university meetings, committee notes, department discussions, teaching-team meetings, action items, decisions, and follow-up emails.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/meeting-synthesizer",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/meeting-synthesizer",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/meeting-synthesizer",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
+      "name": "statement-drafter",
+      "package": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Use when drafting or improving teaching statements, service statements, grant-support text, award nominations, bios, annual review narratives, or faculty activity summaries.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/statement-drafter",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/faculty-tools/skills/statement-drafter",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/faculty-tools/skills/statement-drafter",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "faculty",
+        "teaching",
+        "university",
+        "students"
+      ]
+    },
+    {
       "name": "slidev-slides",
       "package": "presentation-tools",
       "version": "0.1.0",
@@ -168,8 +312,8 @@
     {
       "name": "humanizer",
       "package": "writing-tools",
-      "version": "0.1.1",
-      "description": "Use when the user wants text to sound more natural, human, conversational, warm, direct, less robotic, less generic, or closer to a specific authentic voice while preserving meaning and truthfulness.",
+      "version": "0.1.3",
+      "description": "Use when the user wants text to sound more natural, human, conversational, warm, direct, less robotic, less generic, or clearer for essays, reports, university writing, professional messages, or authentic voice while preserving meaning and truthfulness.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/humanizer",
@@ -186,13 +330,14 @@
         "writing",
         "editing",
         "humanizer",
-        "summarization"
+        "summarization",
+        "university-writing"
       ]
     },
     {
       "name": "rewrite-for-clarity",
       "package": "writing-tools",
-      "version": "0.1.1",
+      "version": "0.1.3",
       "description": "Use when the user wants text rewritten, edited, tightened, translated in tone, made more direct, made more professional, or adapted for a specific audience while preserving meaning.",
       "source": {
         "source": "github",
@@ -210,13 +355,14 @@
         "writing",
         "editing",
         "humanizer",
-        "summarization"
+        "summarization",
+        "university-writing"
       ]
     },
     {
       "name": "summarize-material",
       "package": "writing-tools",
-      "version": "0.1.1",
+      "version": "0.1.3",
       "description": "Use when the user provides notes, articles, transcripts, documents, meeting records, or long context and wants a concise summary, decision record, action list, or synthesis.",
       "source": {
         "source": "github",
@@ -234,7 +380,8 @@
         "writing",
         "editing",
         "humanizer",
-        "summarization"
+        "summarization",
+        "university-writing"
       ]
     }
   ]
