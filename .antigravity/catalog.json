@@ -49,6 +49,28 @@
       }
     },
     {
+      "name": "faculty-tools",
+      "version": "0.1.0",
+      "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/skills.git",
+        "path": "plugins/faculty-tools",
+        "ref": "main"
+      },
+      "plugin": {
+        "status": "ready",
+        "requiredRootFile": "plugin.json",
+        "workspaceInstallPath": ".agents/plugins/faculty-tools",
+        "globalInstallPath": "~/.gemini/config/plugins/faculty-tools"
+      },
+      "extension": {
+        "status": "not-published",
+        "registry": "open-vsx",
+        "extensionId": null
+      }
+    },
+    {
       "name": "presentation-tools",
       "version": "0.1.0",
       "description": "Presentation skills for creating engineering and project slides with Slidev.",
@@ -94,8 +116,8 @@
     },
     {
       "name": "writing-tools",
-      "version": "0.1.1",
-      "description": "Writing skills for clarity, tone, humanization, summarization, and reusable text transformation.",
+      "version": "0.1.3",
+      "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing support, summarization, and reusable text transformation.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/skills.git",
