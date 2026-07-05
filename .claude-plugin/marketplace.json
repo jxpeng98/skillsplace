@@ -31,10 +31,10 @@
       "name": "qiongli-next",
       "source": {
         "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.15.0-beta.1/qiongli-next-claude-plugin-v1.15.0-beta.1.tar.gz"
+        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.15.0-beta.2/qiongli-next-claude-plugin-v1.15.0-beta.2.tar.gz"
       },
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "version": "1.15.0-beta.1",
+      "version": "1.15.0-beta.2",
       "author": {
         "name": "Jiaxin Peng"
       },
