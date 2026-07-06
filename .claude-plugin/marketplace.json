@@ -9,8 +9,10 @@
     {
       "name": "qiongli",
       "source": {
-        "source": "url",
-        "url": "https://github.com/jxpeng98/qiongli/releases/download/v1.15.0/qiongli-claude-plugin-v1.15.0.tar.gz"
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli",
+        "ref": "codex/v1.15.0"
       },
       "description": "Academic paper workflows for planning, literature review, writing, compliance, submission, and research code.",
       "version": "1.15.0",

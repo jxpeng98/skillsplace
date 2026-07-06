@@ -203,6 +203,15 @@ function codexDistSource(slug, version) {
   };
 }
 
+function claudeDistSource(slug, version) {
+  return {
+    source: "git-subdir",
+    url: qiongliGitUrl,
+    path: codexDistPath(slug),
+    ref: codexDistRef(version)
+  };
+}
+
 test("selectLatestQiongliReleases separates latest stable and prerelease by semver", async () => {
   const { selectLatestQiongliReleases } = await import(scriptUrl);
   const selected = selectLatestQiongliReleases([
@@ -258,6 +267,7 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
     path: codexDistUrl("qiongli-next", "1.4.0-beta.1"),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
   });
+  assert.equal(bySlug(marketplace.packages, "qiongli").platforms.claude.path, codexDistUrl("qiongli", "1.3.0"));
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").platforms.claude.path,
     "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-claude-plugin-v1.4.0-beta.1.tar.gz"
@@ -270,6 +280,7 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   assert.deepEqual(bySlug(codex.plugins, "qiongli-next").source, codexDistSource("qiongli-next", "1.4.0-beta.1"));
   assert.equal(bySlug(codex.plugins, "qiongli-core"), undefined);
   assert.equal(bySlug(marketplace.packages, "qiongli-core").platforms.codex, undefined);
+  assert.deepEqual(bySlug(claude.plugins, "qiongli").source, claudeDistSource("qiongli", "1.3.0"));
   assert.equal(bySlug(claude.plugins, "qiongli-next").version, "1.4.0-beta.1");
   assert.equal(
     bySlug(claude.plugins, "qiongli-next").source.url,

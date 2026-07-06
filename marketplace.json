@@ -19,7 +19,7 @@
         },
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.15.0/qiongli-claude-plugin-v1.15.0.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.15.0/plugins/qiongli",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         },
         "antigravity": {

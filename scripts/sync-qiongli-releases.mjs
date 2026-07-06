@@ -307,7 +307,27 @@ function codexDistEntry(name, version) {
   };
 }
 
-function claudeEntry(name, url, description, version, tags) {
+function claudeDistEntry(name, version, description, tags) {
+  return {
+    name,
+    source: {
+      source: "git-subdir",
+      url: `${REPO}.git`,
+      path: qiongliCodexDistPath(name),
+      ref: qiongliCodexDistRef(version)
+    },
+    description,
+    version,
+    author: AUTHOR,
+    homepage: REPO,
+    repository: REPO,
+    license: LICENSE,
+    category: "education",
+    tags
+  };
+}
+
+function claudeArchiveEntry(name, url, description, version, tags) {
   return {
     name,
     source: {
@@ -374,7 +394,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
           },
           claude: {
             type: "plugin",
-            path: stableCore.claude,
+            path: qiongliCodexDistUrl("qiongli", stableVersion),
             marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
           },
           antigravity: {
@@ -397,10 +417,16 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
     ],
     codex: [codexDistEntry("qiongli", stableVersion), codexDistEntry(NEXT_SLUG, prereleaseVersion)],
     claude: [
-      claudeEntry("qiongli", stableCore.claude, QIONGLI_DESCRIPTION, stableVersion, BASE_TAGS),
-      claudeEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [...BASE_TAGS, "pre-release"]),
+      claudeDistEntry("qiongli", stableVersion, QIONGLI_DESCRIPTION, BASE_TAGS),
+      claudeArchiveEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [
+        ...BASE_TAGS,
+        "pre-release"
+      ]),
       ...subjects.map((subject) =>
-        claudeEntry(subject.slug, subject.claudeUrl, subject.description, subject.version, [...BASE_TAGS, "subject-package"])
+        claudeArchiveEntry(subject.slug, subject.claudeUrl, subject.description, subject.version, [
+          ...BASE_TAGS,
+          "subject-package"
+        ])
       )
     ],
     antigravity: {
