@@ -32,18 +32,18 @@
     {
       "name": "Qiongli Next",
       "slug": "qiongli-next",
-      "version": "1.17.0-beta.1",
+      "version": "1.17.0-beta.2",
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.17.0-beta.1/plugins/qiongli-next/.codex-plugin/plugin.json",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/v1.17.0-beta.2/plugins/qiongli-next/.codex-plugin/plugin.json",
       "platforms": {
         "codex": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.17.0-beta.1/plugins/qiongli-next",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.17.0-beta.2/plugins/qiongli-next",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
         },
         "claude": {
           "type": "plugin",
-          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.17.0-beta.1/qiongli-next-claude-plugin-v1.17.0-beta.1.tar.gz",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.17.0-beta.2/qiongli-next-claude-plugin-v1.17.0-beta.2.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         }
       }
