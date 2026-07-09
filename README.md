@@ -7,7 +7,7 @@ The current marketplace entries are:
 | Package | Version | Source | Platforms | Description |
 | --- | --- | --- | --- | --- |
 | `qiongli` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Codex, Claude Code, Claude Desktop, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
-| `qiongli-next` | `1.18.0-beta.1` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.18.0-beta.1) | Codex, Claude Code, Claude Desktop | Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry. |
+| `qiongli-next` | `1.18.0-beta.2` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v1.18.0-beta.2) | Codex, Claude Code, Claude Desktop | Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry. |
 | `qiongli-core` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
 | `qiongli-economics` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
 | `qiongli-accounting` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Accounting-focused archival, disclosure, audit, and measurement workflow. |
