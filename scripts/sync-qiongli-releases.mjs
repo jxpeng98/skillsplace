@@ -265,12 +265,20 @@ function qiongliCodexDistRef(version) {
   return `codex/v${version}`;
 }
 
+function qiongliClaudeDistRef(version) {
+  return `claude/v${version}`;
+}
+
 function qiongliCodexDistPath(slug) {
   return `plugins/${slug}`;
 }
 
 function qiongliCodexDistUrl(slug, version) {
   return `${REPO}/tree/${qiongliCodexDistRef(version)}/${qiongliCodexDistPath(slug)}`;
+}
+
+function qiongliClaudeDistUrl(slug, version) {
+  return `${REPO}/tree/${qiongliClaudeDistRef(version)}/${qiongliCodexDistPath(slug)}`;
 }
 
 function qiongliCodexManifestUrl(slug, version) {
@@ -285,7 +293,7 @@ function claudeDesktopPlatform(url) {
   };
 }
 
-function qiongliNextMarketplacePackage(version, claudeUrl, claudeDesktopUrl) {
+function qiongliNextMarketplacePackage(version, claudeDesktopUrl) {
   return {
     name: "Qiongli Next",
     slug: NEXT_SLUG,
@@ -300,7 +308,7 @@ function qiongliNextMarketplacePackage(version, claudeUrl, claudeDesktopUrl) {
       },
       claude: {
         type: "plugin",
-        path: claudeUrl,
+        path: qiongliClaudeDistUrl(NEXT_SLUG, version),
         marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
       },
       "claude-desktop": claudeDesktopPlatform(claudeDesktopUrl)
@@ -325,14 +333,15 @@ function codexDistEntry(name, version) {
   };
 }
 
-function claudeDistEntry(name, version, description, tags) {
+function claudeDistEntry(name, version, description, tags, { channel = "codex" } = {}) {
+  const ref = channel === "claude" ? qiongliClaudeDistRef(version) : qiongliCodexDistRef(version);
   return {
     name,
     source: {
       source: "git-subdir",
       url: `${REPO}.git`,
       path: qiongliCodexDistPath(name),
-      ref: qiongliCodexDistRef(version)
+      ref
     },
     description,
     version,
@@ -361,6 +370,65 @@ function claudeArchiveEntry(name, url, description, version, tags) {
     category: "education",
     tags
   };
+}
+
+function readmePlatformList(platforms) {
+  const labels = {
+    codex: "Codex",
+    claude: "Claude Code",
+    "claude-desktop": "Claude Desktop",
+    antigravity: "Antigravity",
+    hermes: "Hermes"
+  };
+  return ["codex", "claude", "claude-desktop", "antigravity", "hermes"]
+    .filter((platform) => platforms[platform])
+    .map((platform) => labels[platform])
+    .join(", ");
+}
+
+function qiongliReadmeSource(slug, version) {
+  const label = slug === NEXT_SLUG ? "`qiongli` pre-release" : "`qiongli` release";
+  return `[${label}](${REPO}/releases/tag/v${version})`;
+}
+
+function qiongliReadmeRow(entry) {
+  return [
+    `| \`${entry.slug}\``,
+    `\`${entry.version}\``,
+    qiongliReadmeSource(entry.slug, entry.version),
+    readmePlatformList(entry.platforms),
+    `${entry.description} |`
+  ].join(" | ");
+}
+
+async function updateReadmeQiongliRows(root, packages, dryRun) {
+  const readmePath = path.join(root, "README.md");
+  let text = "";
+  try {
+    text = await readFile(readmePath, "utf8");
+  } catch (error) {
+    if (error && error.code === "ENOENT") {
+      return;
+    }
+    throw error;
+  }
+
+  const lines = text.split("\n");
+  const start = lines.findIndex((line) => line.startsWith("| `qiongli` |"));
+  if (start === -1) {
+    return;
+  }
+
+  let end = start;
+  while (end < lines.length && lines[end].startsWith("| `qiongli")) {
+    end += 1;
+  }
+
+  const qiongliRows = packages.filter((entry) => isQiongliSlug(entry.slug)).map(qiongliReadmeRow);
+  const nextText = [...lines.slice(0, start), ...qiongliRows, ...lines.slice(end)].join("\n");
+  if (!dryRun && nextText !== text) {
+    await writeFile(readmePath, nextText);
+  }
 }
 
 function buildQiongliEntries(stableRelease, prereleaseRelease) {
@@ -431,7 +499,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
           }
         }
       ),
-      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCore.claude, prereleaseClaudeDesktopUrl),
+      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseClaudeDesktopUrl),
       ...subjects.map((subject) =>
         marketplacePackage(subject.slug, subject.name, subject.version, subject.description, subject.claudeUrl, {
           claude: {
@@ -445,10 +513,9 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
     codex: [codexDistEntry("qiongli", stableVersion), codexDistEntry(NEXT_SLUG, prereleaseVersion)],
     claude: [
       claudeDistEntry("qiongli", stableVersion, QIONGLI_DESCRIPTION, BASE_TAGS),
-      claudeArchiveEntry("qiongli-next", prereleaseCore.claude, NEXT_DESCRIPTION, prereleaseVersion, [
-        ...BASE_TAGS,
-        "pre-release"
-      ]),
+      claudeDistEntry("qiongli-next", prereleaseVersion, NEXT_DESCRIPTION, [...BASE_TAGS, "pre-release"], {
+        channel: "claude"
+      }),
       ...subjects.map((subject) =>
         claudeArchiveEntry(subject.slug, subject.claudeUrl, subject.description, subject.version, [
           ...BASE_TAGS,
@@ -520,6 +587,7 @@ export async function syncQiongliReleases({ root = DEFAULT_ROOT, releases, dryRu
   await writeJson(root, ".agents/plugins/marketplace.json", codex, dryRun);
   await writeJson(root, ".claude-plugin/marketplace.json", claude, dryRun);
   await writeJson(root, ".antigravity/catalog.json", antigravity, dryRun);
+  await updateReadmeQiongliRows(root, generated.marketplace, dryRun);
 
   return {
     stableVersion: generated.stableVersion,

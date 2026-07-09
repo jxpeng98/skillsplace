@@ -155,6 +155,24 @@ async function createFixture() {
     ]
   });
 
+  await writeFile(
+    path.join(fixtureRoot, "README.md"),
+    [
+      "# Skillsplace Marketplace",
+      "",
+      "The current marketplace entries are:",
+      "",
+      "| Package | Version | Source | Platforms | Description |",
+      "| --- | --- | --- | --- | --- |",
+      "| `qiongli` | `0.1.0` | [`qiongli` release](https://example.com/old) | Codex | Old Qiongli entry. |",
+      "| `qiongli-next` | `0.2.0-beta.1` | [`qiongli` pre-release](https://example.com/old-beta) | Codex | Old prerelease entry. |",
+      "| `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code | Developer tools. |",
+      "",
+      "Other docs stay untouched.",
+      ""
+    ].join("\n")
+  );
+
   return fixtureRoot;
 }
 
@@ -194,12 +212,20 @@ function codexDistRef(version) {
   return `codex/v${version}`;
 }
 
+function claudeDistRef(version) {
+  return `claude/v${version}`;
+}
+
 function codexDistPath(slug) {
   return `plugins/${slug}`;
 }
 
 function codexDistUrl(slug, version) {
   return `${qiongliRepo}/tree/${codexDistRef(version)}/${codexDistPath(slug)}`;
+}
+
+function claudeDistUrl(slug, version) {
+  return `${qiongliRepo}/tree/${claudeDistRef(version)}/${codexDistPath(slug)}`;
 }
 
 function codexDistManifest(slug, version) {
@@ -225,6 +251,15 @@ function claudeDistSource(slug, version) {
     url: qiongliGitUrl,
     path: codexDistPath(slug),
     ref: codexDistRef(version)
+  };
+}
+
+function nextClaudeDistSource(slug, version) {
+  return {
+    source: "git-subdir",
+    url: qiongliGitUrl,
+    path: codexDistPath(slug),
+    ref: claudeDistRef(version)
   };
 }
 
@@ -296,7 +331,7 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   assert.equal(bySlug(marketplace.packages, "qiongli").platforms.claude.path, codexDistUrl("qiongli", "1.3.0"));
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").platforms.claude.path,
-    "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-claude-plugin-v1.4.0-beta.1.tar.gz"
+    claudeDistUrl("qiongli-next", "1.4.0-beta.1")
   );
   assert.equal(bySlug(marketplace.packages, "qiongli-core").version, "1.3.0");
   assert.equal(bySlug(marketplace.packages, "qiongli-political-economy").version, "1.3.0");
@@ -308,11 +343,20 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
   assert.equal(bySlug(marketplace.packages, "qiongli-core").platforms.codex, undefined);
   assert.deepEqual(bySlug(claude.plugins, "qiongli").source, claudeDistSource("qiongli", "1.3.0"));
   assert.equal(bySlug(claude.plugins, "qiongli-next").version, "1.4.0-beta.1");
-  assert.equal(
-    bySlug(claude.plugins, "qiongli-next").source.url,
-    "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-claude-plugin-v1.4.0-beta.1.tar.gz"
-  );
+  assert.deepEqual(bySlug(claude.plugins, "qiongli-next").source, nextClaudeDistSource("qiongli-next", "1.4.0-beta.1"));
   assert.equal(bySlug(antigravity.plugins, "qiongli").source.ref, "v1.3.0");
+
+  const readme = await readFile(path.join(fixtureRoot, "README.md"), "utf8");
+  assert.match(
+    readme,
+    /\| `qiongli` \| `1\.3\.0` \| \[`qiongli` release\]\(https:\/\/github\.com\/jxpeng98\/qiongli\/releases\/tag\/v1\.3\.0\) \| Codex, Claude Code, Claude Desktop, Antigravity \| Academic paper workflows/
+  );
+  assert.match(
+    readme,
+    /\| `qiongli-next` \| `1\.4\.0-beta\.1` \| \[`qiongli` pre-release\]\(https:\/\/github\.com\/jxpeng98\/qiongli\/releases\/tag\/v1\.4\.0-beta\.1\) \| Codex, Claude Code, Claude Desktop \| Pre-release Qiongli channel/
+  );
+  assert.match(readme, /\| `qiongli-political-economy` \| `1\.3\.0` /);
+  assert.match(readme, /\| `dev-tools` \| `0\.1\.0` /);
 });
 
 test("syncQiongliReleases requires Claude Desktop plugin assets for Qiongli channels", async () => {

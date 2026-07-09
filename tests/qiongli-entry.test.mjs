@@ -63,12 +63,20 @@ function qiongliCodexDistRef(version) {
   return `codex/v${version}`;
 }
 
+function qiongliClaudeDistRef(version) {
+  return `claude/v${version}`;
+}
+
 function qiongliCodexDistPath(slug) {
   return `plugins/${slug}`;
 }
 
 function qiongliCodexDistUrl(slug, version) {
   return `${qiongliRepo}/tree/${qiongliCodexDistRef(version)}/${qiongliCodexDistPath(slug)}`;
+}
+
+function qiongliClaudeDistUrl(slug, version) {
+  return `${qiongliRepo}/tree/${qiongliClaudeDistRef(version)}/${qiongliCodexDistPath(slug)}`;
 }
 
 function qiongliCodexManifest(slug, version) {
@@ -95,6 +103,14 @@ function qiongliClaudePlatform(slug, version) {
   return {
     type: "plugin",
     path: qiongliCodexDistUrl(slug, version),
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+  };
+}
+
+function qiongliNextClaudePlatform(version) {
+  return {
+    type: "plugin",
+    path: qiongliClaudeDistUrl("qiongli-next", version),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
   };
 }
@@ -143,6 +159,28 @@ function qiongliClaudeEntry(name, version, description, tags) {
     license: "MIT",
     category: "education",
     tags
+  };
+}
+
+function qiongliNextClaudeEntry(version) {
+  return {
+    name: "qiongli-next",
+    source: {
+      source: "git-subdir",
+      url: qiongliGitUrl,
+      path: qiongliCodexDistPath("qiongli-next"),
+      ref: qiongliClaudeDistRef(version)
+    },
+    description: qiongliNextDescription,
+    version,
+    author: {
+      name: "Jiaxin Peng"
+    },
+    homepage: "https://github.com/jxpeng98/qiongli",
+    repository: "https://github.com/jxpeng98/qiongli",
+    license: "MIT",
+    category: "education",
+    tags: ["research", "academic-writing", "literature-review", "pre-release"]
   };
 }
 
@@ -259,11 +297,7 @@ test("qiongli pre-release is exposed through a dist-ref next channel", async () 
     manifest: qiongliCodexManifest("qiongli-next", qiongliPrereleaseVersion),
     platforms: {
       codex: qiongliNextCodexPlatform(qiongliPrereleaseVersion),
-      claude: {
-        type: "plugin",
-        path: releaseAsset("qiongli-next", "claude", qiongliPrereleaseVersion),
-        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
-      },
+      claude: qiongliNextClaudePlatform(qiongliPrereleaseVersion),
       "claude-desktop": {
         type: "plugin",
         path: desktopPluginAsset("qiongli-next", qiongliPrereleaseVersion),
@@ -273,23 +307,7 @@ test("qiongli pre-release is exposed through a dist-ref next channel", async () 
   });
 
   assert.deepEqual(bySlug(codexMarketplace.plugins, "qiongli-next"), qiongliNextCodexEntry(qiongliPrereleaseVersion));
-  assert.deepEqual(bySlug(claudeMarketplace.plugins, "qiongli-next"), {
-    name: "qiongli-next",
-    source: {
-      source: "url",
-      url: releaseAsset("qiongli-next", "claude", qiongliPrereleaseVersion)
-    },
-    description: qiongliNextDescription,
-    version: qiongliPrereleaseVersion,
-    author: {
-      name: "Jiaxin Peng"
-    },
-    homepage: "https://github.com/jxpeng98/qiongli",
-    repository: "https://github.com/jxpeng98/qiongli",
-    license: "MIT",
-    category: "education",
-    tags: ["research", "academic-writing", "literature-review", "pre-release"]
-  });
+  assert.deepEqual(bySlug(claudeMarketplace.plugins, "qiongli-next"), qiongliNextClaudeEntry(qiongliPrereleaseVersion));
 });
 
 test("qiongli subject packages are listed as Claude release artifact installs", async () => {
