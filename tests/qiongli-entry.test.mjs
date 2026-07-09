@@ -51,6 +51,10 @@ function releaseAsset(slug, platform, version) {
   );
 }
 
+function desktopPluginAsset(slug, version) {
+  return `${qiongliRepo}/releases/download/v${version}/${slug}-claude-desktop-plugin-v${version}.zip`;
+}
+
 function qiongliCodexPluginPath(version) {
   return version.startsWith("0.") ? "plugins/qiongli" : "packages/qiongli-plugin";
 }
@@ -92,6 +96,14 @@ function qiongliClaudePlatform(slug, version) {
     type: "plugin",
     path: qiongliCodexDistUrl(slug, version),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+  };
+}
+
+function qiongliClaudeDesktopPlatform(slug, version) {
+  return {
+    type: "plugin",
+    path: desktopPluginAsset(slug, version),
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
   };
 }
 
@@ -188,6 +200,7 @@ test("qiongli remains listed as an external marketplace package", async () => {
     platforms: {
       codex: qiongliCodexPlatform(qiongliVersion),
       claude: qiongliClaudePlatform("qiongli", qiongliVersion),
+      "claude-desktop": qiongliClaudeDesktopPlatform("qiongli", qiongliVersion),
       antigravity: {
         type: "plugin",
         path: `https://github.com/jxpeng98/qiongli/tree/v${qiongliVersion}/${qiongliCodexPluginPath(qiongliVersion)}`,
@@ -250,6 +263,11 @@ test("qiongli pre-release is exposed through a dist-ref next channel", async () 
         type: "plugin",
         path: releaseAsset("qiongli-next", "claude", qiongliPrereleaseVersion),
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+      },
+      "claude-desktop": {
+        type: "plugin",
+        path: desktopPluginAsset("qiongli-next", qiongliPrereleaseVersion),
+        marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
       }
     }
   });

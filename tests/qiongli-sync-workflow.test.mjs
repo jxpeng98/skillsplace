@@ -29,9 +29,14 @@ test("external marketplace sync workflow updates all managed sources through one
   assert.match(workflow, /run: npm run sync:skills -- --source-root \.\.\/skills --target-root \./);
   assert.match(workflow, /run: npm run sync:qiongli\b/);
   assert.match(workflow, /run: npm run validate\b/);
+  assert.match(workflow, /id: sync-summary/);
+  assert.match(workflow, /run: node scripts\/summarize-marketplace-sync\.mjs/);
   assert.match(workflow, /uses: peter-evans\/create-pull-request@v6/);
   assert.match(workflow, /path: skillsplace/);
   assert.match(workflow, /branch: chore\/sync-marketplace-sources/);
+  assert.match(workflow, /title: \$\{\{ steps\.sync-summary\.outputs\.pr_title \}\}/);
+  assert.match(workflow, /commit-message: \$\{\{ steps\.sync-summary\.outputs\.commit_message \}\}/);
+  assert.match(workflow, /body: \$\{\{ steps\.sync-summary\.outputs\.pr_body \}\}/);
 });
 
 test("external marketplace sync workflow enables auto-merge after opening a pull request", async () => {

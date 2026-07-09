@@ -158,19 +158,31 @@ async function createFixture() {
   return fixtureRoot;
 }
 
-function release(tagName, prerelease, assetSlugs, platforms = ["codex", "claude"]) {
+function release(
+  tagName,
+  prerelease,
+  assetSlugs,
+  platforms = ["codex", "claude"],
+  desktopSlugs = assetSlugs.filter((slug) => slug === "qiongli" || slug === "qiongli-next")
+) {
   const version = tagName.replace(/^v/, "");
   return {
     tag_name: tagName,
     draft: false,
     prerelease,
     published_at: "2026-06-01T00:00:00Z",
-    assets: assetSlugs.flatMap((slug) =>
-      platforms.map((platform) => ({
-        name: `${slug}-${platform}-plugin-v${version}.tar.gz`,
-        browser_download_url: `https://github.com/jxpeng98/qiongli/releases/download/${tagName}/${slug}-${platform}-plugin-v${version}.tar.gz`
+    assets: [
+      ...assetSlugs.flatMap((slug) =>
+        platforms.map((platform) => ({
+          name: `${slug}-${platform}-plugin-v${version}.tar.gz`,
+          browser_download_url: `https://github.com/jxpeng98/qiongli/releases/download/${tagName}/${slug}-${platform}-plugin-v${version}.tar.gz`
+        }))
+      ),
+      ...desktopSlugs.map((slug) => ({
+        name: `${slug}-claude-desktop-plugin-v${version}.zip`,
+        browser_download_url: desktopPluginAsset(slug, version)
       }))
-    )
+    ]
   };
 }
 
@@ -192,6 +204,10 @@ function codexDistUrl(slug, version) {
 
 function codexDistManifest(slug, version) {
   return `${codexDistUrl(slug, version)}/.codex-plugin/plugin.json`;
+}
+
+function desktopPluginAsset(slug, version) {
+  return `${qiongliRepo}/releases/download/v${version}/${slug}-claude-desktop-plugin-v${version}.zip`;
 }
 
 function codexDistSource(slug, version) {
@@ -267,6 +283,16 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
     path: codexDistUrl("qiongli-next", "1.4.0-beta.1"),
     marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
   });
+  assert.deepEqual(bySlug(marketplace.packages, "qiongli").platforms["claude-desktop"], {
+    type: "plugin",
+    path: desktopPluginAsset("qiongli", "1.3.0"),
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
+  });
+  assert.deepEqual(bySlug(marketplace.packages, "qiongli-next").platforms["claude-desktop"], {
+    type: "plugin",
+    path: desktopPluginAsset("qiongli-next", "1.4.0-beta.1"),
+    marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
+  });
   assert.equal(bySlug(marketplace.packages, "qiongli").platforms.claude.path, codexDistUrl("qiongli", "1.3.0"));
   assert.equal(
     bySlug(marketplace.packages, "qiongli-next").platforms.claude.path,
@@ -287,6 +313,33 @@ test("syncQiongliReleases rewrites qiongli catalogs from release assets", async 
     "https://github.com/jxpeng98/qiongli/releases/download/v1.4.0-beta.1/qiongli-next-claude-plugin-v1.4.0-beta.1.tar.gz"
   );
   assert.equal(bySlug(antigravity.plugins, "qiongli").source.ref, "v1.3.0");
+});
+
+test("syncQiongliReleases requires Claude Desktop plugin assets for Qiongli channels", async () => {
+  const { syncQiongliReleases } = await import(scriptUrl);
+  const fixtureRoot = await createFixture();
+
+  await assert.rejects(
+    syncQiongliReleases({
+      root: fixtureRoot,
+      releases: [
+        release("v1.3.0", false, ["qiongli"], ["codex", "claude"], []),
+        release("v1.4.0-beta.1", true, ["qiongli-next"])
+      ]
+    }),
+    /v1\.3\.0 is missing the qiongli Claude Desktop plugin asset/
+  );
+
+  await assert.rejects(
+    syncQiongliReleases({
+      root: fixtureRoot,
+      releases: [
+        release("v1.3.0", false, ["qiongli"]),
+        release("v1.4.0-beta.1", true, ["qiongli-next"], ["codex", "claude"], [])
+      ]
+    }),
+    /v1\.4\.0-beta\.1 is missing the qiongli-next Claude Desktop plugin asset/
+  );
 });
 
 test("syncQiongliReleases keeps Antigravity on the stable source path for 1.x releases", async () => {

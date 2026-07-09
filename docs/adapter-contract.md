@@ -8,6 +8,7 @@ The platform-neutral catalog is intentionally small. It should be easy for anoth
 
 - Codex: `.agents/plugins/marketplace.json`
 - Claude Code: `.claude-plugin/marketplace.json`
+- Claude Desktop: `marketplace.json` `platforms.claude-desktop`
 - Antigravity: `.antigravity/catalog.json`
 - Hermes: `.hermes/marketplace.json`
 
@@ -47,6 +48,10 @@ Codex entries while this repository remains catalog-only. Codex archive URL sour
 because Codex installs plugin directories, not release tarballs. Packages whose source repository does
 not contain a complete installable plugin directory should publish a build-generated dist Git ref and
 use a `git-subdir` Codex entry pinned to that ref.
+
+Claude Desktop entries use `platforms.claude-desktop` in `marketplace.json` and should point to a
+reviewed direct plugin ZIP. Do not replace `.claude-plugin/marketplace.json` entries with Desktop ZIPs;
+that file remains the Claude Code plugin marketplace.
 
 ## Antigravity Adapter Entries
 

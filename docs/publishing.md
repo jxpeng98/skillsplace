@@ -12,8 +12,9 @@ This repository is a marketplace host only. Do not add bundled skills, plugin so
 2. Add the package summary to the top-level `marketplace.json`.
 3. Add a Codex entry to `.agents/plugins/marketplace.json` when the package should appear in Codex.
 4. Add a Claude Code entry to `.claude-plugin/marketplace.json` when the package should appear in Claude Code.
-5. Add an Antigravity entry to `.antigravity/catalog.json` when the package should advertise Antigravity plugin or extension routes.
-6. Add a Hermes entry to `.hermes/marketplace.json` when the package exposes installable external `SKILL.md` directories.
+5. Add a `platforms.claude-desktop` entry in `marketplace.json` when the package should expose a Claude Desktop direct plugin ZIP.
+6. Add an Antigravity entry to `.antigravity/catalog.json` when the package should advertise Antigravity plugin or extension routes.
+7. Add a Hermes entry to `.hermes/marketplace.json` when the package exposes installable external `SKILL.md` directories.
 7. Point entries at reviewed external sources, such as a GitHub repo, Git URL, git subdirectory, or pinned release channel.
 8. Run `npm run validate`.
 9. Review every linked external package for secrets, unexpected commands, shell side effects, and unclear install instructions.
@@ -70,6 +71,8 @@ Do not add `.claude/skills/<name>/SKILL.md` or local plugin source trees here wh
 ## Other Platforms
 
 Use `marketplace.json` as the stable adapter contract. Add a new platform key under `platforms` instead of changing existing Codex or Claude entries.
+
+Claude Desktop direct plugin installs use `platforms.claude-desktop` with `type: "plugin"` and a reviewed release ZIP URL. Keep this separate from `.claude-plugin/marketplace.json`, which is reserved for Claude Code plugin marketplace entries.
 
 ## Hermes
 

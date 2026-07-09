@@ -129,11 +129,14 @@ npm run validate
 The sync selects the latest non-prerelease Qiongli release for `qiongli` and the latest prerelease
 for `qiongli-next`, then rewrites the platform catalogs to installable platform sources. Codex uses
 build-generated `codex/v<version>` dist refs containing complete plugin directories, while Claude
-Code uses reviewed release artifacts. Review the resulting diff before publishing.
+Code uses reviewed release artifacts. Claude Desktop direct plugin ZIPs are exposed from the
+platform-neutral catalog as `claude-desktop` entries. Review the resulting diff before publishing.
 
 GitHub Actions also runs `.github/workflows/sync-marketplace-sources.yml` on a daily schedule and via
 manual dispatch. It syncs both `jxpeng98/skills` package metadata and Qiongli release metadata, then
-validates the marketplace and opens a pull request instead of pushing directly to `main`.
+validates the marketplace and opens a pull request instead of pushing directly to `main`. The workflow
+summarizes `marketplace.json` version changes so generated commits use bump-style subjects such as
+`chore: bump qiongli-next to 1.18.0-beta.1` when a package version changes.
 
 Use the local checkout while editing:
 
@@ -149,6 +152,7 @@ Skillsplace keeps catalog layers separate:
 - `marketplace.json`: platform-neutral catalog for humans, tooling, and future adapters.
 - `.agents/plugins/marketplace.json`: Codex-native plugin marketplace.
 - `.claude-plugin/marketplace.json`: Claude Code-native plugin marketplace.
+- Claude Desktop: `marketplace.json` `platforms.claude-desktop` direct plugin ZIP entries.
 - `.antigravity/catalog.json`: Antigravity adapter catalog for plugin and Open VSX extension routes.
 - `.hermes/marketplace.json`: Hermes adapter catalog for GitHub skill identifiers.
 

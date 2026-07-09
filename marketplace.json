@@ -22,6 +22,11 @@
           "path": "https://github.com/jxpeng98/qiongli/tree/codex/v1.17.0/plugins/qiongli",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
         },
+        "claude-desktop": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.17.0/qiongli-claude-desktop-plugin-v1.17.0.zip",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
+        },
         "antigravity": {
           "type": "plugin",
           "path": "https://github.com/jxpeng98/qiongli/tree/v1.17.0/packages/qiongli-plugin",
@@ -45,6 +50,11 @@
           "type": "plugin",
           "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.18.0-beta.1/qiongli-next-claude-plugin-v1.18.0-beta.1.tar.gz",
           "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        },
+        "claude-desktop": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/releases/download/v1.18.0-beta.1/qiongli-next-claude-desktop-plugin-v1.18.0-beta.1.zip",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
         }
       }
     },

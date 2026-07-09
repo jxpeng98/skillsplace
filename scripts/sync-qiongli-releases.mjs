@@ -152,6 +152,15 @@ function hasPluginAsset(release, slug, platform) {
   return names.has(`${slug}-${platform}-plugin-v${version}.tar.gz`);
 }
 
+function releaseAssetUrl(release, assetName) {
+  return (release.assets ?? []).find((asset) => asset.name === assetName)?.browser_download_url ?? "";
+}
+
+function claudeDesktopPluginUrl(release, slug) {
+  const version = stripTag(release.tag_name ?? "");
+  return releaseAssetUrl(release, `${slug}-claude-desktop-plugin-v${version}.zip`);
+}
+
 export function selectLatestQiongliReleases(releases) {
   const candidates = releases.filter(
     (release) =>
@@ -268,7 +277,15 @@ function qiongliCodexManifestUrl(slug, version) {
   return `${qiongliCodexDistUrl(slug, version)}/.codex-plugin/plugin.json`;
 }
 
-function qiongliNextMarketplacePackage(version, claudeUrl) {
+function claudeDesktopPlatform(url) {
+  return {
+    type: "plugin",
+    path: url,
+    marketplace: `${SKILLSPLACE}/marketplace.json`
+  };
+}
+
+function qiongliNextMarketplacePackage(version, claudeUrl, claudeDesktopUrl) {
   return {
     name: "Qiongli Next",
     slug: NEXT_SLUG,
@@ -285,7 +302,8 @@ function qiongliNextMarketplacePackage(version, claudeUrl) {
         type: "plugin",
         path: claudeUrl,
         marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
-      }
+      },
+      "claude-desktop": claudeDesktopPlatform(claudeDesktopUrl)
     }
   };
 }
@@ -349,16 +367,24 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
   const stableVersion = stripTag(stableRelease.tag_name);
   const stableAssets = releaseAssetsBySlug(stableRelease);
   const stableCore = stableAssets.get("qiongli");
+  const stableClaudeDesktopUrl = claudeDesktopPluginUrl(stableRelease, "qiongli");
   const prereleaseVersion = stripTag(prereleaseRelease.tag_name);
   const prereleaseCore = releaseAssetsBySlug(prereleaseRelease).get(NEXT_SLUG);
+  const prereleaseClaudeDesktopUrl = claudeDesktopPluginUrl(prereleaseRelease, NEXT_SLUG);
 
   if (!stableCore?.claude || !stableCore?.codex) {
     throw new Error(`${stableRelease.tag_name} is missing the qiongli Codex or Claude plugin asset`);
+  }
+  if (!stableClaudeDesktopUrl) {
+    throw new Error(`${stableRelease.tag_name} is missing the qiongli Claude Desktop plugin asset`);
   }
   if (!prereleaseCore?.claude || !prereleaseCore?.codex) {
     throw new Error(
       `${prereleaseRelease.tag_name} is missing the qiongli-next pre-release Codex or Claude plugin asset`
     );
+  }
+  if (!prereleaseClaudeDesktopUrl) {
+    throw new Error(`${prereleaseRelease.tag_name} is missing the qiongli-next Claude Desktop plugin asset`);
   }
 
   const subjects = orderedSubjectSlugs(stableAssets).map((slug) => {
@@ -397,6 +423,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
             path: qiongliCodexDistUrl("qiongli", stableVersion),
             marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
           },
+          "claude-desktop": claudeDesktopPlatform(stableClaudeDesktopUrl),
           antigravity: {
             type: "plugin",
             path: stableCodexPath,
@@ -404,7 +431,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
           }
         }
       ),
-      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCore.claude),
+      qiongliNextMarketplacePackage(prereleaseVersion, prereleaseCore.claude, prereleaseClaudeDesktopUrl),
       ...subjects.map((subject) =>
         marketplacePackage(subject.slug, subject.name, subject.version, subject.description, subject.claudeUrl, {
           claude: {
