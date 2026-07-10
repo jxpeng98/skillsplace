@@ -35,10 +35,10 @@
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "plugins/qiongli-next",
-        "ref": "claude/v1.18.0-beta.2"
+        "ref": "claude/v1.18.0-beta.3"
       },
       "description": "Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry.",
-      "version": "1.18.0-beta.2",
+      "version": "1.18.0-beta.3",
       "author": {
         "name": "Jiaxin Peng"
       },
