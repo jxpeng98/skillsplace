@@ -238,7 +238,7 @@
         "ref": "main"
       },
       "description": "Developer skills for repository boundaries, validation, and release readiness.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -261,7 +261,7 @@
         "ref": "main"
       },
       "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -284,8 +284,8 @@
         "path": "plugins/presentation-tools",
         "ref": "main"
       },
-      "description": "Presentation skills for creating engineering and project slides with Slidev.",
-      "version": "0.1.0",
+      "description": "Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks.",
+      "version": "0.2.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -296,6 +296,10 @@
       "tags": [
         "presentations",
         "slidev",
+        "pptx",
+        "powerpoint",
+        "latex",
+        "beamer",
         "slides"
       ]
     },
@@ -308,7 +312,7 @@
         "ref": "main"
       },
       "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -330,8 +334,8 @@
         "path": "plugins/writing-tools",
         "ref": "main"
       },
-      "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing support, summarization, and reusable text transformation.",
-      "version": "0.1.3",
+      "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization.",
+      "version": "0.2.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -343,6 +347,8 @@
         "writing",
         "editing",
         "humanizer",
+        "academic-writing",
+        "writing-coach",
         "summarization",
         "university-writing"
       ]

@@ -7,8 +7,8 @@
     {
       "name": "release-readiness",
       "package": "dev-tools",
-      "version": "0.1.0",
-      "description": "Use when preparing a skill, plugin, repository change, or marketplace update for release, publication, installation testing, or handoff to reviewers.",
+      "version": "0.2.0",
+      "description": "Assess a skill, plugin, repository change, or marketplace update for release, publication, installation testing, or reviewer handoff using fresh validation evidence. Trigger for readiness checks and release gates; report blockers without publishing, tagging, or pushing unless explicitly asked.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/dev-tools/skills/release-readiness",
@@ -30,8 +30,8 @@
     {
       "name": "repo-boundary-review",
       "package": "dev-tools",
-      "version": "0.1.0",
-      "description": "Use when changes touch a skills repository, plugin layout, marketplace integration, repository boundaries, installable skill packaging, or files that may belong in a separate marketplace catalog.",
+      "version": "0.2.0",
+      "description": "Review changed files for correct placement across a skills repository, plugin directories, draft areas, generated mirrors, and a separate marketplace catalog. Trigger for repository-boundary, packaging, or marketplace-layout questions; report findings without moving files unless asked.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/dev-tools/skills/repo-boundary-review",
@@ -53,8 +53,8 @@
     {
       "name": "assignment-brief",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when creating or improving university assignment prompts, essay briefs, report instructions, submission requirements, grading criteria, rubrics, or student-facing task descriptions.",
+      "version": "0.2.0",
+      "description": "Create or improve university assignment prompts, essay and report briefs, submission requirements, grading criteria, rubrics, and student-facing task descriptions. Trigger for assessment design or brief revision; preserve supplied course policy and mark missing policy decisions instead of inventing them.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/assignment-brief",
@@ -77,8 +77,8 @@
     {
       "name": "course-planner",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when planning university courses, weekly classes, seminars, tutorials, reading sessions, classroom activities, learning outcomes, or teaching schedules.",
+      "version": "0.2.0",
+      "description": "Plan university courses, weekly classes, seminars, tutorials, reading sessions, classroom activities, learning outcomes, and teaching schedules. Trigger for course or session design; preserve supplied syllabus constraints and flag unknown institutional requirements rather than guessing.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/course-planner",
@@ -101,8 +101,8 @@
     {
       "name": "faculty-email",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when writing university faculty emails to students, colleagues, administrators, committees, supervisors, external partners, or teaching teams.",
+      "version": "0.2.0",
+      "description": "Draft university faculty emails to students, colleagues, administrators, committees, supervisors, external partners, and teaching teams, with tone and action matched to the relationship and stakes. Trigger for email drafting or revision; do not invent policy exceptions, authority, or confidential facts.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/faculty-email",
@@ -125,8 +125,8 @@
     {
       "name": "feedback-writer",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when writing constructive feedback on student essays, reports, assignments, drafts, presentations, reflections, or project work.",
+      "version": "0.2.0",
+      "description": "Write evidence-based, constructive feedback on student essays, reports, assignments, drafts, presentations, reflections, and project work, tied to the prompt or rubric when available. Trigger for formative or summative feedback; do not invent grades, evidence, or student characteristics.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/feedback-writer",
@@ -149,8 +149,8 @@
     {
       "name": "meeting-synthesizer",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when summarizing university meetings, committee notes, department discussions, teaching-team meetings, action items, decisions, and follow-up emails.",
+      "version": "0.2.0",
+      "description": "Synthesize university meetings, committee notes, department discussions, and teaching-team records into confirmed decisions, action items, risks, open questions, and optional follow-up messages. Trigger for minutes or decision logs; preserve uncertainty and do not invent consensus, owners, or dates.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/meeting-synthesizer",
@@ -173,8 +173,8 @@
     {
       "name": "statement-drafter",
       "package": "faculty-tools",
-      "version": "0.1.0",
-      "description": "Use when drafting or improving teaching statements, service statements, grant-support text, award nominations, bios, annual review narratives, or faculty activity summaries.",
+      "version": "0.2.0",
+      "description": "Draft or improve teaching and service statements, grant-support text, award nominations, bios, annual-review narratives, and faculty activity summaries from verifiable evidence. Trigger for professional faculty narratives; expose evidence gaps instead of inventing achievements, impact, or endorsement.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/statement-drafter",
@@ -195,10 +195,37 @@
       ]
     },
     {
+      "name": "presentation-tool",
+      "package": "presentation-tools",
+      "version": "0.2.0",
+      "description": "Route, create, edit, review, convert, or export presentations across Slidev, PowerPoint/PPTX, LaTeX Beamer, Marp, Quarto, PDF, or multiple deliverables. Trigger when format is undecided, PPTX/Beamer/template fidelity matters, or deck QA is required; use slidev-slides directly only when Slidev is already fixed.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/presentation-tools/skills/presentation-tool",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/presentation-tools/skills/presentation-tool",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/presentation-tools/skills/presentation-tool",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "presentations",
+        "slidev",
+        "pptx",
+        "powerpoint",
+        "latex",
+        "beamer",
+        "slides"
+      ]
+    },
+    {
       "name": "slidev-slides",
       "package": "presentation-tools",
-      "version": "0.1.0",
-      "description": "Use when the user wants to create, edit, review, present, build, or export slides with Slidev; asks for a Markdown-based deck; or needs engineering, product, architecture, demo, project-review, or technical-talk slides.",
+      "version": "0.2.0",
+      "description": "Create, edit, review, present, build, or export Markdown-based Slidev decks for engineering, product, architecture, demos, project reviews, and technical talks. Trigger when Slidev is the chosen format; use presentation-tool first when PPTX, Beamer, Marp, Quarto, or the target format is still undecided.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/presentation-tools/skills/slidev-slides",
@@ -214,14 +241,18 @@
       "tags": [
         "presentations",
         "slidev",
+        "pptx",
+        "powerpoint",
+        "latex",
+        "beamer",
         "slides"
       ]
     },
     {
       "name": "commit-message",
       "package": "productivity",
-      "version": "0.1.0",
-      "description": "Use when the user asks for a Git commit message, wants staged or unstaged changes summarized into a Conventional Commit, or needs commit scope and type chosen from a diff.",
+      "version": "0.2.0",
+      "description": "Generate evidence-grounded Conventional Commit messages from staged or unstaged Git diffs, including type, optional scope, breaking-change footers, and split-commit advice. Trigger for commit-message drafting or commit type/scope selection; do not create the commit unless explicitly asked.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/productivity/skills/commit-message",
@@ -243,8 +274,8 @@
     {
       "name": "decide-between-options",
       "package": "productivity",
-      "version": "0.1.0",
-      "description": "Use when the user has multiple approaches, tools, architectures, designs, vendors, workflows, or plans and needs a recommendation with explicit tradeoffs, assumptions, and decision criteria.",
+      "version": "0.2.0",
+      "description": "Compare competing approaches, tools, architectures, designs, vendors, workflows, or plans and recommend one using explicit criteria, evidence, tradeoffs, assumptions, and reversal conditions. Trigger when the user needs a decision rather than a neutral list of options.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/productivity/skills/decide-between-options",
@@ -266,8 +297,8 @@
     {
       "name": "grill-me",
       "package": "productivity",
-      "version": "0.1.0",
-      "description": "Use when the user wants to stress-test a plan, design, argument, product idea, discovery direction, or implementation strategy; asks to be grilled; or needs assumptions, tradeoffs, risks, and missing decisions exposed before committing.",
+      "version": "0.2.0",
+      "description": "Stress-test a plan, design, argument, product idea, discovery direction, or implementation strategy through focused decision questions with recommended answers. Trigger when the user asks to be grilled or wants assumptions, risks, tradeoffs, and missing decisions exposed before committing.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/productivity/skills/grill-me",
@@ -289,8 +320,8 @@
     {
       "name": "pr-description",
       "package": "productivity",
-      "version": "0.1.0",
-      "description": "Use when the user asks for a pull request description, merge request description, release note draft, reviewer instructions, or a structured summary of code changes for review.",
+      "version": "0.2.0",
+      "description": "Draft reviewer-ready pull request or merge request descriptions, release-note summaries, and review instructions from actual diffs, commits, linked issues, and validation evidence. Trigger for PR/MR write-ups; do not invent tests, impact, screenshots, or issue links.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/productivity/skills/pr-description",
@@ -312,8 +343,8 @@
     {
       "name": "humanizer",
       "package": "writing-tools",
-      "version": "0.1.3",
-      "description": "Use when the user wants text to sound more natural, human, conversational, warm, direct, less robotic, less generic, or clearer for essays, reports, university writing, professional messages, or authentic voice while preserving meaning and truthfulness.",
+      "version": "0.2.0",
+      "description": "Humanize and polish user-authored essays, reports, university writing, professional messages, and general prose while preserving facts, meaning, and authentic voice. Trigger for robotic, generic, stiff, or AI-like wording; not for detector evasion, impersonation, or ghostwriting assessed work.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/humanizer",
@@ -330,6 +361,8 @@
         "writing",
         "editing",
         "humanizer",
+        "academic-writing",
+        "writing-coach",
         "summarization",
         "university-writing"
       ]
@@ -337,8 +370,8 @@
     {
       "name": "rewrite-for-clarity",
       "package": "writing-tools",
-      "version": "0.1.3",
-      "description": "Use when the user wants text rewritten, edited, tightened, translated in tone, made more direct, made more professional, or adapted for a specific audience while preserving meaning.",
+      "version": "0.2.0",
+      "description": "Rewrite, edit, tighten, or adapt supplied text for clarity, directness, professionalism, tone, channel, or audience while preserving meaning, facts, commitments, and level of force. Trigger for a cleaner version of existing prose; do not add unsupported claims or silently change intent.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/rewrite-for-clarity",
@@ -355,6 +388,8 @@
         "writing",
         "editing",
         "humanizer",
+        "academic-writing",
+        "writing-coach",
         "summarization",
         "university-writing"
       ]
@@ -362,8 +397,8 @@
     {
       "name": "summarize-material",
       "package": "writing-tools",
-      "version": "0.1.3",
-      "description": "Use when the user provides notes, articles, transcripts, documents, meeting records, or long context and wants a concise summary, decision record, action list, or synthesis.",
+      "version": "0.2.0",
+      "description": "Summarize notes, articles, transcripts, documents, meeting records, or long context into a concise brief, decision record, action list, or cross-source synthesis. Trigger when the user needs compression grounded only in supplied material; preserve uncertainty, contradictions, attribution, dates, and owners.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/summarize-material",
@@ -380,6 +415,8 @@
         "writing",
         "editing",
         "humanizer",
+        "academic-writing",
+        "writing-coach",
         "summarization",
         "university-writing"
       ]
