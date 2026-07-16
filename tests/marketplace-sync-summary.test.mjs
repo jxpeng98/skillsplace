@@ -40,12 +40,13 @@ test("summarizeMarketplaceSync formats a single package bump as the commit subje
   const summary = summarizeMarketplaceSync({
     before: marketplace([pkg("qiongli-next", "1.17.0-beta.2")]),
     after: marketplace([pkg("qiongli-next", "1.18.0-beta.1")]),
-    changedFiles: ["marketplace.json"]
+    changedFiles: ["marketplace.json", "README.md"]
   });
 
   assert.equal(summary.commitMessage, "chore: bump qiongli-next to 1.18.0-beta.1");
   assert.equal(summary.prTitle, "chore: bump qiongli-next to 1.18.0-beta.1");
   assert.match(summary.prBody, /qiongli-next: `1\.17\.0-beta\.2` -> `1\.18\.0-beta\.1`/);
+  assert.match(summary.prBody, /README\.md/);
   assert.match(summary.stepSummary, /Version Updates/);
 });
 

@@ -9,6 +9,7 @@
     "test": "node --test",
     "sync:qiongli": "node scripts/sync-qiongli-releases.mjs",
     "sync:skills": "node scripts/sync-skills-repo.mjs --source-root ../skills --target-root .",
+    "sync:readme": "node scripts/sync-marketplace-readme.mjs",
     "validate": "node scripts/validate.mjs && node --test"
   },
   "engines": {

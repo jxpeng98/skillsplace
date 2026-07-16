@@ -170,7 +170,8 @@ async function readChangedFiles() {
     ".agents/plugins/marketplace.json",
     ".claude-plugin/marketplace.json",
     ".antigravity/catalog.json",
-    ".hermes/marketplace.json"
+    ".hermes/marketplace.json",
+    "README.md"
   ]);
   return stdout
     .split("\n")

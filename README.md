@@ -16,10 +16,11 @@ The current marketplace entries are:
 | `qiongli-economics-accounting` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Cross-disciplinary economics and accounting workflow for archival, causal, and reporting-setting research. |
 | `qiongli-political-economy` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Political economy workflow for institutions, mechanisms, distribution, and comparative political-economic analysis. |
 | `qiongli-geoeconomics` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Geoeconomics workflow for statecraft, sanctions, supply chains, strategic competition, and global political economy. |
-| `productivity` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Productivity skills for planning, critique, decisions, commits, and pull requests. |
-| `dev-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Developer skills for repository boundaries, validation, and release readiness. |
-| `writing-tools` | `0.1.1` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Writing skills for clarity, tone, humanization, summarization, and reusable text transformation. |
-| `presentation-tools` | `0.1.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Presentation skills for creating engineering and project slides with Slidev. |
+| `dev-tools` | `0.2.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Developer skills for repository boundaries, validation, and release readiness. |
+| `faculty-tools` | `0.2.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing. |
+| `presentation-tools` | `0.2.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks. |
+| `productivity` | `0.2.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Productivity skills for planning, critique, decisions, commits, and pull requests. |
+| `writing-tools` | `0.2.0` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex, Claude Code, Antigravity, Hermes | Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization. |
 
 This repository does not vendor plugin source code, skills, hooks, MCP servers, or executable package artifacts. It only points supported platforms to reviewed external sources.
 
@@ -134,8 +135,9 @@ build-generated `codex/v<version>` dist refs containing Codex plugin directories
 `qiongli-next` Claude plugin catalog uses a separate `claude/v<version>` dist ref containing the
 Claude plugin layout, while subject packages continue to use reviewed release artifacts. Claude
 Desktop direct plugin ZIPs are exposed from the platform-neutral catalog as `claude-desktop`
-entries. The sync also refreshes the Qiongli rows in this README. Review the resulting diff before
-publishing.
+entries. Both source syncs rebuild the full marketplace table in this README from `marketplace.json`,
+so package additions, removals, versions, platforms, and descriptions stay aligned. Review the
+resulting diff before publishing.
 
 GitHub Actions also runs `.github/workflows/sync-marketplace-sources.yml` on a daily schedule and via
 manual dispatch. It syncs both `jxpeng98/skills` package metadata and Qiongli release metadata, then

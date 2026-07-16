@@ -5,6 +5,7 @@ import path from "node:path";
 import process from "node:process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
+import { syncMarketplaceReadme } from "./sync-marketplace-readme.mjs";
 
 const SKILLS_REPO = "https://github.com/jxpeng98/skills";
 const SKILLS_REPO_GIT = `${SKILLS_REPO}.git`;
@@ -338,6 +339,7 @@ async function syncCatalogs(root, plugins) {
   await writeJson(path.join(root, CATALOGS.claude), claude);
   await writeJson(path.join(root, CATALOGS.antigravity), antigravity);
   await writeJson(path.join(root, CATALOGS.hermes), hermes);
+  await syncMarketplaceReadme({ root, marketplace });
 }
 
 async function validateMergedCatalogFiles(catalogs) {

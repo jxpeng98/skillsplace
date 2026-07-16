@@ -50,6 +50,19 @@ async function createSkillsplaceFixture(name) {
             path: "https://github.com/jxpeng98/qiongli/tree/main/plugins/qiongli"
           }
         }
+      },
+      {
+        name: "Productivity",
+        slug: "productivity",
+        version: "0.0.1",
+        description: "Old productivity metadata.",
+        manifest: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/.codex-plugin/plugin.json",
+        platforms: {
+          codex: {
+            type: "plugin",
+            path: "https://github.com/jxpeng98/skills/tree/main/plugins/productivity"
+          }
+        }
       }
     ]
   });
@@ -113,6 +126,22 @@ async function createSkillsplaceFixture(name) {
     description: "Fixture Hermes catalog.",
     skills: []
   });
+  await writeFile(
+    path.join(fixtureRoot, "README.md"),
+    [
+      "# Skillsplace Marketplace",
+      "",
+      "The current marketplace entries are:",
+      "",
+      "| Package | Version | Source | Platforms | Description |",
+      "| --- | --- | --- | --- | --- |",
+      "| `qiongli` | `0.13.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v0.13.0) | Codex, Claude Code | Academic paper workflows. |",
+      "| `productivity` | `0.0.1` | [`jxpeng98/skills`](https://github.com/jxpeng98/skills) | Codex | Old productivity metadata. |",
+      "",
+      "Other docs stay untouched.",
+      ""
+    ].join("\n")
+  );
 
   return fixtureRoot;
 }
@@ -205,6 +234,7 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
   const claude = await readJson(path.join(targetRoot, ".claude-plugin/marketplace.json"));
   const antigravity = await readJson(path.join(targetRoot, ".antigravity/catalog.json"));
   const hermes = await readJson(path.join(targetRoot, ".hermes/marketplace.json"));
+  const readme = await readFile(path.join(targetRoot, "README.md"), "utf8");
 
   assert.equal(bySlug(marketplace.packages, "qiongli").name, "Qiongli");
   assert.deepEqual(bySlug(marketplace.packages, "productivity"), {
@@ -314,6 +344,12 @@ test("sync inserts skills repo plugins into every requested catalog", async () =
     },
     tags: ["productivity", "planning", "review"]
   });
+  assert.match(
+    readme,
+    /\| `productivity` \| `0\.1\.0` \| \[`jxpeng98\/skills`\]\(https:\/\/github\.com\/jxpeng98\/skills\) \| Codex, Claude Code, Antigravity, Hermes \| Productivity skills/
+  );
+  assert.doesNotMatch(readme, /`productivity` \| `0\.0\.1`|Old productivity metadata/);
+  assert.match(readme, /Other docs stay untouched\./);
 
   const validateResult = await execFileAsync(process.execPath, [validateScript, "--root", targetRoot]);
   assert.match(validateResult.stdout, /Marketplace validation passed/);
