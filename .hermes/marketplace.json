@@ -53,7 +53,7 @@
     {
       "name": "assignment-brief",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Create or improve university assignment briefs, prompts, submission requirements, grading criteria, and rubrics from supplied course policy. Use for assessment design; never invent dates, weights, penalties, or AI rules.",
       "source": {
         "source": "github",
@@ -77,7 +77,7 @@
     {
       "name": "course-planner",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Plan university courses, classes, seminars, tutorials, reading sessions, outcomes, activities, and schedules from supplied curriculum constraints. Use for teaching plans, not assignment grading or research workflows.",
       "source": {
         "source": "github",
@@ -101,7 +101,7 @@
     {
       "name": "faculty-email",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Draft or revise university emails to students, colleagues, administrators, committees, supervisors, partners, or teaching teams from supplied context. Use for send-ready drafts; never send or invent policy, approval, or commitments.",
       "source": {
         "source": "github",
@@ -125,7 +125,7 @@
     {
       "name": "feedback-writer",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Write constructive, evidence-based feedback on student essays, reports, assignments, drafts, presentations, reflections, or projects from the actual work and rubric. Use for feedback, not unsupported grading or student profiling.",
       "source": {
         "source": "github",
@@ -149,7 +149,7 @@
     {
       "name": "meeting-synthesizer",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Synthesize university meeting, committee, department, or teaching-team notes when decisions, owners, due dates, risks, or confirmation status matter. Use summarize-material for general non-meeting sources.",
       "source": {
         "source": "github",
@@ -173,7 +173,7 @@
     {
       "name": "statement-drafter",
       "package": "faculty-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Draft or improve teaching and service statements, grant-support text, nominations, bios, annual reviews, or faculty summaries from verified evidence. Expose evidence gaps instead of inventing achievements or endorsement.",
       "source": {
         "source": "github",
@@ -343,7 +343,7 @@
     {
       "name": "humanizer",
       "package": "writing-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Polish user-authored writing when natural voice, specificity, or robotic phrasing is the problem. Preserve facts and authorship; use rewrite-for-clarity for direct clarity or tone edits, never for detector evasion.",
       "source": {
         "source": "github",
@@ -370,7 +370,7 @@
     {
       "name": "rewrite-for-clarity",
       "package": "writing-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Rewrite, tighten, or adapt supplied text for clarity, tone, channel, or audience while preserving meaning, facts, and commitments. Use humanizer when authentic voice or robotic style is the main problem.",
       "source": {
         "source": "github",
@@ -397,7 +397,7 @@
     {
       "name": "summarize-material",
       "package": "writing-tools",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Summarize notes, articles, transcripts, documents, or long context into a brief, decision record, action list, or synthesis. Use meeting-synthesizer for university meetings where decisions, owners, or dates matter.",
       "source": {
         "source": "github",
