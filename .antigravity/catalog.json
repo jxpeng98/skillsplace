@@ -28,8 +28,8 @@
     },
     {
       "name": "dev-tools",
-      "version": "0.3.0",
-      "description": "Developer skills for repository boundaries, validation, and release readiness.",
+      "version": "0.6.1",
+      "description": "Developer skills for debugging, change review, Rust-to-Windows cross-builds, repository boundaries, and release readiness.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/jxpeng98/skills.git",
@@ -50,7 +50,7 @@
     },
     {
       "name": "faculty-tools",
-      "version": "0.4.0",
+      "version": "0.6.1",
       "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
       "source": {
         "source": "git-subdir",
@@ -72,7 +72,7 @@
     },
     {
       "name": "presentation-tools",
-      "version": "0.3.0",
+      "version": "0.6.1",
       "description": "Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks.",
       "source": {
         "source": "git-subdir",
@@ -94,7 +94,7 @@
     },
     {
       "name": "productivity",
-      "version": "0.3.0",
+      "version": "0.6.1",
       "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
       "source": {
         "source": "git-subdir",
@@ -116,7 +116,7 @@
     },
     {
       "name": "writing-tools",
-      "version": "0.4.0",
+      "version": "0.6.1",
       "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization.",
       "source": {
         "source": "git-subdir",
