@@ -238,7 +238,7 @@
         "ref": "main"
       },
       "description": "Developer skills for debugging, change review, Rust-to-Windows cross-builds, repository boundaries, and release readiness.",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -265,7 +265,7 @@
         "ref": "main"
       },
       "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -289,7 +289,7 @@
         "ref": "main"
       },
       "description": "Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks.",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -316,7 +316,7 @@
         "ref": "main"
       },
       "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -339,7 +339,7 @@
         "ref": "main"
       },
       "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization.",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "author": {
         "name": "Jiaxin Peng"
       },
