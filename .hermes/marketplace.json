@@ -7,7 +7,7 @@
     {
       "name": "change-review",
       "package": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Review a branch, pull request, commit range, or working-tree diff for request fidelity and behavior, regression, compatibility, and maintainability risks. Return findings only; use repo-boundary-review for file ownership and placement.",
       "source": {
         "source": "github",
@@ -34,7 +34,7 @@
     {
       "name": "release-readiness",
       "package": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Verify release readiness for skill, plugin, repository, or marketplace changes using fresh validation and packaging evidence. Use for readiness gates; never tag, push, publish, or count unrun checks as passed.",
       "source": {
         "source": "github",
@@ -61,7 +61,7 @@
     {
       "name": "repo-boundary-review",
       "package": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Review changed files for ownership and placement across canonical skill sources, plugin roots, generated mirrors, drafts, and marketplace catalogs. Use for findings, not file moves or release approval.",
       "source": {
         "source": "github",
@@ -88,7 +88,7 @@
     {
       "name": "rust-windows-cross-build",
       "package": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Cross-build Rust applications on Apple Silicon macOS for Windows x64 MSVC, then validate the artifacts in a Parallels Windows 11 Arm guest. Use for this build-and-test loop; not as proof of native x64 hardware behavior.",
       "source": {
         "source": "github",
@@ -115,7 +115,7 @@
     {
       "name": "systematic-debugging",
       "package": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Diagnose bugs, failing tests, build failures, unexpected behavior, or performance regressions with reproducible evidence and a root-cause fix. Use for diagnosis or repair; use change-review for review-only requests.",
       "source": {
         "source": "github",
@@ -142,7 +142,7 @@
     {
       "name": "assignment-brief",
       "package": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Create or improve university assignment briefs, prompts, submission requirements, grading criteria, and rubrics from supplied course policy. Use for assessment design; never invent dates, weights, penalties, or AI rules.",
       "source": {
         "source": "github",
@@ -166,7 +166,7 @@
     {
       "name": "course-planner",
       "package": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Plan university courses, classes, seminars, tutorials, reading sessions, outcomes, activities, and schedules from supplied curriculum constraints. Use for teaching plans, not assignment grading or research workflows.",
       "source": {
         "source": "github",
@@ -190,7 +190,7 @@
     {
       "name": "faculty-email",
       "package": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Draft or revise university emails to students, colleagues, administrators, committees, supervisors, partners, or teaching teams from supplied context. Use for send-ready drafts; never send or invent policy, approval, or commitments.",
       "source": {
         "source": "github",
@@ -214,7 +214,7 @@
     {
       "name": "feedback-writer",
       "package": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Write constructive, evidence-based feedback on student essays, reports, assignments, drafts, presentations, reflections, or projects from the actual work and rubric. Use for feedback, not unsupported grading or student profiling.",
       "source": {
         "source": "github",
@@ -238,8 +238,8 @@
     {
       "name": "meeting-synthesizer",
       "package": "faculty-tools",
-      "version": "0.6.3",
-      "description": "Synthesize university meeting, committee, department, or teaching-team notes when decisions, owners, due dates, risks, or confirmation status matter. Use summarize-material for general non-meeting sources.",
+      "version": "0.6.4",
+      "description": "Create traceable decision and action records from university meeting, committee, department, or teaching-team notes. For a brief summary without an action record, prefer summarize-material when available.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/faculty-tools/skills/meeting-synthesizer",
@@ -262,7 +262,7 @@
     {
       "name": "statement-drafter",
       "package": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Draft or improve teaching and service statements, grant-support text, nominations, bios, annual reviews, or faculty summaries from verified evidence. Expose evidence gaps instead of inventing achievements or endorsement.",
       "source": {
         "source": "github",
@@ -286,8 +286,8 @@
     {
       "name": "presentation-tool",
       "package": "presentation-tools",
-      "version": "0.6.3",
-      "description": "Create, edit, review, or route Slidev, PowerPoint/PPTX, Beamer, Marp, Quarto, or PDF presentation work. Use when the format is undecided or not fixed to Slidev; use slidev-slides when Slidev is already chosen.",
+      "version": "0.6.4",
+      "description": "Create, edit, review, or route PowerPoint/PPTX, Beamer, Marp, Quarto, PDF, or undecided presentation work. Prefer slidev-slides when Slidev remains the chosen output; use this for native editable PPTX even from Slidev sources.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/presentation-tools/skills/presentation-tool",
@@ -313,7 +313,7 @@
     {
       "name": "slidev-slides",
       "package": "presentation-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Create, edit, review, build, present, or export Markdown-based Slidev decks. Use only when Slidev is the chosen format; use presentation-tool for format selection or native PPTX and Beamer workflows.",
       "source": {
         "source": "github",
@@ -340,7 +340,7 @@
     {
       "name": "commit-message",
       "package": "productivity",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Draft Conventional Commit messages from staged or unstaged Git diffs, including split advice. Use for message generation only; do not stage, commit, or push.",
       "source": {
         "source": "github",
@@ -363,7 +363,7 @@
     {
       "name": "decide-between-options",
       "package": "productivity",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Compare concrete approaches, tools, architectures, vendors, workflows, or plans and recommend one against shared constraints, tradeoffs, and reversal evidence. Use for decisions, not open-ended ideation.",
       "source": {
         "source": "github",
@@ -386,7 +386,7 @@
     {
       "name": "grill-me",
       "package": "productivity",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Stress-test a plan, design, argument, product idea, or implementation strategy one unresolved decision at a time, with a recommended answer. Use for interactive pressure-testing, not passive review or bulk question lists.",
       "source": {
         "source": "github",
@@ -409,7 +409,7 @@
     {
       "name": "pr-description",
       "package": "productivity",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Draft reviewer-ready pull request or merge request descriptions from diffs, commits, linked issues, and actual validation evidence. Use for description text only; do not create or publish the PR.",
       "source": {
         "source": "github",
@@ -432,8 +432,8 @@
     {
       "name": "humanizer",
       "package": "writing-tools",
-      "version": "0.6.3",
-      "description": "Rewrite user-authored text that sounds stiff, translated, generic, or machine-like into natural target-language prose, including register-aware Chinese. Preserve facts and authorship; use rewrite-for-clarity for direct clarity or tone edits, never for detector evasion.",
+      "version": "0.6.4",
+      "description": "Rewrite stiff, translated, generic, or machine-like drafts into faithful, idiomatic prose with coherent flow, including English and Chinese register guidance. Use rewrite-for-clarity for direct clarity or tone edits; never for detector evasion.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/humanizer",
@@ -459,7 +459,7 @@
     {
       "name": "rewrite-for-clarity",
       "package": "writing-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Rewrite, tighten, or adapt supplied text for clarity, tone, channel, or audience while preserving meaning, facts, and commitments. Use humanizer when authentic voice or robotic style is the main problem.",
       "source": {
         "source": "github",
@@ -486,8 +486,8 @@
     {
       "name": "summarize-material",
       "package": "writing-tools",
-      "version": "0.6.3",
-      "description": "Summarize notes, articles, transcripts, documents, or long context into a brief, decision record, action list, or synthesis. Use meeting-synthesizer for university meetings where decisions, owners, or dates matter.",
+      "version": "0.6.4",
+      "description": "Condense notes, articles, transcripts, documents, or long context into a brief or synthesis. For a traceable university meeting decision and action record, prefer meeting-synthesizer when available.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/summarize-material",

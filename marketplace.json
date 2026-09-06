@@ -173,7 +173,7 @@
     {
       "name": "Dev Tools",
       "slug": "dev-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Developer skills for debugging, change review, Rust-to-Windows cross-builds, repository boundaries, and release readiness.",
       "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/dev-tools/.codex-plugin/plugin.json",
       "platforms": {
@@ -202,7 +202,7 @@
     {
       "name": "Faculty Tools",
       "slug": "faculty-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
       "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/faculty-tools/.codex-plugin/plugin.json",
       "platforms": {
@@ -231,7 +231,7 @@
     {
       "name": "Presentation Tools",
       "slug": "presentation-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks.",
       "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/presentation-tools/.codex-plugin/plugin.json",
       "platforms": {
@@ -260,7 +260,7 @@
     {
       "name": "Productivity",
       "slug": "productivity",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
       "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/productivity/.codex-plugin/plugin.json",
       "platforms": {
@@ -289,7 +289,7 @@
     {
       "name": "Writing Tools",
       "slug": "writing-tools",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization.",
       "manifest": "https://github.com/jxpeng98/skills/tree/main/plugins/writing-tools/.codex-plugin/plugin.json",
       "platforms": {
