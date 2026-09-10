@@ -312,7 +312,7 @@ function qiongliNextMarketplacePackage(version, claudeDesktopUrl) {
         path: qiongliClaudeDistUrl(NEXT_SLUG, version),
         marketplace: `${SKILLSPLACE}/.claude-plugin/marketplace.json`
       },
-      "claude-desktop": claudeDesktopPlatform(claudeDesktopUrl)
+      ...(claudeDesktopUrl ? { "claude-desktop": claudeDesktopPlatform(claudeDesktopUrl) } : {})
     }
   };
 }
@@ -393,7 +393,7 @@ function buildQiongliEntries(stableRelease, prereleaseRelease) {
       `${prereleaseRelease.tag_name} is missing the qiongli-next pre-release Codex or Claude plugin asset`
     );
   }
-  if (!prereleaseClaudeDesktopUrl) {
+  if (!prereleaseClaudeDesktopUrl && parseSemver(prereleaseVersion).major < 2) {
     throw new Error(`${prereleaseRelease.tag_name} is missing the qiongli-next Claude Desktop plugin asset`);
   }
 

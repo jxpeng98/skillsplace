@@ -386,6 +386,21 @@ test("syncQiongliReleases requires Claude Desktop plugin assets for Qiongli chan
   );
 });
 
+test("syncQiongliReleases accepts native next without a Desktop artifact", async () => {
+  const { syncQiongliReleases } = await import(scriptUrl);
+  const fixtureRoot = await createFixture();
+  await syncQiongliReleases({ root: fixtureRoot, releases: [
+    release("v1.17.0", false, ["qiongli"]),
+    release("v2.0.0-alpha.8", true, ["qiongli-next"], ["codex", "claude"], [])
+  ] });
+  const marketplace = await readJson(path.join(fixtureRoot, "marketplace.json"));
+  const entry = bySlug(marketplace.packages, "qiongli-next");
+  assert.equal(entry.version, "2.0.0-alpha.8");
+  assert.deepEqual(Object.keys(entry.platforms).sort(), ["claude", "codex"]);
+  const codex = await readJson(path.join(fixtureRoot, ".agents/plugins/marketplace.json"));
+  assert.equal(bySlug(codex.plugins, "qiongli-next").source.ref, "codex/v2.0.0-alpha.8");
+});
+
 test("syncQiongliReleases keeps Antigravity on the stable source path for 1.x releases", async () => {
   const { syncQiongliReleases } = await import(scriptUrl);
   const fixtureRoot = await createFixture();

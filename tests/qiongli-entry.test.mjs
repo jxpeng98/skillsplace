@@ -298,11 +298,11 @@ test("qiongli pre-release is exposed through a dist-ref next channel", async () 
     platforms: {
       codex: qiongliNextCodexPlatform(qiongliPrereleaseVersion),
       claude: qiongliNextClaudePlatform(qiongliPrereleaseVersion),
-      "claude-desktop": {
+      ...(qiongliPrereleaseVersion.startsWith("2.") ? {} : { "claude-desktop": {
         type: "plugin",
         path: desktopPluginAsset("qiongli-next", qiongliPrereleaseVersion),
         marketplace: "https://github.com/jxpeng98/skillsplace/blob/main/marketplace.json"
-      }
+      } })
     }
   });
 
