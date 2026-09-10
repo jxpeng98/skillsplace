@@ -202,7 +202,7 @@ function qiongliNextCodexEntry(version) {
 }
 
 function qiongliSubjectPackages(packages) {
-  return packages.filter((entry) => entry.slug.startsWith("qiongli-") && entry.slug !== "qiongli-next");
+  return packages.filter((entry) => entry.slug.startsWith("qiongli-") && !entry.slug.startsWith("qiongli-next"));
 }
 
 test("qiongli remains listed as an external marketplace package", async () => {

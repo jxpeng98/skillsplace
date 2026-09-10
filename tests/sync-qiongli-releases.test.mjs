@@ -401,6 +401,29 @@ test("syncQiongliReleases accepts native next without a Desktop artifact", async
   assert.equal(bySlug(codex.plugins, "qiongli-next").source.ref, "codex/v2.0.0-alpha.8");
 });
 
+test("legacy release sync preserves separately qualified platform entries", async () => {
+  const { syncQiongliReleases } = await import(scriptUrl);
+  const fixtureRoot = await createFixture();
+  const records = [];
+  for (const [file, key] of [["marketplace.json", "packages"],
+    [".agents/plugins/marketplace.json", "plugins"], [".claude-plugin/marketplace.json", "plugins"]]) {
+    const catalog = await readJson(path.join(fixtureRoot, file));
+    const entry = { ...catalog[key][0], name: "qiongli-next-windows-x64", version: "2.0.0-beta.1" };
+    if (key === "packages") entry.slug = entry.name;
+    catalog[key].push(entry);
+    await writeJson(path.join(fixtureRoot, file), catalog);
+    records.push({ file, key, entry });
+  }
+  await syncQiongliReleases({ root: fixtureRoot, releases: [
+    release("v1.17.0", false, ["qiongli"]),
+    release("v2.0.0-alpha.8", true, ["qiongli-next"], ["codex", "claude"], [])
+  ] });
+  for (const { file, key, entry } of records) {
+    const catalog = await readJson(path.join(fixtureRoot, file));
+    assert.deepEqual(bySlug(catalog[key], entry.name), entry);
+  }
+});
+
 test("syncQiongliReleases keeps Antigravity on the stable source path for 1.x releases", async () => {
   const { syncQiongliReleases } = await import(scriptUrl);
   const fixtureRoot = await createFixture();

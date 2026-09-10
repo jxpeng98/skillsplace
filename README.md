@@ -7,6 +7,9 @@ The current marketplace entries are:
 | Package | Version | Source | Platforms | Description |
 | --- | --- | --- | --- | --- |
 | `qiongli` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Codex, Claude Code, Claude Desktop, Antigravity | Academic paper workflows for planning, literature review, writing, compliance, submission, and research code. |
+| `qiongli-next-macos-arm64` | `2.0.0-beta.1` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v2.0.0-beta.1) | Codex, Claude Code | Qiongli beta for macOS Apple Silicon. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup. |
+| `qiongli-next-windows-x64` | `2.0.0-beta.1` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v2.0.0-beta.1) | Codex, Claude Code | Qiongli beta for Windows x64. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup. |
+| `qiongli-next-linux-x64` | `2.0.0-beta.1` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v2.0.0-beta.1) | Codex, Claude Code | Qiongli beta for Linux x64 (glibc 2.35+). Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup. |
 | `qiongli-next` | `2.0.0-alpha.8` | [`qiongli` pre-release](https://github.com/jxpeng98/qiongli/releases/tag/v2.0.0-alpha.8) | Codex, Claude Code | Pre-release Qiongli channel for testing the restructured package layout before it becomes the stable marketplace entry. |
 | `qiongli-core` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | General-purpose Qiongli academic workflow across paper types and methods. |
 | `qiongli-economics` | `1.17.0` | [`qiongli` release](https://github.com/jxpeng98/qiongli/releases/tag/v1.17.0) | Claude Code | Economics-focused empirical, theory, and reproducibility workflow. |
@@ -25,6 +28,12 @@ The current marketplace entries are:
 This repository does not vendor plugin source code, skills, hooks, MCP servers, or executable package artifacts. It only points supported platforms to reviewed external sources.
 
 ## Install Plugins
+
+For Qiongli beta.1, choose **one** platform entry: `qiongli-next-macos-arm64`,
+`qiongli-next-windows-x64`, or `qiongli-next-linux-x64` (glibc 2.35+). Each bundles
+its native runtime and needs no Node.js, npm or Python setup. The generic
+`qiongli-next` entry remains on alpha.8 with its npm bridge; it does not select
+your platform automatically. The stable `qiongli` entry remains on 1.x.
 
 ### Codex
 

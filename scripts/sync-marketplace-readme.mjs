@@ -54,7 +54,7 @@ function readmePlatformList(platforms = {}) {
 function readmeSource(entry) {
   const manifest = entry.manifest ?? "";
   if (manifest.includes("github.com/jxpeng98/qiongli")) {
-    const label = entry.slug === "qiongli-next" ? "`qiongli` pre-release" : "`qiongli` release";
+    const label = entry.slug.startsWith("qiongli-next") ? "`qiongli` pre-release" : "`qiongli` release";
     return `[${label}](${QIONGLI_REPO}/releases/tag/v${entry.version})`;
   }
   if (manifest.includes("github.com/jxpeng98/skills")) {

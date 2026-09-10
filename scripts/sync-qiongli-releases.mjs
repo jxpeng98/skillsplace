@@ -244,7 +244,9 @@ function subjectMetadata(slug) {
 }
 
 function isQiongliSlug(slug) {
-  return slug === "qiongli" || slug === "qiongli-next" || slug.startsWith("qiongli-");
+  // Platform entries are pinned from the qualified release index, independently
+  // of the legacy generic/subject archive sync.
+  return slug === "qiongli" || (slug.startsWith("qiongli-") && !slug.startsWith("qiongli-next-"));
 }
 
 function marketplacePackage(slug, name, version, description, manifest, platforms) {

@@ -35,6 +35,63 @@
       }
     },
     {
+      "name": "Qiongli Beta — macOS Apple Silicon",
+      "slug": "qiongli-next-macos-arm64",
+      "version": "2.0.0-beta.1",
+      "description": "Qiongli beta for macOS Apple Silicon. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/aarch64-apple-darwin/v2.0.0-beta.1/plugins/qiongli-next-macos-arm64/.codex-plugin/plugin.json",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/aarch64-apple-darwin/v2.0.0-beta.1/plugins/qiongli-next-macos-arm64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/claude/aarch64-apple-darwin/v2.0.0-beta.1/plugins/qiongli-next-macos-arm64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Beta — Windows x64",
+      "slug": "qiongli-next-windows-x64",
+      "version": "2.0.0-beta.1",
+      "description": "Qiongli beta for Windows x64. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/x86_64-pc-windows-msvc/v2.0.0-beta.1/plugins/qiongli-next-windows-x64/.codex-plugin/plugin.json",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/x86_64-pc-windows-msvc/v2.0.0-beta.1/plugins/qiongli-next-windows-x64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/claude/x86_64-pc-windows-msvc/v2.0.0-beta.1/plugins/qiongli-next-windows-x64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
+      "name": "Qiongli Beta — Linux x64 (glibc 2.35+)",
+      "slug": "qiongli-next-linux-x64",
+      "version": "2.0.0-beta.1",
+      "description": "Qiongli beta for Linux x64 (glibc 2.35+). Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "manifest": "https://github.com/jxpeng98/qiongli/tree/codex/x86_64-unknown-linux-gnu/v2.0.0-beta.1/plugins/qiongli-next-linux-x64/.codex-plugin/plugin.json",
+      "platforms": {
+        "codex": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/codex/x86_64-unknown-linux-gnu/v2.0.0-beta.1/plugins/qiongli-next-linux-x64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.agents/plugins/marketplace.json"
+        },
+        "claude": {
+          "type": "plugin",
+          "path": "https://github.com/jxpeng98/qiongli/tree/claude/x86_64-unknown-linux-gnu/v2.0.0-beta.1/plugins/qiongli-next-linux-x64",
+          "marketplace": "https://github.com/jxpeng98/skillsplace/blob/main/.claude-plugin/marketplace.json"
+        }
+      }
+    },
+    {
       "name": "Qiongli Next",
       "slug": "qiongli-next",
       "version": "2.0.0-alpha.8",
