@@ -19,6 +19,20 @@
       "category": "Education"
     },
     {
+      "name": "qiongli-next",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "./plugins/qiongli-next",
+        "ref": "codex/v2.0.0-alpha.8"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
       "name": "qiongli-next-macos-arm64",
       "source": {
         "source": "git-subdir",
@@ -53,20 +67,6 @@
         "url": "https://github.com/jxpeng98/qiongli.git",
         "path": "./plugins/qiongli-next-linux-x64",
         "ref": "codex/x86_64-unknown-linux-gnu/v2.0.0-beta.1"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Education"
-    },
-    {
-      "name": "qiongli-next",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "./plugins/qiongli-next",
-        "ref": "codex/v2.0.0-alpha.8"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -30,81 +30,6 @@
       ]
     },
     {
-      "name": "qiongli-next-macos-arm64",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "plugins/qiongli-next-macos-arm64",
-        "ref": "claude/aarch64-apple-darwin/v2.0.0-beta.1"
-      },
-      "description": "Qiongli beta for macOS Apple Silicon. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
-      "version": "2.0.0-beta.1",
-      "author": {
-        "name": "Jiaxin Peng"
-      },
-      "homepage": "https://github.com/jxpeng98/qiongli",
-      "repository": "https://github.com/jxpeng98/qiongli",
-      "license": "MIT",
-      "category": "education",
-      "tags": [
-        "research",
-        "academic-writing",
-        "literature-review",
-        "pre-release",
-        "macos-arm64"
-      ]
-    },
-    {
-      "name": "qiongli-next-windows-x64",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "plugins/qiongli-next-windows-x64",
-        "ref": "claude/x86_64-pc-windows-msvc/v2.0.0-beta.1"
-      },
-      "description": "Qiongli beta for Windows x64. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
-      "version": "2.0.0-beta.1",
-      "author": {
-        "name": "Jiaxin Peng"
-      },
-      "homepage": "https://github.com/jxpeng98/qiongli",
-      "repository": "https://github.com/jxpeng98/qiongli",
-      "license": "MIT",
-      "category": "education",
-      "tags": [
-        "research",
-        "academic-writing",
-        "literature-review",
-        "pre-release",
-        "windows-x64"
-      ]
-    },
-    {
-      "name": "qiongli-next-linux-x64",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/jxpeng98/qiongli.git",
-        "path": "plugins/qiongli-next-linux-x64",
-        "ref": "claude/x86_64-unknown-linux-gnu/v2.0.0-beta.1"
-      },
-      "description": "Qiongli beta for Linux x64 (glibc 2.35+). Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
-      "version": "2.0.0-beta.1",
-      "author": {
-        "name": "Jiaxin Peng"
-      },
-      "homepage": "https://github.com/jxpeng98/qiongli",
-      "repository": "https://github.com/jxpeng98/qiongli",
-      "license": "MIT",
-      "category": "education",
-      "tags": [
-        "research",
-        "academic-writing",
-        "literature-review",
-        "pre-release",
-        "linux-x64"
-      ]
-    },
-    {
       "name": "qiongli-next",
       "source": {
         "source": "git-subdir",
@@ -302,6 +227,81 @@
         "academic-writing",
         "literature-review",
         "subject-package"
+      ]
+    },
+    {
+      "name": "qiongli-next-macos-arm64",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli-next-macos-arm64",
+        "ref": "claude/aarch64-apple-darwin/v2.0.0-beta.1"
+      },
+      "description": "Qiongli beta for macOS Apple Silicon. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "version": "2.0.0-beta.1",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "pre-release",
+        "macos-arm64"
+      ]
+    },
+    {
+      "name": "qiongli-next-windows-x64",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli-next-windows-x64",
+        "ref": "claude/x86_64-pc-windows-msvc/v2.0.0-beta.1"
+      },
+      "description": "Qiongli beta for Windows x64. Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "version": "2.0.0-beta.1",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "pre-release",
+        "windows-x64"
+      ]
+    },
+    {
+      "name": "qiongli-next-linux-x64",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jxpeng98/qiongli.git",
+        "path": "plugins/qiongli-next-linux-x64",
+        "ref": "claude/x86_64-unknown-linux-gnu/v2.0.0-beta.1"
+      },
+      "description": "Qiongli beta for Linux x64 (glibc 2.35+). Bundled native Lite MCP and research Skills; no Node.js, npm or Python setup.",
+      "version": "2.0.0-beta.1",
+      "author": {
+        "name": "Jiaxin Peng"
+      },
+      "homepage": "https://github.com/jxpeng98/qiongli",
+      "repository": "https://github.com/jxpeng98/qiongli",
+      "license": "MIT",
+      "category": "education",
+      "tags": [
+        "research",
+        "academic-writing",
+        "literature-review",
+        "pre-release",
+        "linux-x64"
       ]
     },
     {
