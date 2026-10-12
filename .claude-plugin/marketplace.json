@@ -313,7 +313,7 @@
         "ref": "main"
       },
       "description": "Developer skills for debugging, change review, cross-builds, repository boundaries, release readiness, and App Store releases.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -330,6 +330,8 @@
         "repository",
         "release",
         "ios",
+        "macos",
+        "testflight",
         "app-store"
       ]
     },
@@ -342,7 +344,7 @@
         "ref": "main"
       },
       "description": "Daily university faculty skills for teaching, feedback, student communication, meetings, and light academic-service writing.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -366,7 +368,7 @@
         "ref": "main"
       },
       "description": "Presentation skills for choosing, creating, reviewing, and exporting Slidev, PowerPoint/PPTX, and LaTeX Beamer decks.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -393,7 +395,7 @@
         "ref": "main"
       },
       "description": "Productivity skills for planning, critique, decisions, commits, and pull requests.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Jiaxin Peng"
       },
@@ -416,7 +418,7 @@
         "ref": "main"
       },
       "description": "Writing skills for clarity, tone, humanization, general writing polish, academic writing coaching, protected-fact preservation, and summarization.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Jiaxin Peng"
       },
