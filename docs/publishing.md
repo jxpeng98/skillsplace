@@ -108,6 +108,13 @@ Do not copy `SKILL.md` files into this repository while it remains catalog-only.
 
 Antigravity support is recorded in `.antigravity/catalog.json`.
 
+The catalog is consumed by `npm run install:antigravity -- <package> --target cli|app`,
+not registered as a named marketplace in agy. The installer supports GitHub HTTPS
+`git-subdir` sources and installs only entries marked `ready`. Before marking an entry
+ready, verify its root `plugin.json` name matches the catalog name and its native
+skills, MCP settings, and hooks work with Antigravity. Keep packages self-contained
+without symbolic links. See [installation instructions](antigravity.md).
+
 Use the plugin route when the external source is a valid Antigravity plugin directory with a root `plugin.json` file:
 
 ```json

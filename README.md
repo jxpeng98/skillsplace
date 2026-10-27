@@ -75,25 +75,34 @@ In an interactive Claude Code session, the equivalent slash commands are:
 
 ### Antigravity
 
-Skillsplace publishes Antigravity adapter metadata at:
+Install directly without cloning Skillsplace (macOS/Linux, Node.js 18+, Git, and curl):
 
-```text
-.antigravity/catalog.json
+```bash
+# Antigravity App
+curl -fsSL https://raw.githubusercontent.com/jxpeng98/skillsplace/main/scripts/install-antigravity.sh | sh -s -- dev-tools --target app
+
+# agy CLI (requires agy on PATH)
+curl -fsSL https://raw.githubusercontent.com/jxpeng98/skillsplace/main/scripts/install-antigravity.sh | sh -s -- dev-tools --target cli
 ```
 
-Antigravity currently uses custom plugin directories with a root `plugin.json`, or editor extensions from Open VSX.
+The bootstrap downloads the installer and catalog to a temporary directory, runs
+installation, and removes the temporary files. Review the installer and external
+plugin source before running it; the commands execute the current installer from `main`.
 
-Current Antigravity entries:
+From an existing Skillsplace checkout, the equivalent command is
+`npm run install:antigravity -- dev-tools --target app` (or `--target cli`). List
+available packages with `npm run install:antigravity -- --list`.
 
-- `productivity`, `dev-tools`, `writing-tools`, and `presentation-tools` are marked ready for the native plugin route.
-- `qiongli` is listed in the Antigravity catalog at stable tag `v1.3.0`, but native Antigravity plugin installation is marked pending until `jxpeng98/qiongli` adds a root `plugin.json` compatible with Antigravity.
-- The `qiongli` and `qiongli-next` Codex entries install from build-generated `codex/v<version>`
-  dist refs in `jxpeng98/qiongli`. The `qiongli-next` Claude plugin entry installs from the
-  Claude-only `claude/v<version>` dist ref; stable `qiongli` stays on its existing published ref
-  until a matching stable Claude ref is published. Subject-specific Qiongli release packages remain
-  Claude Code only.
+Antigravity does not register this repository as a third-party marketplace. The
+installer reads `.antigravity/catalog.json` and installs the external plugin
+subdirectory after checking its root `plugin.json`.
 
-See `docs/antigravity.md` for the exact plugin and Open VSX extension routes.
+`dev-tools`, `faculty-tools`, `presentation-tools`, `productivity`, and
+`writing-tools` have native plugin entries. `qiongli` remains blocked by its
+`pending-native-manifest` status; Qiongli Next has no Antigravity entry.
+
+See [Antigravity installation](docs/antigravity.md) for App installation, verification,
+manual installation, updates, and limitations.
 
 ### Hermes
 

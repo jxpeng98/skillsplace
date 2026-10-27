@@ -6,6 +6,7 @@
   "description": "A platform-neutral marketplace repository for agent skills and Codex plugins.",
   "license": "UNLICENSED",
   "scripts": {
+    "install:antigravity": "node scripts/install-antigravity.mjs",
     "test": "node --test",
     "sync:qiongli": "node scripts/sync-qiongli-releases.mjs",
     "sync:skills": "node scripts/sync-skills-repo.mjs --source-root ../skills --target-root .",
