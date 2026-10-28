@@ -8,6 +8,9 @@ import assert from "node:assert/strict";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bootstrap = await readFile(path.join(root, "scripts/install-antigravity.sh"), "utf8");
+const bootstrapOptions = {
+  skip: !["darwin", "linux"].includes(process.platform) && "Shell bootstrap supports macOS and Linux only"
+};
 
 async function setup(t, installer) {
   const directory = await mkdtemp(path.join(tmpdir(), "antigravity bootstrap-"));
@@ -50,7 +53,7 @@ fs.copyFileSync(sources[url], args[args.indexOf('-o') + 1]);
   return { run, temporary };
 }
 
-test("one-line bootstrap runs the real catalog listing outside a checkout and cleans up", async (t) => {
+test("one-line bootstrap runs the real catalog listing outside a checkout and cleans up", bootstrapOptions, async (t) => {
   const f = await setup(t);
   const result = await f.run(["--list"]);
   assert.equal(result.code, 0, result.stderr);
@@ -59,7 +62,7 @@ test("one-line bootstrap runs the real catalog listing outside a checkout and cl
   assert.deepEqual(await readdir(f.temporary), []);
 });
 
-test("bootstrap forwards arguments unchanged and preserves installer failures", async (t) => {
+test("bootstrap forwards arguments unchanged and preserves installer failures", bootstrapOptions, async (t) => {
   const f = await setup(t, "console.log(JSON.stringify(process.argv.slice(2))); process.exitCode = 7;");
   for (const target of ["app", "cli"]) {
     const args = ["dev-tools", "--target", target, "argument with spaces"];
@@ -70,7 +73,7 @@ test("bootstrap forwards arguments unchanged and preserves installer failures", 
   }
 });
 
-test("failed downloads stop before execution and clean temporary files", async (t) => {
+test("failed downloads stop before execution and clean temporary files", bootstrapOptions, async (t) => {
   const f = await setup(t, "console.log('must not execute');");
   for (const file of ["install-antigravity.mjs", "catalog.json"]) {
     const result = await f.run(["dev-tools", "--target", "cli"], { TEST_FAIL_FETCH: file });
