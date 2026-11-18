@@ -5,10 +5,41 @@
   "description": "Adapter metadata for installing Skillsplace packages as Hermes skills through GitHub skill identifiers.",
   "skills": [
     {
+      "name": "app-store-connect-api",
+      "package": "dev-tools",
+      "version": "0.9.0",
+      "description": "Automate Apple app releases through the App Store Connect API. Use for JWT-authenticated requests, headless release jobs, TestFlight, App Review submission and storefront rollout. For general App Store preparation, use app-store-release when available.",
+      "source": {
+        "source": "github",
+        "identifier": "jxpeng98/skills/plugins/dev-tools/skills/app-store-connect-api",
+        "repo": "jxpeng98/skills",
+        "path": "plugins/dev-tools/skills/app-store-connect-api",
+        "ref": "main"
+      },
+      "install": {
+        "command": "hermes skills install jxpeng98/skills/plugins/dev-tools/skills/app-store-connect-api",
+        "source": "github",
+        "trust": "community"
+      },
+      "tags": [
+        "development",
+        "debugging",
+        "code-review",
+        "rust",
+        "windows",
+        "repository",
+        "release",
+        "ios",
+        "macos",
+        "testflight",
+        "app-store"
+      ]
+    },
+    {
       "name": "app-store-release",
       "package": "dev-tools",
-      "version": "0.8.0",
-      "description": "Prepare, audit, build, upload, distribute through TestFlight, submit, or release Apple-platform apps through App Store Connect. Use for App Store 上架, release configuration, store information, and review issues at the requested stage; not general feature development, other app stores, or direct macOS distribution.",
+      "version": "0.9.0",
+      "description": "Prepare, audit, build, upload, distribute through TestFlight, submit, or release Apple-platform apps through App Store Connect. Use for App Store 上架, release configuration, store information and review issues. For explicit API automation, prefer app-store-connect-api when available.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/dev-tools/skills/app-store-release",
@@ -38,7 +69,7 @@
     {
       "name": "change-review",
       "package": "dev-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Review a branch, pull request, commit range, or working-tree diff for request fidelity and behavior, regression, compatibility, and maintainability risks. Return findings only; use repo-boundary-review for file ownership and placement.",
       "source": {
         "source": "github",
@@ -69,7 +100,7 @@
     {
       "name": "release-readiness",
       "package": "dev-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Check skill, plugin, or repository release readiness from validation and packaging evidence, on its own or as a gate within an authorized release.",
       "source": {
         "source": "github",
@@ -100,7 +131,7 @@
     {
       "name": "repo-boundary-review",
       "package": "dev-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Review changed files for ownership and placement across canonical skill sources, plugin roots, generated mirrors, drafts, and marketplace catalogs. Use for findings, not file moves or release approval.",
       "source": {
         "source": "github",
@@ -131,7 +162,7 @@
     {
       "name": "rust-windows-cross-build",
       "package": "dev-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Cross-build Rust applications on Apple Silicon macOS for Windows x64 MSVC, then validate the artifacts in a Parallels Windows 11 Arm guest. Use for this build-and-test loop; not as proof of native x64 hardware behavior.",
       "source": {
         "source": "github",
@@ -162,7 +193,7 @@
     {
       "name": "systematic-debugging",
       "package": "dev-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Diagnose or fix bugs, failing tests, builds, and performance regressions. Use change-review for reviewing otherwise working changes.",
       "source": {
         "source": "github",
@@ -193,7 +224,7 @@
     {
       "name": "assignment-brief",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Create or revise university assignment briefs and rubrics within course policy. Distinguish approved requirements from proposed assessment design.",
       "source": {
         "source": "github",
@@ -217,7 +248,7 @@
     {
       "name": "course-planner",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Plan university courses or teaching sessions and prepare teaching handouts from supplied material. Use for learning content and activities, not grading or research workflows.",
       "source": {
         "source": "github",
@@ -241,7 +272,7 @@
     {
       "name": "faculty-email",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Draft or revise university emails from supplied context and policy. Use for send-ready drafts.",
       "source": {
         "source": "github",
@@ -265,7 +296,7 @@
     {
       "name": "feedback-writer",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Write actionable feedback on student work using the actual submission and rubric. Use for feedback, not assignment design or unsupported grading.",
       "source": {
         "source": "github",
@@ -289,7 +320,7 @@
     {
       "name": "meeting-synthesizer",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Create traceable decision and action records from university meeting, committee, department, or teaching-team notes. For a brief summary without an action record, prefer summarize-material when available.",
       "source": {
         "source": "github",
@@ -313,7 +344,7 @@
     {
       "name": "statement-drafter",
       "package": "faculty-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Draft or improve teaching and service statements, grant-support text, nominations, bios, annual reviews, or faculty summaries from verified evidence. Expose evidence gaps instead of inventing achievements or endorsement.",
       "source": {
         "source": "github",
@@ -337,7 +368,7 @@
     {
       "name": "presentation-tool",
       "package": "presentation-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Create, edit, review, or export presentations and accompanying handouts, including native editable PPTX and Beamer. Use slidev-slides when Slidev is the chosen output.",
       "source": {
         "source": "github",
@@ -364,7 +395,7 @@
     {
       "name": "slidev-slides",
       "package": "presentation-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Create, edit, review, or export Slidev decks and accompanying handouts. Use presentation-tool for format selection or native editable PPTX and Beamer.",
       "source": {
         "source": "github",
@@ -391,7 +422,7 @@
     {
       "name": "commit-message",
       "package": "productivity",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Draft a Conventional Commit message from a Git diff, either on its own or as part of an authorized commit task.",
       "source": {
         "source": "github",
@@ -414,7 +445,7 @@
     {
       "name": "decide-between-options",
       "package": "productivity",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Compare concrete approaches, tools, architectures, vendors, workflows, or plans and recommend one against shared constraints, tradeoffs, and reversal evidence. Use for decisions, not open-ended ideation.",
       "source": {
         "source": "github",
@@ -437,7 +468,7 @@
     {
       "name": "grill-me",
       "package": "productivity",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Stress-test a plan, design, argument, product idea, or implementation strategy one unresolved decision at a time, with a recommended answer. Use for interactive pressure-testing, not passive review or bulk question lists.",
       "source": {
         "source": "github",
@@ -460,7 +491,7 @@
     {
       "name": "pr-description",
       "package": "productivity",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Draft reviewer-ready pull request or merge request descriptions from diffs, commits, linked issues, and actual validation evidence. Use for description text only; do not create or publish the PR.",
       "source": {
         "source": "github",
@@ -483,8 +514,8 @@
     {
       "name": "humanizer",
       "package": "writing-tools",
-      "version": "0.8.0",
-      "description": "Rewrite stiff, translated, generic, or machine-like drafts into faithful, idiomatic prose with coherent flow, including English and Chinese register guidance. Use rewrite-for-clarity for direct clarity or tone edits; never for detector evasion.",
+      "version": "0.9.0",
+      "description": "Polish stiff or translated English and Chinese in emails, READMEs, work documents and journal manuscripts. Use humanizer for natural voice and flow, and rewrite-for-clarity for a requested change of length, tone or audience.",
       "source": {
         "source": "github",
         "identifier": "jxpeng98/skills/plugins/writing-tools/skills/humanizer",
@@ -510,7 +541,7 @@
     {
       "name": "rewrite-for-clarity",
       "package": "writing-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Rewrite, tighten, or adapt supplied text for clarity, tone, channel, or audience while preserving meaning, facts, and commitments. Use humanizer when authentic voice or robotic style is the main problem.",
       "source": {
         "source": "github",
@@ -537,7 +568,7 @@
     {
       "name": "summarize-material",
       "package": "writing-tools",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "description": "Condense notes, articles, transcripts, documents, or long context into a brief or synthesis. For a traceable university meeting decision and action record, prefer meeting-synthesizer when available.",
       "source": {
         "source": "github",
